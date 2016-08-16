@@ -4,7 +4,6 @@
 /dist
 .git/
 .git*
-configuration.inc
 site_config.inc
 backup.cnf
 /data/sessions/*
@@ -12,5 +11,4 @@ node_modules
 .gulp-build
 .ftppass
 gulpfile.js
-composer.lock
 .sass-cache
