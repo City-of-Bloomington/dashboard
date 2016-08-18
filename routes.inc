@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2015-2016 City of Bloomington, Indiana
+ * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 $rf = new \Aura\Router\RouterFactory(BASE_URI);
@@ -34,7 +34,16 @@ $ROUTES->attach('users', '/users', function ($r) {
     $r->add('delete', '/delete/{id}') ->addValues(['action'=>'delete']);
 });
 
+$ROUTES->attach('cards', '/cards', function ($r) {
+    $r->setTokens(['id'=>'[a-z0-9]+']);
+    $r->setValues(['controller'=>'cards']);
+
+    $r->add('index',  '')             ->addValues(['action'=>'index' ]);
+    $r->add('update', '/update{/id}') ->addValues(['action'=>'update']);
+    $r->add('delete', '/delete/{id}') ->addValues(['action'=>'delete']);
+});
+
+
 $NAV1 = [
-    ['msgid'=>'home',                  'uri'=>$ROUTES->generate('home')],
-    ['msgid'=>['person', 'people', 2], 'uri'=>$ROUTES->generate('people.index')]
+    ['msgid'=>['card', 'cards', 4], 'uri'=>$ROUTES->generate('cards.index')]
 ];

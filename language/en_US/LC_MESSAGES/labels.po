@@ -113,5 +113,16 @@ msgstr "Account Info"
 msgid "error"
 msgstr "Sorry"
 
-msgid "my_account"
-msgstr "My Account"
+msgid "card"
+msgid_plural "cards"
+msgstr[0] "Card"
+msgstr[1] "Cards"
+
+msgid "card_add"
+msgstr "New Card"
+
+msgid "card_edit"
+msgstr "Edit Card"
+
+msgid "card_delete"
+msgstr "Delete Card"
