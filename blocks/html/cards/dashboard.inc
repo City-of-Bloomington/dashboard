@@ -24,6 +24,8 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
                 <header>
                     <h1><a href=\"$uri\">$description</a></h1>
                 </header>
+                <div class=\"value\"></div>
+                <div class=\"target\">{$this->_('target')}: {$c->getTarget()}</div>
             </article>
             ";
         }

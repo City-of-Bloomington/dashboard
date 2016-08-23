@@ -14,7 +14,8 @@ var CARD_LIST = {
                 var data       = JSON.parse(r.responseText),
                     target     = card.getAttribute('data-target'),
                     comparison = card.getAttribute('data-comparison'),
-                    status     = 'fail';
+                    status     = 'fail',
+                    element    = document.getElementById(id);
 
                 switch (comparison) {
                     case 'gt' : if (data.value >  target) { status = 'pass'; } break;
@@ -24,8 +25,8 @@ var CARD_LIST = {
                 }
 
                 if (data.value) {
-                    document.getElementById(id).setAttribute('class', 'card ' + status);
-                    //document.getElementById(id).innerHTML += d.value;
+                    element.setAttribute('class', 'card ' + status);
+                    element.querySelector('.value').innerHTML = data.value;
                 }
             });
         }

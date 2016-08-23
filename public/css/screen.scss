@@ -7,5 +7,8 @@
 @import 'sass-modules/_buttons';
 @import 'sass-modules/_tables';
 
-article.card.pass { background-color:green; }
-article.card.fail { background-color:red;   }
+article.card {
+    background-color:#ff3;
+    &.pass { background-color: green; }
+    &.fail { background-color: red;   }
+}
