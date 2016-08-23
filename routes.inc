@@ -35,14 +35,20 @@ $ROUTES->attach('users', '/users', function ($r) {
 });
 
 $ROUTES->attach('cards', '/cards', function ($r) {
-    $r->setTokens(['id'=>'[a-z0-9]+']);
+    $r->setTokens(['id'=>'[0-9]+']);
     $r->setValues(['controller'=>'cards']);
 
-    $r->add('index',  '')             ->addValues(['action'=>'index' ]);
-    $r->add('update', '/update{/id}') ->addValues(['action'=>'update']);
-    $r->add('delete', '/delete/{id}') ->addValues(['action'=>'delete']);
+    $r->add('index',  '')            ->addValues(['action'=>'index' ]);
+    $r->add('view',   '/{id}')       ->addValues(['action'=>'view'  ]);
+    $r->add('update', '/update{/id}')->addValues(['action'=>'update']);
+    $r->add('delete', '/delete/{id}')->addValues(['action'=>'delete']);
 });
 
+$ROUTES->attach('services', '/services', function ($r) {
+    $r->setValues(['controller'=>'services']);
+
+    $r->add('index',  '')->addValues(['action'=>'index']);
+});
 
 $NAV1 = [
     ['msgid'=>['card', 'cards', 4], 'uri'=>$ROUTES->generate('cards.index')]

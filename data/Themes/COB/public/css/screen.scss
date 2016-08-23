@@ -23,6 +23,10 @@ main .dropdown .launcher {
     color: $color-content-background;
 }
 
+.card {
+    width:33%; float:left;
+}
+
 .pageNavigation          { margin:.5em; }
 .pageNavigation li       { display:inline; margin:.5em; }
 a.current { border:2px solid green; }

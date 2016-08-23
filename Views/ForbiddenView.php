@@ -5,6 +5,7 @@
  */
 namespace Application\Views;
 
+use Blossom\Classes\Block;
 use Blossom\Classes\Template;
 
 class ForbiddenView extends Template
@@ -14,5 +15,6 @@ class ForbiddenView extends Template
         header('HTTP/1.1 403 Forbidden', true, 403);
 
         parent::__construct('default', 'html', $vars);
+        $this->blocks[] = new Block('403.inc');
     }
 }

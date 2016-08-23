@@ -1,7 +1,7 @@
 -- @copyright 2016 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
 create table people (
-	id int unsigned not null primary key auto_increment,
+	id        int unsigned not null primary key auto_increment,
 	firstname varchar(128) not null,
 	lastname  varchar(128) not null,
 	email     varchar(255) not null,
@@ -12,6 +12,11 @@ create table people (
 );
 
 create table cards (
-    id int unsigned not null primary key auto_increment,
-    description varchar(255) not null
+    id          int unsigned not null primary key auto_increment,
+    description varchar(255) not null,
+    service     varchar(32)  not null,
+    method      varchar(32)  not null,
+    parameters  varchar(128),
+    target      tinyint      not null,
+    comparison  varchar(16)  not null
 );

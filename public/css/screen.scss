@@ -6,3 +6,6 @@
 @import 'sass-modules/_field';
 @import 'sass-modules/_buttons';
 @import 'sass-modules/_tables';
+
+article.card.pass { background-color:green; }
+article.card.fail { background-color:red;   }

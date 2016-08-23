@@ -5,12 +5,6 @@
  * @param Card $this->card
  */
 use Application\Models\Person;
-
-$fields = ['id', 'description'];
-foreach ($fields as $f) {
-    $get = 'get'.ucfirst($f);
-    $$f  = $this->$get();
-}
 ?>
 <section>
     <header>
@@ -20,24 +14,33 @@ foreach ($fields as $f) {
             $helper = $this->template->getHelper('buttonLink');
             if (Person::isAllowed('cards', 'edit')) {
                 echo $helper->buttonLink(
-                    self::generateUri('cards.update', ['id'=>$id]),
+                    self::generateUri('cards.update', ['id'=>$this->card->getId()]),
                     $this->_('card_edit'),
                     'edit'
                 );
             }
             if (Person::isAllowed('cards', 'delete')) {
                 echo $helper->buttonLink(
-                    self::generateUri('cards.delete', ['id'=>$id]),
+                    self::generateUri('cards.delete', ['id'=>$this->card->getId()]),
                     $this->_('card_delete'),
                     'delete'
                 );
             }
         ?>
         </div>
+
         <table>
-            <tr><th><?= $this->_('description'); ?></th>
-                <td><?= $description; ?></td>
-            </tr>
+        <?php
+            $fields = ['description', 'service', 'method', 'target', 'comparison'];
+            foreach ($fields as $f) {
+                $get = 'get'.ucfirst($f);
+                $$f  = $this->card->$get();
+                echo "<tr><th>{$this->_($f)}</th><td>{$$f}</td></tr>";
+            }
+
+            $parameters = json_encode($this->card->getParameters());
+            echo "<tr><th>{$this->_('parameters')}</th><td>$parameters</td></tr>";
+        ?>
         </table>
     </header>
 </section>

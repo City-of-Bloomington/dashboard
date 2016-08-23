@@ -36,7 +36,7 @@ class PeopleController extends Controller
 
 	public function view(array $params)
 	{
-        $person = $this->loadPerson($_REQUEST['id']);
+        $person = $this->loadPerson($_GET['id']);
         return new \Application\Views\People\InfoView(['person'=>$person]);
 	}
 

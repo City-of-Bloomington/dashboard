@@ -5,6 +5,8 @@
  * @param array $this->cards
  */
 use Application\Models\Person;
+
+$this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
 ?>
 <section>
     <header>
@@ -25,12 +27,24 @@ use Application\Models\Person;
         </div>
     </header>
     <table>
-        <?php
-            foreach ($this->cards as $c) {
-                $description = self::escape($c->getDescription());
-                $uri = self::generateUri('cards.view', ['id'=>$c->getId()]);
-                echo "<tr><td><a href=\"$uri\">$description</a></td></tr>";
-            }
-        ?>
+    <?php
+        foreach ($this->cards as $c) {
+            $id          = $c->getId();
+            $description = self::escape($c->getDescription());
+            $uri         = self::generateUri('cards.view', ['id'=>$id]);
+            $comparison  = $this->_($c->getComparison());
+            $parameters  = json_encode($c->getParameters());
+            echo "
+            <tr><th>$id</th>
+                <td><a href=\"$uri\">$description</a></td>
+                <td>{$c->getService()}</td>
+                <td>{$c->getMethod()}</td>
+                <td>$comparison</td>
+                <td>{$c->getTarget()}</td>
+                <td>$parameters</td>
+            </tr>
+            ";
+        }
+    ?>
     </table>
 </section>

@@ -5,7 +5,10 @@
  */
 namespace Application\Controllers;
 
+use Application\Models\Card;
 use Application\Models\CardsTable;
+
+use Blossom\Classes\Block;
 use Blossom\Classes\Controller;
 
 class CardsController extends Controller
@@ -17,20 +20,18 @@ class CardsController extends Controller
         return new \Application\Views\Cards\ListView(['cards'=>$list]);
 	}
 
-	public function view()
+	public function view(array $params)
 	{
-        if (!empty($_REQUEST['id'])) {
-            try { $card = new Card($_REQUEST['id']); }
+        if (!empty($_GET['id'])) {
+            try { $card = new Card($_GET['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-
-        if (isset($card)) {
-            $this->template->blocks[] = new Block('cards/info.inc', ['card'=>$card]);
-        }
-        else { $this->do404(); }
+        return isset($card)
+            ? new \Application\Views\Cards\InfoView(['card'=>$card])
+            : new \Application\Views\NotFoundView();
 	}
 
-	public function update()
+	public function update(array $params)
 	{
         if (!empty($_REQUEST['id'])) {
             try { $card = new Card($_REQUEST['id']); }
@@ -40,8 +41,11 @@ class CardsController extends Controller
             $card = new Card();
         }
 
+        if (!empty($_REQUEST['service'])) { $card->setService($_REQUEST['service']); }
+        if (!empty($_REQUEST['method' ])) { $card->setMethod ($_REQUEST['method' ]); }
+
         if (isset($card)) {
-            if (isset($_POST['id'])) {
+            if (isset($_POST['description'])) {
                 try {
                     $card->handleUpdate($_POST);
                     $card->save();
@@ -51,15 +55,15 @@ class CardsController extends Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
-            $this->template->blocks[] = new Block('cards/updateForm.inc', ['card'=>$card]);
+            return new \Application\Views\Cards\UpdateView(['card'=>$card]);
         }
-        else { $this->do404(); }
+        else { return new \Application\Views\NotFoundView(); }
 	}
 
-	public function delete()
+	public function delete(array $params)
 	{
-        if (!empty($_REQUEST['id'])) {
-            try { $card = new Card($_REQUEST['id']); }
+        if (!empty($_GET['id'])) {
+            try { $card = new Card($_GET['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
@@ -68,13 +72,6 @@ class CardsController extends Controller
             header('Location: '.parent::generateUrl('cards.index'));
             exit();
         }
-        else { $this->do404(); }
+        else { return new \Application\Views\NotFoundView(); }
 	}
-
-    private function do404()
-    {
-        header('HTTP/1.1 404 Not Found', true, 404);
-        $this->template->blocks[] = new Block('404.inc');
-    }
-
 }

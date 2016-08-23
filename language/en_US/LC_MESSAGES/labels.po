@@ -126,3 +126,32 @@ msgstr "Edit Card"
 
 msgid "card_delete"
 msgstr "Delete Card"
+
+msgid "description"
+msgstr "Description"
+
+msgid "service"
+msgid_plural "services"
+msgstr[0] "Service"
+msgstr[1] "Services"
+
+msgid "method"
+msgstr "Method"
+
+msgid "target"
+msgstr "Target"
+
+msgid "comparison"
+msgstr "Comparison"
+
+msgid "gt"
+msgstr ">"
+
+msgid "gte"
+msgstr ">="
+
+msgid "lt"
+msgstr "<"
+
+msgid "lte"
+msgstr "<="

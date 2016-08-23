@@ -22,6 +22,7 @@ $ZEND_ACL->addResource(new Resource('users'));
 $ZEND_ACL->addResource(new Resource('login'));
 
 $ZEND_ACL->addResource(new Resource('cards'));
+$ZEND_ACL->addResource(new Resource('services'));
 
 /**
  * Assign permissions to the resources
@@ -30,11 +31,11 @@ $ZEND_ACL->allow(null,'login');
 
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null,
-				['index'],
-				['index']);
+				['index', 'cards'],
+				['index', 'view']);
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Staff', 'people', ['index','view']);
+$ZEND_ACL->allow('Staff', ['people', 'services'], ['index','view']);
 $ZEND_ACL->allow('Staff', 'cards');
 
 // Administrator is allowed access to everything
