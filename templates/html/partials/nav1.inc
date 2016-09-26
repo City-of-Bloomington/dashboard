@@ -8,9 +8,11 @@
          * file without worrying about changes to the navigation items
          * over time.
          */
-        global $NAV1;
+        $links = [
+            ['msgid'=>'home', 'uri'=>self::generateUri('home')]
+        ];
 
-        foreach ($NAV1 as $item) {
+        foreach ($links as $item) {
             echo "<a href=\"$item[uri]\">{$this->_($item['msgid'])}</a>";
         }
     ?>

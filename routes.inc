@@ -45,11 +45,10 @@ $ROUTES->attach('cards', '/cards', function ($r) {
 });
 
 $ROUTES->attach('services', '/services', function ($r) {
+    $r->setTokens(['id'=>'[0-9]+']);
     $r->setValues(['controller'=>'services']);
 
-    $r->add('index',  '')->addValues(['action'=>'index']);
+    $r->add('index',  '')            ->addValues(['action'=>'index' ]);
+    $r->add('view',   '/{id}')       ->addValues(['action'=>'view'  ]);
+    $r->add('update', '/update{/id}')->addValues(['action'=>'update']);
 });
-
-$NAV1 = [
-    ['msgid'=>['card', 'cards', 4], 'uri'=>$ROUTES->generate('cards.index')]
-];
