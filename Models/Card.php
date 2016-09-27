@@ -12,17 +12,8 @@ use Blossom\Classes\Url;
 class Card extends ActiveRecord
 {
     protected $tablename = 'cards';
-    public static $services = [
-        'uReport' => [
-            'base_url'=> 'http://aoi.bloomington.in.gov/crm/metrics',
-            'methods' => [
-                'onTimePercentage' => [
-                    'uri'        => '/onTimePercentage?format=json',
-                    'parameters' => ['category_id'=>'', 'numDays'=>'']
-                ]
-            ]
-        ]
-    ];
+    protected $service;
+
     public static $comparisons = ['gt', 'gte', 'lt', 'lte'];
 
 	/**
@@ -52,7 +43,7 @@ class Card extends ActiveRecord
                     $this->data = $rows[0];
                 }
                 else {
-                    throw new \Exception('cards/unknownCard');
+                    throw new \Exception('cards/unknown');
                 }
 			}
 		}
@@ -64,15 +55,11 @@ class Card extends ActiveRecord
 
 	public function validate()
 	{
-        if (!$this->getDescription() || !$this->getService() || !$this->getMethod()) {
+        if (!$this->getDescription() || !$this->getService_id() || !$this->getMethod()) {
             throw new \Exception('missingRequiredFields');
         }
 
-        if (!array_key_exists($this->getService(), Card::$services)) {
-            throw new \Exception('cards/invalidService');
-        }
-
-        if (!array_key_exists($this->getMethod(), Card::$services[$this->getService()]['methods'])) {
+        if (!array_key_exists($this->getMethod(), $this->getService()->getMethods())) {
             throw new \Exception('cards/invalidMethod');
         }
 	}
@@ -85,17 +72,19 @@ class Card extends ActiveRecord
 	//----------------------------------------------------------------
 	public function getId()            { return parent::get('id');           }
 	public function getDescription()   { return parent::get('description');  }
-	public function getService()       { return parent::get('service');      }
 	public function getMethod()        { return parent::get('method');       }
 	public function getParameters()    { return json_decode(parent::get('parameters'), true); }
 	public function getTarget()        { return (int)parent::get('target');  }
 	public function getComparison()    { return parent::get('comparison');   }
+	public function getService_id()    { return parent::get('service_id');   }
+	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
 
 	public function setDescription($s) { parent::set('description', $s); }
-	public function setService    ($s) { parent::set('service',     $s); }
 	public function setMethod     ($s) { parent::set('method',      $s); }
 	public function setTarget     ($i) { parent::set('target', (int)$i); }
 	public function setComparison ($s) { parent::set('comparison',  $s); }
+	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
+	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
 	{
         if ($p) { $p = json_encode($p); }
@@ -104,7 +93,7 @@ class Card extends ActiveRecord
 
 	public function handleUpdate($post)
 	{
-        $fields = ['description', 'service', 'method', 'parameters', 'target', 'comparison'];
+        $fields = ['description', 'service_id', 'method', 'parameters', 'target', 'comparison'];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
@@ -114,6 +103,36 @@ class Card extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	/**
+	 * Queries the configured webservice and returns the value
+	 */
+	public function getCurrentValue()
+	{
+        $service = $this->getService();
+        $method  = $this->getMethod();
+        $params  = $this->getParameters();
+
+        $o = $service->factory();
+        $value = $o->$method($params);
+        return $value;
+	}
+
+	/**
+	 * return array [timestamp=> , value=> ]
+	 */
+	public function getLastLogEntry()
+	{
+        $sql = "select timestamp, value from card_log where card_id=?
+                order by timestamp desc limit 1";
+        $result = parent::doQuery($sql, [$this->getId()]);
+        if (count( $result)) {
+            $row   = $result[0];
+            return [
+                'timestamp' => new \DateTime($row['timestamp']),
+                'value'     => $row['value']
+            ];
+        }
+	}
 
 	/**
 	 * @return Blossom\Classes\Url
@@ -130,5 +149,56 @@ class Card extends ActiveRecord
         }
 
         return $url;
+	}
+
+	/**
+	 * @param string $value
+	 */
+	public function logValue($value)
+	{
+        $sql = 'insert into card_log set card_id=?, value=?';
+        $pdo = Database::getConnection();
+        $query = $pdo->prepare($sql);
+        $success = $query->execute([$this->getId(), $value]);
+        if (!$success) {
+            $error = $query->errorInfo();
+            throw new \Exception($error[2]);
+        }
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getLogValues()
+	{
+        $log = [];
+
+        $sql = "select timestamp, value from card_log where card_id=?
+                order by timestamp desc";
+        $result = parent::doQuery($sql, [$this->getId()]);
+        foreach ($result as $row) {
+            $log[] = [
+                'timestamp' => new \DateTime($row['timestamp']),
+                'value'     => $row['value']
+            ];
+        }
+        return $log;
+	}
+
+	/**
+	 * @return string PASS|FAIL|UNKNOWN
+	 */
+	public function getStatus($value)
+	{
+        $target = $this->getTarget();
+
+        $status = 'fail';
+        switch ($this->getComparison()) {
+            case 'gt' : if ($value >  $target) { $status = 'pass'; } break;
+            case 'gte': if ($value >= $target) { $status = 'pass'; } break;
+            case 'lt' : if ($value <  $target) { $status = 'pass'; } break;
+            case 'lte': if ($value <= $target) { $status = 'pass'; } break;
+        }
+        return $status;
 	}
 }

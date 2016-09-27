@@ -41,8 +41,8 @@ class CardsController extends Controller
             $card = new Card();
         }
 
-        if (!empty($_REQUEST['service'])) { $card->setService($_REQUEST['service']); }
-        if (!empty($_REQUEST['method' ])) { $card->setMethod ($_REQUEST['method' ]); }
+        if (!empty($_REQUEST['service_id'])) { $card->setService_id($_REQUEST['service_id']); }
+        if (!empty($_REQUEST['method'    ])) { $card->setMethod    ($_REQUEST['method'    ]); }
 
         if (isset($card)) {
             if (isset($_POST['description'])) {

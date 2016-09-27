@@ -4,7 +4,6 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->cards
  */
-$this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
 ?>
 <section>
     <header>
@@ -13,19 +12,18 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
     <?php
         foreach ($this->cards as $c) {
             $id          = $c->getId();
-            $description = self::escape($c->getDescription());
-            $uri         = self::generateUri('cards.view', ['id'=>$id]);
-            $queryUrl    = $c->getQueryUrl();
+            $description = parent::escape($c->getDescription());
+            $target      = parent::escape($c->getTarget());
+            $entry       = $c->getLastLogEntry();
+            $value       = parent::escape($entry['value']);
+            $status      = $c->getStatus ($entry['value']);
             echo "
-            <article class=\"card\" id=\"card_$id\"
-                    data-queryUrl=\"$queryUrl\"
-                    data-target=\"{$c->getTarget()}\"
-                    data-comparison=\"{$c->getComparison()}\">
+            <article class=\"card $status\" id=\"card_$id\">
                 <header>
-                    <h1><a href=\"$uri\">$description</a></h1>
+                    <h1>$description</h1>
                 </header>
-                <div class=\"value\"></div>
-                <div class=\"target\">{$this->_('target')}: {$c->getTarget()}</div>
+                <div class=\"value\">$value</div>
+                <div class=\"target\">{$this->_('target')}: $target</div>
             </article>
             ";
         }

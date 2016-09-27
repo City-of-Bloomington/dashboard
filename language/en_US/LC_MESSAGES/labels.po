@@ -135,6 +135,12 @@ msgid_plural "services"
 msgstr[0] "Service"
 msgstr[1] "Services"
 
+msgid "service_add"
+msgstr "New Service"
+
+msgid "service_edit"
+msgstr "Edit Service"
+
 msgid "method"
 msgstr "Method"
 

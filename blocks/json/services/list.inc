@@ -4,4 +4,13 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->services
  */
-echo json_encode($this->services);
+$out = [];
+foreach ($this->services as $s) {
+    $out[$s->getName()] = [
+        'id'       => (int)$s->getId(),
+        'base_url' => $s->getUrl(),
+        'class'    => $s->getClass(),
+        'methods'  => $s->getMethods()
+    ];
+}
+echo json_encode($out, JSON_PRETTY_PRINT);

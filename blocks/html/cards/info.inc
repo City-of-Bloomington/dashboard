@@ -31,15 +31,31 @@ use Application\Models\Person;
 
         <table>
         <?php
-            $fields = ['description', 'service', 'method', 'target', 'comparison'];
+            $service = parent::escape($this->card->getService()->getName());
+            echo "<tr><th>{$this->_('service')}</th><td>$service</td></tr>";
+
+            $fields = ['description', 'method', 'target', 'comparison'];
             foreach ($fields as $f) {
                 $get = 'get'.ucfirst($f);
-                $$f  = $this->card->$get();
+                $$f  = parent::escape($this->card->$get());
                 echo "<tr><th>{$this->_($f)}</th><td>{$$f}</td></tr>";
             }
 
             $parameters = json_encode($this->card->getParameters());
             echo "<tr><th>{$this->_('parameters')}</th><td>$parameters</td></tr>";
+        ?>
+        </table>
+
+        <table>
+        <?php
+            $log = $this->card->getLogValues();
+            foreach ($log as $entry) {
+                echo "
+                <tr><th>{$entry['timestamp']->format(DATETIME_FORMAT)}</th>
+                    <td>$entry[value]</td>
+                </tr>
+                ";
+            }
         ?>
         </table>
     </header>

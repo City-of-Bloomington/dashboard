@@ -9,6 +9,7 @@
 
 article.card {
     background-color:#ff3;
-    &.pass { background-color: green; }
-    &.fail { background-color: red;   }
+
+    &.pass { background-color:green; }
+    &.fail { background-color:red;  }
 }

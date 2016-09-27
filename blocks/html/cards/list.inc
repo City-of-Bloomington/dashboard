@@ -31,13 +31,14 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
         foreach ($this->cards as $c) {
             $id          = $c->getId();
             $description = self::escape($c->getDescription());
+            $service     = self::escape($c->getService()->getName());
             $uri         = self::generateUri('cards.view', ['id'=>$id]);
             $comparison  = $this->_($c->getComparison());
             $parameters  = json_encode($c->getParameters());
             echo "
             <tr><th>$id</th>
                 <td><a href=\"$uri\">$description</a></td>
-                <td>{$c->getService()}</td>
+                <td>$service</td>
                 <td>{$c->getMethod()}</td>
                 <td>$comparison</td>
                 <td>{$c->getTarget()}</td>

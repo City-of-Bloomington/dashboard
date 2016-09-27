@@ -5,10 +5,11 @@
  * @param Card $this->card
  */
 use Application\Models\Card;
+use Application\Models\ServicesTable;
 
 $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
-$fields = ['id', 'description', 'service', 'method', 'target', 'comparison'];
+$fields = ['id', 'description', 'service_id', 'method', 'target', 'comparison'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = $this->card->$get();
@@ -35,21 +36,22 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                 ]);
 
                 $options = [['value'=>'']];
-                foreach (array_keys(Card::$services) as $name) { $options[] = ['value'=>$name]; }
+                $table   = new ServicesTable();
+                $list    = $table->find();
+                foreach ($list as $s) { $options[] = ['value'=>$s->getId(), 'label'=>$s->getName()]; }
                 echo $helper->field([
-                    'name'    => 'service',
-                    'id'      => 'service',
+                    'name'    => 'service_id',
+                    'id'      => 'service_id',
                     'label'   => $this->_('service'),
-                    'value'   => $service,
+                    'value'   => $service_id,
                     'type'    => 'select',
                     'options' => $options
                 ]);
 
                 $options = [];
-                if ($service && array_key_exists($service, Card::$services)) {
-                    foreach (array_keys(Card::$services[$service]['methods']) as $m) {
-                        $options[] = ['value'=>$m];
-                    }
+                $service = $this->card->getService();
+                if ($service) {
+                    foreach ($service->getMethods() as $m=>$o) { $options[] = ['value'=>$m]; }
                 }
                 echo $helper->field([
                     'name'    => 'method',
@@ -61,7 +63,7 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                 ]);
 
                 $options = [];
-                foreach (Card::$comparisons as $c) { $options[] = ['value'=>$c, 'label'=>$this->_($c)]; }
+                foreach (Card::$comparisons as $c) { $options[] = ['value'=>$c, 'label'=>parent::escape($this->_($c))]; }
                 echo $helper->field([
                     'name'    => 'comparison',
                     'id'      => 'comparison',
@@ -82,13 +84,18 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                 echo '<div id="parameters">';
                 if ($method) {
                     $parameters = $this->card->getParameters();
-                    foreach (Card::$services[$service]['methods'][$method]['parameters'] as $k=>$v) {
-                        echo $helper->field([
-                            'name'  => "parameters[$k]",
-                            'id'    => "parameters_$k",
-                            'label' => $k,
-                            'value' => !empty($parameters[$k]) ? self::escape($parameters[$k]) : ''
-                        ]);
+                    if ($service) {
+                        $methods = $service->getMethods();
+                        if (!empty(  $methods[$method]['parameters'])) {
+                            foreach ($methods[$method]['parameters'] as $k=>$v) {
+                                echo $helper->field([
+                                    'name'  => "parameters[$k]",
+                                    'id'    => "parameters_$k",
+                                    'label' => $k,
+                                    'value' => !empty($parameters[$k]) ? self::escape($parameters[$k]) : ''
+                                ]);
+                            }
+                        }
                     }
                 }
                 echo '</div>';
