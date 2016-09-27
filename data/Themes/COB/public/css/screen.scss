@@ -15,6 +15,9 @@
 @import 'modules/main.scss';
 
 .card {
-    width:33%; float:left;
-    color:white;
+    width:33%; height:170px; float:left;
+    color:$color-content-background;
+
+    h1 { color:$color-content-background; font-size:$font-size-normal; }
+    a  { color:$color-content-background; }
 }
