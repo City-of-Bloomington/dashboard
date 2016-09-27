@@ -17,12 +17,13 @@
             $entry       = $c->getLastLogEntry();
             $value       = parent::escape($entry['value']);
             $status      = $c->getStatus ($entry['value']);
+            $uri         = parent::generateUri('cards.view', ['id'=>$c->getId()]);
             echo "
             <article class=\"card $status\" id=\"card_$id\">
                 <header>
-                    <h1>$description</h1>
+                    <h1><a href=\"$uri\">$description</a></h1>
                 </header>
-                <div class=\"value\">$value</div>
+                <div class=\"value\">$value ({$entry['timestamp']->format(DATETIME_FORMAT)})</div>
                 <div class=\"target\">{$this->_('target')}: $target</div>
             </article>
             ";

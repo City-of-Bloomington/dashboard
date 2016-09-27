@@ -9,7 +9,7 @@ use Application\Models\ServicesTable;
 
 $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
-$fields = ['id', 'description', 'service_id', 'method', 'target', 'comparison'];
+$fields = ['id', 'description', 'service_id', 'method', 'target', 'comparison', 'units'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = $this->card->$get();
@@ -22,7 +22,7 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
         <h1><?= $title; ?></h1>
     </header>
 
-    <form method="post" action="<?= self::generateUri('cards.update'); ?>">
+    <form method="post" action="<?= parent::generateUri('cards.update'); ?>">
         <fieldset>
             <input name="id" type="hidden" value="<?= $id; ?>" />
             <?php
@@ -81,6 +81,13 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'type'  => 'number'
                 ]);
 
+                echo $helper->field([
+                    'name'  => 'units',
+                    'id'    => 'units',
+                    'label' => $this->_('units'),
+                    'value' => $units
+                ]);
+
                 echo '<div id="parameters">';
                 if ($method) {
                     $parameters = $this->card->getParameters();
@@ -92,7 +99,7 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                                     'name'  => "parameters[$k]",
                                     'id'    => "parameters_$k",
                                     'label' => $k,
-                                    'value' => !empty($parameters[$k]) ? self::escape($parameters[$k]) : ''
+                                    'value' => !empty($parameters[$k]) ? parent::escape($parameters[$k]) : ''
                                 ]);
                             }
                         }
@@ -102,8 +109,8 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
                 $uri = $id
-                    ? self::generateUri('cards.view', ['id'=>$id])
-                    : self::generateUri('cards.index');
+                    ? parent::generateUri('cards.view', ['id'=>$id])
+                    : parent::generateUri('cards.index');
                 echo $helper->saveAndCancelButtons($uri);
             ?>
         </fieldset>

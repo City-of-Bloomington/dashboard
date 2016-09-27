@@ -29,6 +29,7 @@ $ZEND_ACL->addResource(new Resource('services'));
  */
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null,['login', 'index']);
+$ZEND_ACL->allow(null, 'cards', 'view');
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Staff', ['people', 'services'], ['index','view']);

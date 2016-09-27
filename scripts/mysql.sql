@@ -26,6 +26,7 @@ create table cards (
     parameters  varchar(128),
     target      tinyint      not null,
     comparison  varchar(16)  not null,
+    units       varchar(16),
     constraint FK_cards_service_id foreign key (service_id) references services(id)
 );
 

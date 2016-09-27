@@ -150,6 +150,9 @@ msgstr "Target"
 msgid "comparison"
 msgstr "Comparison"
 
+msgid "units"
+msgstr "Units"
+
 msgid "gt"
 msgstr ">"
 

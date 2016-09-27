@@ -5,21 +5,29 @@
  * @param Card $this->card
  */
 use Application\Models\Person;
+
+$fields = ['description', 'method', 'target', 'comparison'];
+foreach ($fields as $f) {
+    $get = 'get'.ucfirst($f);
+    $$f  = parent::escape($this->card->$get());
+}
+$userCanEdit   = Person::isAllowed('cards', 'edit'  );
+$userCanDelete = Person::isAllowed('cards', 'delete');
 ?>
 <section>
     <header>
-        <h1><?= $this->_('card'); ?></h1>
+        <h1><?= $description; ?></h1>
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
-            if (Person::isAllowed('cards', 'edit')) {
+            if ($userCanEdit) {
                 echo $helper->buttonLink(
                     self::generateUri('cards.update', ['id'=>$this->card->getId()]),
                     $this->_('card_edit'),
                     'edit'
                 );
             }
-            if (Person::isAllowed('cards', 'delete')) {
+            if ($userCanDelete) {
                 echo $helper->buttonLink(
                     self::generateUri('cards.delete', ['id'=>$this->card->getId()]),
                     $this->_('card_delete'),
@@ -29,22 +37,9 @@ use Application\Models\Person;
         ?>
         </div>
 
-        <table>
         <?php
-            $service = parent::escape($this->card->getService()->getName());
-            echo "<tr><th>{$this->_('service')}</th><td>$service</td></tr>";
-
-            $fields = ['description', 'method', 'target', 'comparison'];
-            foreach ($fields as $f) {
-                $get = 'get'.ucfirst($f);
-                $$f  = parent::escape($this->card->$get());
-                echo "<tr><th>{$this->_($f)}</th><td>{$$f}</td></tr>";
-            }
-
-            $parameters = json_encode($this->card->getParameters());
-            echo "<tr><th>{$this->_('parameters')}</th><td>$parameters</td></tr>";
+            if ($userCanEdit) { $this->_include('cards/partials/parameters.inc'); }
         ?>
-        </table>
 
         <table>
         <?php

@@ -76,6 +76,7 @@ class Card extends ActiveRecord
 	public function getParameters()    { return json_decode(parent::get('parameters'), true); }
 	public function getTarget()        { return (int)parent::get('target');  }
 	public function getComparison()    { return parent::get('comparison');   }
+	public function getUnits()         { return parent::get('units');        }
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
 
@@ -83,6 +84,7 @@ class Card extends ActiveRecord
 	public function setMethod     ($s) { parent::set('method',      $s); }
 	public function setTarget     ($i) { parent::set('target', (int)$i); }
 	public function setComparison ($s) { parent::set('comparison',  $s); }
+	public function setUnits      ($s) { parent::set('units',       $s); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
@@ -93,7 +95,10 @@ class Card extends ActiveRecord
 
 	public function handleUpdate($post)
 	{
-        $fields = ['description', 'service_id', 'method', 'parameters', 'target', 'comparison'];
+        $fields = [
+            'description', 'service_id', 'method', 'parameters',
+            'target', 'comparison', 'units'
+        ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);

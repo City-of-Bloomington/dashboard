@@ -30,9 +30,11 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
     <?php
         foreach ($this->cards as $c) {
             $id          = $c->getId();
-            $description = self::escape($c->getDescription());
-            $service     = self::escape($c->getService()->getName());
-            $uri         = self::generateUri('cards.view', ['id'=>$id]);
+            $description = parent::escape($c->getDescription());
+            $service     = parent::escape($c->getService()->getName());
+            $uri         = parent::generateUri('cards.view', ['id'=>$id]);
+            $target      = parent::escape($c->getTarget());
+            $units       = parent::escape($c->getUnits());
             $comparison  = $this->_($c->getComparison());
             $parameters  = json_encode($c->getParameters());
             echo "
@@ -41,7 +43,7 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
                 <td>$service</td>
                 <td>{$c->getMethod()}</td>
                 <td>$comparison</td>
-                <td>{$c->getTarget()}</td>
+                <td>$target$units</td>
                 <td>$parameters</td>
             </tr>
             ";
