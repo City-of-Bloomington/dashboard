@@ -19,7 +19,7 @@ class CkanService extends ServiceInterface
     {
         return [
             'onTimePercentage' => [
-                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>'']
+                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>'', 'asOfDate'=>'']
             ]
         ];
     }
@@ -29,12 +29,17 @@ class CkanService extends ServiceInterface
         $resource_id = preg_replace('/[^0-9a-f\-]/', '', $params['resource_id']);
         $numDays     = (int)$params['numDays'];
         $slaDays     = (int)$params['slaDays'];
+        $asOfDate    = !empty($params['asOfDate']) ? preg_replace('/[^0-9\-]/', '', $params['asOfDate']) : null;
+
+        $dateRangeFilter = $asOfDate
+            ? "'$asOfDate'::date > requested_datetime and requested_datetime > ('$asOfDate'::date - interval '$numDays day')"
+            : "requested_datetime > (now() - interval '$numDays day')";
 
         $sql = "select floor(x.ontime::real / x.total::real * 100) as percentage
                 from  (select
-                        (select count(*) from \"$resource_id\" where requested_datetime > (now() - interval '$numDays day')) as total,
+                        (select count(*) from \"$resource_id\" where $dateRangeFilter) as total,
                         (select count(*) from \"$resource_id\"
-                            where requested_datetime > (now() - interval '$numDays day')
+                            where $dateRangeFilter
                             and least(closed_date, current_timestamp)::date - requested_datetime::date <= $slaDays)  as ontime
                 ) x";
         $sql = preg_replace('/\s+/', ' ', $sql);
