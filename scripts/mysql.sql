@@ -30,9 +30,11 @@ create table cards (
     constraint FK_cards_service_id foreign key (service_id) references services(id)
 );
 
-create table card_log (
-    card_id   int unsigned not null,
-    timestamp timestamp    not null default current_timestamp,
-    value     varchar(32)  not null,
+create table cardLog (
+    card_id       int unsigned not null,
+    logDate       date         not null,
+    effectiveDate datetime     not null,
+    value         varchar(32)  not null,
+    primary key (card_id, logDate),
     constraint FK_card_log_card_id foreign key (card_id) references cards(id)
 );

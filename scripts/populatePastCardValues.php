@@ -4,10 +4,11 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\Card;
+use Application\Models\ServiceInterface;
 use Site\Classes\CkanService;
 use Blossom\Classes\Database;
 
-include './bootstrap.inc';
+include realpath(__DIR__.'/../bootstrap.inc');
 
 $ckan   = new CkanService('https://data.bloomington.in.gov');
 
@@ -17,16 +18,12 @@ $oneDay = new \DateInterval('P1D');
 $card = new Card(2);
 $params = $card->getParameters();
 
-$sql = 'insert card_log values(?, ?, ?)';
-$pdo = Database::getConnection();
-$query = $pdo->prepare($sql);
-
 for ($i=0; $i<30; $i++) {
-    $params['asOfDate'] = $date->format('Y-m-d');
+    $params[ServiceInterface::EFFECTIVE_DATE] = $date;
 
-    $value = $ckan->onTimePercentage($params);
-    $query->execute([$card->getId(), $date->format('Y-m-d H:i:s'), $value]);
-    echo "{$date->format(DATE_FORMAT)} $value\n";
+    $result = $ckan->onTimePercentage($params);
+    $card->logValue($result, $date);
+    echo "{$date->format(DATE_FORMAT)} {$result->value}\n";
 
     $date->sub($oneDay);
 }

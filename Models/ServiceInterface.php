@@ -7,6 +7,9 @@ namespace Application\Models;
 
 abstract class ServiceInterface
 {
+    const VALUE          = 'value';
+    const EFFECTIVE_DATE = 'effectiveDate';
+
     protected $base_url;
 
     public function __construct($url)

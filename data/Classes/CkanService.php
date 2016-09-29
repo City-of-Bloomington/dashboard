@@ -6,10 +6,13 @@
 namespace Site\Classes;
 
 use Application\Models\ServiceInterface;
+use Application\Models\ServiceDateValue;
 use Blossom\Classes\Url;
 
 class CkanService extends ServiceInterface
 {
+    const PSQL_DATETIME_FORMAT = 'c';
+
     /**
      * Returns a list of all the methods and their parameters
      *
@@ -29,17 +32,21 @@ class CkanService extends ServiceInterface
         $resource_id = preg_replace('/[^0-9a-f\-]/', '', $params['resource_id']);
         $numDays     = (int)$params['numDays'];
         $slaDays     = (int)$params['slaDays'];
-        $asOfDate    = !empty($params['asOfDate']) ? preg_replace('/[^0-9\-]/', '', $params['asOfDate']) : null;
 
-        $dateRangeFilter = $asOfDate
-            ? "'$asOfDate'::date > requested_datetime and requested_datetime > ('$asOfDate'::date - interval '$numDays day')"
-            : "requested_datetime > (now() - interval '$numDays day')";
+        $s = clone $params[parent::EFFECTIVE_DATE];
+        $e = clone $params[parent::EFFECTIVE_DATE];
 
-        $sql = "select floor(x.ontime::real / x.total::real * 100) as percentage
+        $s->sub(new \DateInterval("P{$numDays}D"));
+        $scopeStart = $s->format(self::PSQL_DATETIME_FORMAT);
+        $scopeEnd   = $e->format(self::PSQL_DATETIME_FORMAT);
+
+        $scopeFilter = "('$scopeStart'::timestamp <= least(closed_date, current_timestamp) and '$scopeEnd'::timestamp >= requested_datetime)";
+
+        $sql = "select floor(x.ontime::real / x.total::real * 100) as percentage, x.effectiveDate
                 from  (select
-                        (select count(*) from \"$resource_id\" where $dateRangeFilter) as total,
-                        (select count(*) from \"$resource_id\"
-                            where $dateRangeFilter
+                        (select count(*)              from \"$resource_id\" where $scopeFilter) as total,
+                        (select max(updated_datetime) from \"$resource_id\" where $scopeFilter) as effectiveDate,
+                        (select count(*)              from \"$resource_id\" where $scopeFilter
                             and least(closed_date, current_timestamp)::date - requested_datetime::date <= $slaDays)  as ontime
                 ) x";
         $sql = preg_replace('/\s+/', ' ', $sql);
@@ -51,7 +58,10 @@ class CkanService extends ServiceInterface
         $response = Url::get($url);
         if ($response) {
             $json = json_decode($response);
-            return (int)$json->result->records[0]->percentage;
+            return new ServiceDateValue(
+                         (int)$json->result->records[0]->percentage,
+                new \DateTime($json->result->records[0]->effectivedate)
+            );
         }
     }
 }

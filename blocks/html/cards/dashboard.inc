@@ -9,7 +9,7 @@ foreach ($this->cards as $c) {
     $description = parent::escape($c->getDescription());
     $target      = parent::escape($c->getTarget());
     $units       = parent::escape($c->getUnits());
-    $entry       = $c->getLastLogEntry();
+    $entry       = $c->getLatestLogEntry();
     $value       = parent::escape($entry['value']);
     $status      = $c->getStatus ($entry['value']);
     $uri         = parent::generateUri('cards.view', ['id'=>$c->getId()]);
@@ -18,7 +18,7 @@ foreach ($this->cards as $c) {
         <header>
             <h1><a href=\"$uri\">$description</a></h1>
         </header>
-        <div class=\"value\">$value$units ({$entry['timestamp']->format(DATETIME_FORMAT)})</div>
+        <div class=\"value\">$value$units</div>
         <div class=\"target\">{$this->_('target')}: $target$units</div>
     </article>
     ";

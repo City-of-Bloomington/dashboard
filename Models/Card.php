@@ -11,6 +11,7 @@ use Blossom\Classes\Url;
 
 class Card extends ActiveRecord
 {
+
     protected $tablename = 'cards';
     protected $service;
 
@@ -109,32 +110,40 @@ class Card extends ActiveRecord
 	// Custom Functions
 	//----------------------------------------------------------------
 	/**
-	 * Queries the configured webservice and returns the value
+	 * Queries the configured webservice for a value as of a point in time
+	 * If no date is provided, then the current datetime is used
+	 *
+	 * @param  DateTime $effectiveDate  The point in time to ask the service for a value
+	 * @return ServiceDateValue
 	 */
-	public function getCurrentValue()
+	public function getValue(\DateTime $effectiveDate=null)
 	{
+        if (!$effectiveDate) { $effectiveDate = new \DateTime(); }
+
         $service = $this->getService();
         $method  = $this->getMethod();
         $params  = $this->getParameters();
 
+        $params[ServiceInterface::EFFECTIVE_DATE] = $effectiveDate;
+
         $o = $service->factory();
-        $value = $o->$method($params);
-        return $value;
+        return $o->$method($params);
 	}
 
 	/**
-	 * return array [timestamp=> , value=> ]
+	 * @return array
 	 */
-	public function getLastLogEntry()
+	public function getLatestLogEntry()
 	{
-        $sql = "select timestamp, value from card_log where card_id=?
-                order by timestamp desc limit 1";
+        $sql = "select * from cardLog where card_id=? order by logDate desc limit 1";
         $result = parent::doQuery($sql, [$this->getId()]);
         if (count( $result)) {
             $row   = $result[0];
             return [
-                'timestamp' => new \DateTime($row['timestamp']),
-                'value'     => $row['value']
+                'card_id'       => $row['card_id'],
+                'logDate'       => new \DateTime($row['logDate'      ]),
+                'effectiveDate' => new \DateTime($row['effectiveDate']),
+                'value'         => $row['value']
             ];
         }
 	}
@@ -159,12 +168,23 @@ class Card extends ActiveRecord
 	/**
 	 * @param string $value
 	 */
-	public function logValue($value)
+	public function logValue(ServiceDateValue $value, \DateTime $logDate=null)
 	{
-        $sql = 'insert into card_log set card_id=?, value=?';
-        $pdo = Database::getConnection();
-        $query = $pdo->prepare($sql);
-        $success = $query->execute([$this->getId(), $value]);
+        if (!$logDate) { $logDate = new \DateTime(); }
+
+        $id = $this->getId();
+        $ld = $logDate             ->format(parent::MYSQL_DATE_FORMAT);
+        $ed = $value->effectiveDate->format(parent::MYSQL_DATETIME_FORMAT);
+        $v  = $value->value;
+
+        $sql = "insert into cardLog (card_id, logDate, effectiveDate, value) values(?, ?, ?, ?)
+                on duplicate key update value=?, effectiveDate=?";
+        $pdo     = Database::getConnection();
+        $query   = $pdo->prepare($sql);
+        $success = $query->execute([
+            $id, $ld, $ed, $v,
+            $v, $ed
+        ]);
         if (!$success) {
             $error = $query->errorInfo();
             throw new \Exception($error[2]);
@@ -174,17 +194,18 @@ class Card extends ActiveRecord
 	/**
 	 * @return array
 	 */
-	public function getLogValues()
+	public function getLogEntries()
 	{
         $log = [];
 
-        $sql = "select timestamp, value from card_log where card_id=?
-                order by timestamp desc";
+        $sql = "select * from cardLog where card_id=? order by date desc";
         $result = parent::doQuery($sql, [$this->getId()]);
         foreach ($result as $row) {
             $log[] = [
-                'timestamp' => new \DateTime($row['timestamp']),
-                'value'     => $row['value']
+                'card_id'       => $row['card_id'],
+                'logDate'       => new \DateTime($row['logDate'      ]),
+                'effectiveDate' => new \DateTime($row['effectiveDate']),
+                'value'         => $row['value']
             ];
         }
         return $log;

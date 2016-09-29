@@ -6,10 +6,13 @@
 namespace Site\Classes;
 
 use Application\Models\ServiceInterface;
+use Application\Models\ServiceDateValue;
 use Blossom\Classes\Url;
 
 class uReportService extends ServiceInterface
 {
+    const UREPORT_DATETIME_FORMAT = 'c';
+
     /**
      * Returns a list of all the methods and their parameters
      *
@@ -26,17 +29,23 @@ class uReportService extends ServiceInterface
 
     public function onTimePercentage(array $params)
     {
+        if (!$params[parent::EFFECTIVE_DATE]) {
+             $params[parent::EFFECTIVE_DATE] = new \DateTime();
+        }
+        $params[parent::EFFECTIVE_DATE] = $params[parent::EFFECTIVE_DATE]->format(self::UREPORT_DATETIME_FORMAT);
+
         $url = new Url($this->base_url.'/onTimePercentage');
         $url->parameters = $params;
         $url->format     = 'json';
         $url = $url->__toString();
 
-        echo "$url\n";
-
         $response = Url::get($url);
         if ($response) {
             $json = json_decode($response);
-            return (int)$json->value;
+            return new ServiceDateValue(
+                         (int)$json->onTime,
+                new \DateTime($json->effectiveDate)
+            );
         }
     }
 }

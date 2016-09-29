@@ -17,6 +17,7 @@
 .card {
     width:33%; height:170px; float:left;
     color:$color-content-background;
+    margin:$size-gutter;
 
     h1 { color:$color-content-background; font-size:$font-size-normal; }
     a  { color:$color-content-background; }

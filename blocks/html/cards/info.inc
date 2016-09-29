@@ -5,6 +5,7 @@
  * @param Card $this->card
  */
 use Application\Models\Person;
+use Application\Models\ServiceInterface;
 
 $fields = ['description', 'method', 'target', 'comparison'];
 foreach ($fields as $f) {
@@ -46,8 +47,9 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
             $log = $this->card->getLogValues();
             foreach ($log as $entry) {
                 echo "
-                <tr><th>{$entry['timestamp']->format(DATETIME_FORMAT)}</th>
+                <tr><th>{$entry['logDate']->format(DATE_FORMAT)}</th>
                     <td>$entry[value]</td>
+                    <td>{$entry[ServiceInterface::EFFECTIVE_DATE]->format(DATETIME_FORMAT)}</td>
                 </tr>
                 ";
             }
