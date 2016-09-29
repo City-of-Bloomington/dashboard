@@ -43,17 +43,25 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
         ?>
 
         <table>
-        <?php
-            $log = $this->card->getLogEntries();
-            foreach ($log as $entry) {
-                echo "
-                <tr><th>{$entry['logDate']->format(DATE_FORMAT)}</th>
-                    <td>$entry[value]$units</td>
-                    <td>{$entry[ServiceInterface::EFFECTIVE_DATE]->format(DATETIME_FORMAT)}</td>
+            <thead>
+                <tr><th><?= $this->_('logDate'); ?></th>
+                    <th></th>
+                    <th><?= $this->_(ServiceInterface::EFFECTIVE_DATE); ?></th>
                 </tr>
-                ";
-            }
-        ?>
+            </thead>
+            <tbody>
+            <?php
+                $log = $this->card->getLogEntries();
+                foreach ($log as $entry) {
+                    echo "
+                    <tr><th>{$entry['logDate']->format(DATE_FORMAT)}</th>
+                        <td>$entry[value]$units</td>
+                        <td>{$entry[ServiceInterface::EFFECTIVE_DATE]->format(DATETIME_FORMAT)}</td>
+                    </tr>
+                    ";
+                }
+            ?>
+            </tbody>
         </table>
     </header>
 </section>

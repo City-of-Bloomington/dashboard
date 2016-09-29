@@ -153,6 +153,12 @@ msgstr "Comparison"
 msgid "units"
 msgstr "Units"
 
+msgid "logDate"
+msgstr "Date Logged"
+
+msgid "effectiveDate"
+msgstr "Effective Date"
+
 msgid "gt"
 msgstr ">"
 

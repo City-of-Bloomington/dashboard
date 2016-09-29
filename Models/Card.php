@@ -192,13 +192,16 @@ class Card extends ActiveRecord
 	}
 
 	/**
+	 * @param  int    $limit
 	 * @return array
 	 */
-	public function getLogEntries()
+	public function getLogEntries($limit=null)
 	{
         $log = [];
 
         $sql = "select * from cardLog where card_id=? order by logDate desc";
+        if ($limit) { $sql.= " limit ".(int)$limit; }
+
         $result = parent::doQuery($sql, [$this->getId()]);
         foreach ($result as $row) {
             $log[] = [
