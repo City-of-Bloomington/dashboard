@@ -7,7 +7,7 @@
 use Application\Models\Person;
 use Application\Models\ServiceInterface;
 
-$fields = ['description', 'method', 'target', 'comparison'];
+$fields = ['description', 'method', 'target', 'comparison', 'units'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->card->$get());
@@ -44,11 +44,11 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
 
         <table>
         <?php
-            $log = $this->card->getLogValues();
+            $log = $this->card->getLogEntries();
             foreach ($log as $entry) {
                 echo "
                 <tr><th>{$entry['logDate']->format(DATE_FORMAT)}</th>
-                    <td>$entry[value]</td>
+                    <td>$entry[value]$units</td>
                     <td>{$entry[ServiceInterface::EFFECTIVE_DATE]->format(DATETIME_FORMAT)}</td>
                 </tr>
                 ";

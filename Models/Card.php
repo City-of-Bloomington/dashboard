@@ -198,7 +198,7 @@ class Card extends ActiveRecord
 	{
         $log = [];
 
-        $sql = "select * from cardLog where card_id=? order by date desc";
+        $sql = "select * from cardLog where card_id=? order by logDate desc";
         $result = parent::doQuery($sql, [$this->getId()]);
         foreach ($result as $row) {
             $log[] = [
