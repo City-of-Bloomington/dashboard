@@ -20,9 +20,16 @@ foreach ($list as $card) {
 
     for ($i=0; $i<30; $i++) {
         $result = $card->getValue($date);
+        $id     = $card->getId();
+        $d      = $date->format(DATE_FORMAT);
 
-        $card->logValue($result, $date);
-        echo "Card #{$card->getId()} {$result->value} {$date->format(DATE_FORMAT)}\n";
+        if ($result) {
+            $card->logValue($result, $date);
+            echo "Card #$id {$result->value} $d\n";
+        }
+        else {
+            echo "Card #$id ERROR $d\n";
+        }
 
         $date->sub($oneDay);
     }

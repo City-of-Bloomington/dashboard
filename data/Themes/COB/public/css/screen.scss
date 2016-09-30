@@ -15,10 +15,16 @@
 @import 'modules/main.scss';
 
 .card {
-    width:33%; height:170px; float:left;
+    width:30%; height:170px; float:left;
     color:$color-content-background;
     margin:$size-gutter;
+    padding:$size-gutter;
 
     h1 { color:$color-content-background; font-size:$font-size-normal; }
     a  { color:$color-content-background; }
+}
+
+article.card {
+    &.pass { background-color:$green; }
+    &.fail { background-color:$red; }
 }

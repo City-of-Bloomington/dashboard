@@ -11,6 +11,8 @@ DASHBOARD.drawSparklines = function () {
             axisTitlesPosition: 'none',
             enableInteractivity: false,
             width:120, height:20,
+            backgroundColor: 'transparent',
+            colors: ['white'],
             chartArea: {
                 width:120, height:20
             },

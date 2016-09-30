@@ -36,7 +36,6 @@ class Card extends ActiveRecord
 				$this->data = $id;
 			}
 			else {
-                $pdo = Database::getConnection();
                 $sql = 'select * from cards where id=?';
 
 				$rows = parent::doQuery($sql, [$id]);
@@ -66,7 +65,14 @@ class Card extends ActiveRecord
 	}
 
 	public function save  () { parent::save  (); }
-	public function delete() { parent::delete(); }
+	public function delete()
+	{
+        $pdo   = Database::getConnection();
+        $query = $pdo->prepare('delete from cardLog where card_id=?');
+        $query->execute([$this->getId()]);
+
+        parent::delete();
+    }
 
 	//----------------------------------------------------------------
 	// Generic Getters & Setters

@@ -22,7 +22,7 @@ class CkanService extends ServiceInterface
     {
         return [
             'onTimePercentage' => [
-                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>'', 'asOfDate'=>'']
+                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>'']
             ]
         ];
     }
@@ -42,7 +42,11 @@ class CkanService extends ServiceInterface
 
         $scopeFilter = "('$scopeStart'::timestamp <= least(closed_date, current_timestamp) and '$scopeEnd'::timestamp >= requested_datetime)";
 
-        $sql = "select floor(x.ontime::real / x.total::real * 100) as percentage, x.effectiveDate
+        $sql = "select  case x.total
+                            when 0 then 0
+                            else floor(x.ontime::real / x.total::real * 100)
+                        end as percentage,
+                        x.effectiveDate
                 from  (select
                         (select count(*)              from \"$resource_id\" where $scopeFilter) as total,
                         (select max(updated_datetime) from \"$resource_id\" where $scopeFilter) as effectiveDate,
@@ -58,10 +62,12 @@ class CkanService extends ServiceInterface
         $response = Url::get($url);
         if ($response) {
             $json = json_decode($response);
-            return new ServiceDateValue(
-                         (int)$json->result->records[0]->percentage,
-                new \DateTime($json->result->records[0]->effectivedate)
-            );
+            if ($json->success) {
+                return new ServiceDateValue(
+                             (int)$json->result->records[0]->percentage,
+                    new \DateTime($json->result->records[0]->effectivedate)
+                );
+            }
         }
     }
 }
