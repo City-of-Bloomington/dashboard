@@ -21,7 +21,7 @@ foreach ($this->cards as $c) {
     }
     $data = parent::escape(json_encode($data));
     echo "
-    <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\">
+    <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
         <header>
             <h1><a href=\"$uri\">$description</a></h1>
         </header>

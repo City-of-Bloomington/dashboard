@@ -4,6 +4,7 @@ DASHBOARD.drawSparklines = function () {
         len     = cards.length,
         i       = 0,
         data    = {},
+        target  = 0,
         date    = '',
         rows    = [],
         card    = {},
@@ -12,7 +13,11 @@ DASHBOARD.drawSparklines = function () {
             enableInteractivity: false,
             width:120, height:20,
             backgroundColor: 'transparent',
-            colors: ['white'],
+            colors: ['white', 'gray'],
+            series: [
+                {  },
+                { lineWidth: 1, lineDashStyle:[4, 2] }
+            ],
             chartArea: {
                 width:120, height:20
             },
@@ -29,10 +34,11 @@ DASHBOARD.drawSparklines = function () {
 
     DASHBOARD.cards = [];
     for (i=0; i<len; i++) {
-        data = JSON.parse(cards[i].getAttribute('data-logEntries'));
-        rows = [];
+        data   = JSON.parse(cards[i].getAttribute('data-logEntries'));
+        target =   parseInt(cards[i].getAttribute('data-target'), 10);
+        rows   = [];
         for (date in data) {
-            rows.push([date, data[date]]);
+            rows.push([date, data[date], target]);
         }
 
         card = {};
@@ -40,6 +46,7 @@ DASHBOARD.drawSparklines = function () {
         card.datatable = new google.visualization.DataTable();
         card.datatable.addColumn('string', 'Log Date');
         card.datatable.addColumn('number', 'value'   );
+        card.datatable.addColumn('number', 'target'  );
         card.datatable.addRows(rows);
 
         card.chart = new google.visualization.LineChart(cards[i].querySelector('.chart'));
