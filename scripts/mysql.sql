@@ -26,7 +26,7 @@ create table cards (
     parameters  varchar(128),
     target      tinyint      not null,
     comparison  varchar(16)  not null,
-    units       varchar(16),
+    responseKey varchar(32)  not null,
     constraint FK_cards_service_id foreign key (service_id) references services(id)
 );
 
@@ -34,7 +34,7 @@ create table cardLog (
     card_id       int unsigned not null,
     logDate       date         not null,
     effectiveDate datetime     not null,
-    value         varchar(32)  not null,
+    response      varchar(255) not null,
     primary key (card_id, logDate),
     constraint FK_card_log_card_id foreign key (card_id) references cards(id)
 );

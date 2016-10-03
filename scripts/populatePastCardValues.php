@@ -9,23 +9,23 @@ use Blossom\Classes\Database;
 
 include realpath(__DIR__.'/../bootstrap.inc');
 
-$date   = new \DateTime();
 $oneDay = new \DateInterval('P1D');
-
 
 $table = new CardsTable();
 $list  = $table->find();
 foreach ($list as $card) {
+    $date   = new \DateTime();
     $params = $card->getParameters();
 
     for ($i=0; $i<30; $i++) {
-        $result = $card->getValue($date);
-        $id     = $card->getId();
-        $d      = $date->format(DATE_FORMAT);
+        $sr = $card->queryService($date);
+        $id = $card->getId();
+        $d  = $date->format(DATE_FORMAT);
 
-        if ($result) {
-            $card->logValue($result, $date);
-            echo "Card #$id {$result->value} $d\n";
+        if ($sr) {
+            $card->logResponse($sr, $date);
+            $v = json_encode($sr->response);
+            echo "Card #$id $v $d\n";
         }
         else {
             echo "Card #$id ERROR $d\n";

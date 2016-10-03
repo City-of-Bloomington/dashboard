@@ -35,13 +35,23 @@ $methods = $this->service->getMethods();
         </table>
 
         <?php
+            echo "<table>";
             foreach ($methods as $n => $method) {
-                echo "<fieldset><legend>$n</legend>";
-                foreach ($method['parameters'] as $param=>$value) {
-                    echo "<dl><dt>$param</dt><dd>$value</dd></dt></dl>";
-                }
-                echo "</fieldset>";
+                $parameters = json_encode($method['parameters']);
+                $response   = json_encode($method['response'  ]);
+
+                echo "
+                <fieldset><legend>$n</legend>
+                    <dl><dt>{$this->_('parameters')}</dt>
+                        <dd>$parameters</dd>
+                    </dl>
+                    <dl><dt>{$this->_('response')}</dt>
+                        <dd>$response</dd>
+                    </dl>
+                </fieldset>
+                ";
             }
+            echo "</table>";
         ?>
 
     </header>

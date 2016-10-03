@@ -83,7 +83,7 @@ class Card extends ActiveRecord
 	public function getParameters()    { return json_decode(parent::get('parameters'), true); }
 	public function getTarget()        { return (int)parent::get('target');  }
 	public function getComparison()    { return parent::get('comparison');   }
-	public function getUnits()         { return parent::get('units');        }
+	public function getResponseKey()   { return parent::get('responseKey');  }
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
 
@@ -91,7 +91,7 @@ class Card extends ActiveRecord
 	public function setMethod     ($s) { parent::set('method',      $s); }
 	public function setTarget     ($i) { parent::set('target', (int)$i); }
 	public function setComparison ($s) { parent::set('comparison',  $s); }
-	public function setUnits      ($s) { parent::set('units',       $s); }
+	public function setResponseKey($s) { parent::set('responseKey', $s); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
@@ -104,7 +104,7 @@ class Card extends ActiveRecord
 	{
         $fields = [
             'description', 'service_id', 'method', 'parameters',
-            'target', 'comparison', 'units'
+            'target', 'comparison', 'responseKey'
         ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
@@ -120,9 +120,9 @@ class Card extends ActiveRecord
 	 * If no date is provided, then the current datetime is used
 	 *
 	 * @param  DateTime $effectiveDate  The point in time to ask the service for a value
-	 * @return ServiceDateValue
+	 * @return ServiceResponse
 	 */
-	public function getValue(\DateTime $effectiveDate=null)
+	public function queryService(\DateTime $effectiveDate=null)
 	{
         if (!$effectiveDate) { $effectiveDate = new \DateTime(); }
 
@@ -141,17 +141,8 @@ class Card extends ActiveRecord
 	 */
 	public function getLatestLogEntry()
 	{
-        $sql = "select * from cardLog where card_id=? order by logDate desc limit 1";
-        $result = parent::doQuery($sql, [$this->getId()]);
-        if (count( $result)) {
-            $row   = $result[0];
-            return [
-                'card_id'       => $row['card_id'],
-                'logDate'       => new \DateTime($row['logDate'      ]),
-                'effectiveDate' => new \DateTime($row['effectiveDate']),
-                'value'         => $row['value']
-            ];
-        }
+        $result = $this->getLogEntries(1);
+        if (count($result)) { return $result[0]; }
 	}
 
 	/**
@@ -171,20 +162,17 @@ class Card extends ActiveRecord
         return $url;
 	}
 
-	/**
-	 * @param string $value
-	 */
-	public function logValue(ServiceDateValue $value, \DateTime $logDate=null)
+	public function logResponse(ServiceResponse $sr, \DateTime $logDate=null)
 	{
         if (!$logDate) { $logDate = new \DateTime(); }
 
         $id = $this->getId();
-        $ld = $logDate             ->format(parent::MYSQL_DATE_FORMAT);
-        $ed = $value->effectiveDate->format(parent::MYSQL_DATETIME_FORMAT);
-        $v  = $value->value;
+        $ld = $logDate          ->format(parent::MYSQL_DATE_FORMAT);
+        $ed = $sr->effectiveDate->format(parent::MYSQL_DATETIME_FORMAT);
+        $v  = json_encode($sr->response);
 
-        $sql = "insert into cardLog (card_id, logDate, effectiveDate, value) values(?, ?, ?, ?)
-                on duplicate key update value=?, effectiveDate=?";
+        $sql = "insert into cardLog (card_id, logDate, effectiveDate, response) values(?, ?, ?, ?)
+                on duplicate key update response=?, effectiveDate=?";
         $pdo     = Database::getConnection();
         $query   = $pdo->prepare($sql);
         $success = $query->execute([
@@ -214,18 +202,19 @@ class Card extends ActiveRecord
                 'card_id'       => $row['card_id'],
                 'logDate'       => new \DateTime($row['logDate'      ]),
                 'effectiveDate' => new \DateTime($row['effectiveDate']),
-                'value'         => $row['value']
+                'response'      =>   json_decode($row['response'], true)
             ];
         }
         return $log;
 	}
 
 	/**
-	 * @return string PASS|FAIL|UNKNOWN
+	 * @return array A Log Entry array
 	 */
-	public function getStatus($value)
+	public function getStatus(array $entry)
 	{
-        $target = $this->getTarget();
+        $target = (int)$this->getTarget();
+        $value  = (int)$entry['response'][$this->getResponseKey()];
 
         $status = 'fail';
         switch ($this->getComparison()) {
@@ -235,5 +224,17 @@ class Card extends ActiveRecord
             case 'lte': if ($value <= $target) { $status = 'pass'; } break;
         }
         return $status;
+	}
+
+	/**
+	 * @return array [ parameters=>[], response=>[] ]
+	 */
+	public function getMethodDefinition()
+	{
+        $method  = $this->getMethod();
+        $service = $this->getService();
+        if ($method && $service) {
+            return $service->getMethods()[$method];
+        }
 	}
 }

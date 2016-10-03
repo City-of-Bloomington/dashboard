@@ -6,7 +6,7 @@
 namespace Site\Classes;
 
 use Application\Models\ServiceInterface;
-use Application\Models\ServiceDateValue;
+use Application\Models\ServiceResponse;
 use Blossom\Classes\Url;
 
 class CkanService extends ServiceInterface
@@ -22,7 +22,8 @@ class CkanService extends ServiceInterface
     {
         return [
             'onTimePercentage' => [
-                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>'']
+                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>''],
+                'response'   => ['total'=>'', 'ontime'=>'', 'percent'=>'']
             ]
         ];
     }
@@ -42,7 +43,9 @@ class CkanService extends ServiceInterface
 
         $scopeFilter = "('$scopeStart'::timestamp <= least(closed_date, current_timestamp) and '$scopeEnd'::timestamp >= requested_datetime)";
 
-        $sql = "select  case x.total
+        $sql = "select  x.total,
+                        x.ontime,
+                        case x.total
                             when 0 then 0
                             else floor(x.ontime::real / x.total::real * 100)
                         end as percentage,
@@ -63,8 +66,12 @@ class CkanService extends ServiceInterface
         if ($response) {
             $json = json_decode($response);
             if ($json->success) {
-                return new ServiceDateValue(
-                             (int)$json->result->records[0]->percentage,
+                return new ServiceResponse(
+                    [
+                        'total'   => (int)$json->result->records[0]->total,
+                        'ontime'  => (int)$json->result->records[0]->ontime,
+                        'percent' => (int)$json->result->records[0]->percentage
+                    ],
                     new \DateTime($json->result->records[0]->effectivedate)
                 );
             }

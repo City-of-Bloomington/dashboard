@@ -5,14 +5,14 @@
  */
 namespace Application\Models;
 
-class ServiceDateValue
+class ServiceResponse
 {
-    public $value;
+    public $response;
     public $effectiveDate;
 
-    public function __construct($value, \DateTime $effectiveDate)
+    public function __construct(array $response, \DateTime $effectiveDate)
     {
-        $this->value         = $value;
+        $this->response      = $response;
         $this->effectiveDate = $effectiveDate;
     }
 }

@@ -10,16 +10,14 @@ foreach ($this->cards as $c) {
     $id          = $c->getId();
     $description = parent::escape($c->getDescription());
     $target      = parent::escape($c->getTarget());
-    $units       = parent::escape($c->getUnits());
     $entry       = $c->getLatestLogEntry();
-    $value       = parent::escape($entry['value']);
-    $status      = $c->getStatus ($entry['value']);
+    $status      = $c->getStatus($entry);
     $uri         = parent::generateUri('cards.view', ['id'=>$c->getId()]);
 
     $data = [];
     foreach ($c->getLogEntries(10) as $entry) {
         $d        = $entry['logDate']->format($JSON_DATE_FORMAT);
-        $data[$d] = (int)$entry['value'];
+        $data[$d] = (int)$entry['response'][$c->getResponseKey()];
     }
     $data = parent::escape(json_encode($data));
     echo "
@@ -27,8 +25,14 @@ foreach ($this->cards as $c) {
         <header>
             <h1><a href=\"$uri\">$description</a></h1>
         </header>
-        <div class=\"value\">$value$units</div>
-        <div class=\"target\">{$this->_('target')}: $target$units</div>
+        <div class=\"response\">
+    ";
+        foreach ($entry['response'] as $key=>$value) {
+            echo "<div class=\"$key\">$value $key</div>";
+        }
+    echo "
+        </div>
+        <div class=\"target\">{$this->_('target')}: $target</div>
         <div class=\"chart\"></div>
     </article>
     ";

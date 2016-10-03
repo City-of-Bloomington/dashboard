@@ -7,7 +7,7 @@
 use Application\Models\Person;
 use Application\Models\ServiceInterface;
 
-$fields = ['description', 'method', 'target', 'comparison', 'units'];
+$fields = ['description', 'method', 'target', 'comparison', 'responseKey'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->card->$get());
@@ -45,7 +45,13 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
         <table>
             <thead>
                 <tr><th><?= $this->_('logDate'); ?></th>
-                    <th></th>
+                    <?php
+                        $responseDefinition = $this->card->getMethodDefinition()['response'];
+                        foreach ($responseDefinition as $key=>$v) {
+                            $key = self::escape($key);
+                            echo "<th>$key</th>";
+                        }
+                    ?>
                     <th><?= $this->_(ServiceInterface::EFFECTIVE_DATE); ?></th>
                 </tr>
             </thead>
@@ -53,9 +59,14 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
             <?php
                 $log = $this->card->getLogEntries();
                 foreach ($log as $entry) {
+                    $responseValues = '';
+                    foreach ($responseDefinition as $key=>$v) {
+                        $responseValues.= "<td>{$entry['response'][$key]}</td>";
+                    }
+
                     echo "
                     <tr><th>{$entry['logDate']->format(DATE_FORMAT)}</th>
-                        <td>$entry[value]$units</td>
+                        $responseValues
                         <td>{$entry[ServiceInterface::EFFECTIVE_DATE]->format(DATETIME_FORMAT)}</td>
                     </tr>
                     ";

@@ -6,7 +6,7 @@
 namespace Site\Classes;
 
 use Application\Models\ServiceInterface;
-use Application\Models\ServiceDateValue;
+use Application\Models\ServiceResponse;
 use Blossom\Classes\Url;
 
 class uReportService extends ServiceInterface
@@ -22,7 +22,8 @@ class uReportService extends ServiceInterface
     {
         return [
             'onTimePercentage' => [
-                'parameters' => ['category_id'=>'', 'numDays'=>'']
+                'parameters' => ['category_id'=>'', 'numDays'=>''],
+                'response'   => ['total'=>'', 'ontime'=>'', 'percent'=>'']
             ]
         ];
     }
@@ -42,8 +43,12 @@ class uReportService extends ServiceInterface
         $response = Url::get($url);
         if ($response) {
             $json = json_decode($response);
-            return new ServiceDateValue(
-                         (int)$json->onTime,
+            return new ServiceResponse(
+                [
+                    'total'   => (int)$json->total,
+                    'ontime'  => (int)$json->ontime,
+                    'percent' => (int)$json->percentage
+                ],
                 new \DateTime($json->effectiveDate)
             );
         }

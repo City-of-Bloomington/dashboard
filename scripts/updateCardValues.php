@@ -10,7 +10,7 @@ include realpath(__DIR__.'/../bootstrap.inc');
 $table = new CardsTable();
 $cards = $table->find();
 foreach ($cards as $c) {
-    $v = $c->getCurrentValue();
-    $c->logValue($v);
+    $v = $c->queryService();
+    $c->logResponse($v);
     echo "{$c->getDescription()}: $v\n";
 }

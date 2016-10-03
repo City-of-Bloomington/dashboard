@@ -34,7 +34,7 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
             $service     = parent::escape($c->getService()->getName());
             $uri         = parent::generateUri('cards.view', ['id'=>$id]);
             $target      = parent::escape($c->getTarget());
-            $units       = parent::escape($c->getUnits());
+            $responseKey = parent::escape($c->getResponseKey());
             $comparison  = $this->_($c->getComparison());
             $parameters  = json_encode($c->getParameters());
             echo "
@@ -42,8 +42,9 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
                 <td><a href=\"$uri\">$description</a></td>
                 <td>$service</td>
                 <td>{$c->getMethod()}</td>
+                <td>$responseKey</td>
                 <td>$comparison</td>
-                <td>$target$units</td>
+                <td>$target</td>
                 <td>$parameters</td>
             </tr>
             ";

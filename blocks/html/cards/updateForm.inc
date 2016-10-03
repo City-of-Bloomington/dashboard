@@ -9,7 +9,7 @@ use Application\Models\ServicesTable;
 
 $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
-$fields = ['id', 'description', 'service_id', 'method', 'target', 'comparison', 'units'];
+$fields = ['id', 'description', 'service_id', 'method', 'target', 'comparison', 'responseKey'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = $this->card->$get();
@@ -63,6 +63,20 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                 ]);
 
                 $options = [];
+                $definition = $this->card->getMethodDefinition();
+                if ($definition) {
+                    foreach ($definition['response'] as $key=>$v) { $options[] = ['value'=>$key]; }
+                }
+                echo $helper->field([
+                    'name'    => 'responseKey',
+                    'id'      => 'responseKey',
+                    'label'   => $this->_('responseKey'),
+                    'value'   => $responseKey,
+                    'type'    => 'select',
+                    'options' => $options
+                ]);
+
+                $options = [];
                 foreach (Card::$comparisons as $c) { $options[] = ['value'=>$c, 'label'=>parent::escape($this->_($c))]; }
                 echo $helper->field([
                     'name'    => 'comparison',
@@ -79,13 +93,6 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'label' => $this->_('target'),
                     'value' => $target,
                     'type'  => 'number'
-                ]);
-
-                echo $helper->field([
-                    'name'  => 'units',
-                    'id'    => 'units',
-                    'label' => $this->_('units'),
-                    'value' => $units
                 ]);
 
                 echo '<div id="parameters">';

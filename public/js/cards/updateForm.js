@@ -13,8 +13,10 @@ var CARD_FORM = {
             CARD_FORM.service = JSON.parse(r.responseText);
 
             for (m in CARD_FORM.service.methods) { options += '<option>' + m + '</option>'; }
-            method.innerHTML = options;
+            method.innerHTML     = options;
             method.selectedIndex = 1;
+
+            document.getElementById('responseKey').innerHTML = '';
         });
     },
     loadParameters: function (e) {
@@ -25,8 +27,16 @@ var CARD_FORM = {
             url             = document.location,
             search          = document.location.search,
             tmpNode         = document.createElement('div'),
-            param           = '';
+            keyDropdown     = document.getElementById('responseKey'),
+            options         = '',
+            key             = '';
 
+        // Repopulate the responseKey drop down
+        for (key in CARD_FORM.service.methods[method].response) { options += '<option>' + key + '</option>'; }
+        keyDropdown.innerHTML     = options;
+        keyDropdown.selectedIndex = 0;
+
+        // Ask the server to render the form fields for the chosen method
         url += url.search
             ? ';partial=cards/updateForm.inc'
             : '?service_id=' + service_id + ';method=' + method + ';partial=cards/updateForm.inc';
