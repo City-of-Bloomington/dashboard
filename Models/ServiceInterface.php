@@ -9,6 +9,7 @@ abstract class ServiceInterface
 {
     const VALUE          = 'value';
     const EFFECTIVE_DATE = 'effectiveDate';
+    const PERIOD         = 'period';
 
     protected $base_url;
 

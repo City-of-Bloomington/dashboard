@@ -82,6 +82,7 @@ class Card extends ActiveRecord
 	public function getMethod()        { return parent::get('method');       }
 	public function getParameters()    { return json_decode(parent::get('parameters'), true); }
 	public function getTarget()        { return (int)parent::get('target');  }
+	public function getPeriod()        { return (int)parent::get('period');  }
 	public function getComparison()    { return parent::get('comparison');   }
 	public function getResponseKey()   { return parent::get('responseKey');  }
 	public function getService_id()    { return parent::get('service_id');   }
@@ -90,6 +91,7 @@ class Card extends ActiveRecord
 	public function setDescription($s) { parent::set('description', $s); }
 	public function setMethod     ($s) { parent::set('method',      $s); }
 	public function setTarget     ($i) { parent::set('target', (int)$i); }
+	public function setPeriod     ($i) { parent::set('period', (int)$i); }
 	public function setComparison ($s) { parent::set('comparison',  $s); }
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
@@ -104,7 +106,7 @@ class Card extends ActiveRecord
 	{
         $fields = [
             'description', 'service_id', 'method', 'parameters',
-            'target', 'comparison', 'responseKey'
+            'target', 'period', 'comparison', 'responseKey'
         ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
@@ -131,6 +133,7 @@ class Card extends ActiveRecord
         $params  = $this->getParameters();
 
         $params[ServiceInterface::EFFECTIVE_DATE] = $effectiveDate;
+        $params[ServiceInterface::PERIOD        ] = $this->getPeriod();
 
         $o = $service->factory();
         return $o->$method($params);

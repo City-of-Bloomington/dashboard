@@ -1,5 +1,5 @@
 #!/bin/bash
-APPNAME=blossom
+APPNAME=dashboard
 DIR=`pwd`
 BUILD=$DIR/build
 

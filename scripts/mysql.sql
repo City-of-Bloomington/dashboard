@@ -25,6 +25,7 @@ create table cards (
     method      varchar(32)  not null,
     parameters  varchar(128),
     target      tinyint      not null,
+    period      tinyint unsigned not null,
     comparison  varchar(16)  not null,
     responseKey varchar(32)  not null,
     constraint FK_cards_service_id foreign key (service_id) references services(id)

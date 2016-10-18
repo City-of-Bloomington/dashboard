@@ -144,8 +144,14 @@ msgstr "Edit Service"
 msgid "method"
 msgstr "Method"
 
+msgid "responseKey"
+msgstr "Reponse Key"
+
 msgid "target"
 msgstr "Target"
+
+msgid "period"
+msgstr "Period"
 
 msgid "comparison"
 msgstr "Comparison"

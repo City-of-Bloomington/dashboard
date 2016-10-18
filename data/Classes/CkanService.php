@@ -22,7 +22,7 @@ class CkanService extends ServiceInterface
     {
         return [
             'onTimePercentage' => [
-                'parameters' => ['resource_id'=>'', 'numDays'=>'', 'slaDays'=>''],
+                'parameters' => ['resource_id'=>'', 'slaDays'=>''],
                 'response'   => ['total'=>'', 'ontime'=>'', 'percent'=>'']
             ]
         ];
@@ -31,7 +31,7 @@ class CkanService extends ServiceInterface
     public function onTimePercentage(array $params)
     {
         $resource_id = preg_replace('/[^0-9a-f\-]/', '', $params['resource_id']);
-        $numDays     = (int)$params['numDays'];
+        $numDays     = (int)$params[parent::PERIOD];
         $slaDays     = (int)$params['slaDays'];
 
         $s = clone $params[parent::EFFECTIVE_DATE];

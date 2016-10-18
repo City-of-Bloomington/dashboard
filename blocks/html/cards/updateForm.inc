@@ -9,7 +9,9 @@ use Application\Models\ServicesTable;
 
 $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
-$fields = ['id', 'description', 'service_id', 'method', 'target', 'comparison', 'responseKey'];
+$fields = [
+    'id', 'description', 'service_id', 'method', 'target', 'period', 'comparison', 'responseKey'
+];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = $this->card->$get();
@@ -71,6 +73,7 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'name'    => 'responseKey',
                     'id'      => 'responseKey',
                     'label'   => $this->_('responseKey'),
+                    'help'    => $this->_('responseKey_help', 'messages'),
                     'value'   => $responseKey,
                     'type'    => 'select',
                     'options' => $options
@@ -92,6 +95,14 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'id'    => 'target',
                     'label' => $this->_('target'),
                     'value' => $target,
+                    'type'  => 'number'
+                ]);
+                echo $helper->field([
+                    'name'  => 'period',
+                    'id'    => 'period',
+                    'label' => $this->_('period'),
+                    'help'  => $this->_('period_help', 'messages'),
+                    'value' => $period,
                     'type'  => 'number'
                 ]);
 

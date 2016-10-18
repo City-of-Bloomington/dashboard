@@ -18,3 +18,9 @@ msgstr ""
 
 msgid "signed_in_as"
 msgstr "Signed in as %s"
+
+msgid "responseKey_help"
+msgstr "The value in the response to compare against the target"
+
+msgid "period_help"
+msgstr "The number of days to include as an extent for the query"

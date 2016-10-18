@@ -15,7 +15,6 @@ $table = new CardsTable();
 $list  = $table->find();
 foreach ($list as $card) {
     $date   = new \DateTime();
-    $params = $card->getParameters();
 
     for ($i=0; $i<30; $i++) {
         $sr = $card->queryService($date);
