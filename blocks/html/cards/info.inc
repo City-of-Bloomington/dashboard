@@ -7,7 +7,7 @@
 use Application\Models\Person;
 use Application\Models\ServiceInterface;
 
-$fields = ['description', 'method', 'target', 'comparison', 'responseKey'];
+$fields = ['name', 'description', 'method', 'period', 'target', 'comparison', 'responseKey'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->card->$get());
@@ -17,7 +17,7 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
 ?>
 <section>
     <header>
-        <h1><?= $description; ?></h1>
+        <h1><?= $name; ?></h1>
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');

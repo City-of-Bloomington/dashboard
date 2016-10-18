@@ -8,6 +8,7 @@ $JSON_DATE_FORMAT = 'Y-m-d';
 
 foreach ($this->cards as $c) {
     $id          = $c->getId();
+    $name        = parent::escape($c->getName());
     $description = parent::escape($c->getDescription());
     $target      = parent::escape($c->getTarget());
     $entry       = $c->getLatestLogEntry();
@@ -25,7 +26,7 @@ foreach ($this->cards as $c) {
     echo "
     <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
         <header>
-            <h1><a href=\"$uri\">$description</a></h1>
+            <h1><a href=\"$uri\">$name</a></h1>
         </header>
         <div class=\"response\">
     ";
@@ -37,6 +38,7 @@ foreach ($this->cards as $c) {
         <div class=\"dataUrl\">$dataLink</div>
         <div class=\"target\">{$this->_('target')}: $target</div>
         <div class=\"chart\"></div>
+        <footer>$description</footer>
     </article>
     ";
 }

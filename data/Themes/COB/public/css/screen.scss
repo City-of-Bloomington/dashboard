@@ -20,6 +20,9 @@
     margin:$size-gutter;
     padding:$size-gutter;
 
+    border:2px solid $color-text-default;
+    border-radius: $size-gutter/2;
+
     h1 { color:$color-content-background; font-size:$font-size-normal; }
     a  { color:$color-content-background; }
 }

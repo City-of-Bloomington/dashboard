@@ -10,7 +10,7 @@ use Application\Models\ServicesTable;
 $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
 $fields = [
-    'id', 'description', 'dataUrl', 'service_id', 'method',
+    'id', 'name', 'description', 'dataUrl', 'service_id', 'method',
     'target', 'period', 'comparison', 'responseKey',
 ];
 foreach ($fields as $f) {
@@ -30,6 +30,14 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
             <input name="id" type="hidden" value="<?= $id; ?>" />
             <?php
                 $helper = $this->template->getHelper('field');
+                echo $helper->field([
+                    'name'     => 'name',
+                    'id'       => 'name',
+                    'label'    => $this->_('name'),
+                    'value'    => $name,
+                    'required' => true
+                ]);
+
                 echo $helper->field([
                     'name'     => 'description',
                     'id'       => 'description',

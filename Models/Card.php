@@ -54,7 +54,8 @@ class Card extends ActiveRecord
 
 	public function validate()
 	{
-        if (!$this->getDescription() || !$this->getService_id() || !$this->getMethod()) {
+        if (   !$this->getName() || !$this->getPeriod()
+            || !$this->getDescription() || !$this->getService_id() || !$this->getMethod()) {
             throw new \Exception('missingRequiredFields');
         }
 
@@ -77,6 +78,7 @@ class Card extends ActiveRecord
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
 	public function getId()            { return parent::get('id');           }
+	public function getName()          { return parent::get('name');         }
 	public function getDescription()   { return parent::get('description');  }
 	public function getMethod()        { return parent::get('method');       }
 	public function getParameters()    { return json_decode(parent::get('parameters'), true); }
@@ -88,6 +90,7 @@ class Card extends ActiveRecord
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
 
+	public function setName       ($s) { parent::set('name',        $s); }
 	public function setDescription($s) { parent::set('description', $s); }
 	public function setMethod     ($s) { parent::set('method',      $s); }
 	public function setTarget     ($i) { parent::set('target', (int)$i); }
@@ -106,7 +109,7 @@ class Card extends ActiveRecord
 	public function handleUpdate($post)
 	{
         $fields = [
-            'description', 'service_id', 'method', 'parameters',
+            'name', 'description', 'service_id', 'method', 'parameters',
             'target', 'period', 'comparison', 'responseKey', 'dataUrl'
         ];
         foreach ($fields as $f) {

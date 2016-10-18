@@ -30,22 +30,22 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
     <?php
         foreach ($this->cards as $c) {
             $id          = $c->getId();
-            $description = parent::escape($c->getDescription());
+            $name        = parent::escape($c->getName());
+            $period      = parent::escape($c->getPeriod());
             $service     = parent::escape($c->getService()->getName());
             $uri         = parent::generateUri('cards.view', ['id'=>$id]);
             $target      = parent::escape($c->getTarget());
             $responseKey = parent::escape($c->getResponseKey());
             $comparison  = $this->_($c->getComparison());
-            $parameters  = json_encode($c->getParameters());
             echo "
             <tr><th>$id</th>
-                <td><a href=\"$uri\">$description</a></td>
+                <td><a href=\"$uri\">$name</a></td>
                 <td>$service</td>
                 <td>{$c->getMethod()}</td>
+                <td>$period</td>
                 <td>$responseKey</td>
                 <td>$comparison</td>
                 <td>$target</td>
-                <td>$parameters</td>
             </tr>
             ";
         }
