@@ -217,17 +217,22 @@ class Card extends ActiveRecord
 	 */
 	public function getStatus(array $entry)
 	{
-        $target = (int)$this->getTarget();
-        $value  = (int)$entry['response'][$this->getResponseKey()];
+        $hasData = false;
+        foreach ($entry['response'] as $k=>$v) { if ($v) { $hasData = true; } }
 
-        $status = 'fail';
-        switch ($this->getComparison()) {
-            case 'gt' : if ($value >  $target) { $status = 'pass'; } break;
-            case 'gte': if ($value >= $target) { $status = 'pass'; } break;
-            case 'lt' : if ($value <  $target) { $status = 'pass'; } break;
-            case 'lte': if ($value <= $target) { $status = 'pass'; } break;
+        if ($hasData) {
+            $target = (int)$this->getTarget();
+            $value  = (int)$entry['response'][$this->getResponseKey()];
+
+            $status = 'fail';
+            switch ($this->getComparison()) {
+                case 'gt' : if ($value >  $target) { $status = 'pass'; } break;
+                case 'gte': if ($value >= $target) { $status = 'pass'; } break;
+                case 'lt' : if ($value <  $target) { $status = 'pass'; } break;
+                case 'lte': if ($value <= $target) { $status = 'pass'; } break;
+            }
+            return $status;
         }
-        return $status;
 	}
 
 	/**
