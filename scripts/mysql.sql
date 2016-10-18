@@ -28,6 +28,7 @@ create table cards (
     period      tinyint unsigned not null,
     comparison  varchar(16)  not null,
     responseKey varchar(32)  not null,
+    dataUrl     varchar(255),
     constraint FK_cards_service_id foreign key (service_id) references services(id)
 );
 

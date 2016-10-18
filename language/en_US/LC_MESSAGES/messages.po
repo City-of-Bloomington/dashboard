@@ -19,6 +19,9 @@ msgstr ""
 msgid "signed_in_as"
 msgstr "Signed in as %s"
 
+msgid "dataUrl_help"
+msgstr "Link to the dataset used for this metric"
+
 msgid "responseKey_help"
 msgstr "The value in the response to compare against the target"
 

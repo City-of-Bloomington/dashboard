@@ -130,6 +130,9 @@ msgstr "Delete Card"
 msgid "description"
 msgstr "Description"
 
+msgid "dataUrl"
+msgstr "Dataset URL"
+
 msgid "service"
 msgid_plural "services"
 msgstr[0] "Service"

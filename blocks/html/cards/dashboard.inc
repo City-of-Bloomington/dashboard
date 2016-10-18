@@ -13,6 +13,8 @@ foreach ($this->cards as $c) {
     $entry       = $c->getLatestLogEntry();
     $status      = $c->getStatus($entry);
     $uri         = parent::generateUri('cards.view', ['id'=>$c->getId()]);
+    $dataUrl     = parent::escape($c->getDataUrl());
+    $dataLink    = $dataUrl ? "<a href=\"$dataUrl\">{$this->_('dataUrl')}</a>" : '';
 
     $data = [];
     foreach ($c->getLogEntries(10) as $entry) {
@@ -32,6 +34,7 @@ foreach ($this->cards as $c) {
         }
     echo "
         </div>
+        <div class=\"dataUrl\">$dataLink</div>
         <div class=\"target\">{$this->_('target')}: $target</div>
         <div class=\"chart\"></div>
     </article>

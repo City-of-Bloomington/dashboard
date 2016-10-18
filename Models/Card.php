@@ -11,7 +11,6 @@ use Blossom\Classes\Url;
 
 class Card extends ActiveRecord
 {
-
     protected $tablename = 'cards';
     protected $service;
 
@@ -85,6 +84,7 @@ class Card extends ActiveRecord
 	public function getPeriod()        { return (int)parent::get('period');  }
 	public function getComparison()    { return parent::get('comparison');   }
 	public function getResponseKey()   { return parent::get('responseKey');  }
+	public function getDataUrl()       { return parent::get('dataUrl');      }
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
 
@@ -94,6 +94,7 @@ class Card extends ActiveRecord
 	public function setPeriod     ($i) { parent::set('period', (int)$i); }
 	public function setComparison ($s) { parent::set('comparison',  $s); }
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
+	public function setDataUrl    ($s) { parent::set('dataUrl',     $s); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
@@ -106,7 +107,7 @@ class Card extends ActiveRecord
 	{
         $fields = [
             'description', 'service_id', 'method', 'parameters',
-            'target', 'period', 'comparison', 'responseKey'
+            'target', 'period', 'comparison', 'responseKey', 'dataUrl'
         ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
