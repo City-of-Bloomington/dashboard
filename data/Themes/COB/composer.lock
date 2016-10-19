@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Bloomington/factory-number-one.git",
-                "reference": "6a1d4dca527b82682665b5bbcb5f6bf7049c7d63"
+                "reference": "e72c59a621fe461ec28fc1cc856570db5195bff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/6a1d4dca527b82682665b5bbcb5f6bf7049c7d63",
-                "reference": "6a1d4dca527b82682665b5bbcb5f6bf7049c7d63",
+                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/e72c59a621fe461ec28fc1cc856570db5195bff6",
+                "reference": "e72c59a621fe461ec28fc1cc856570db5195bff6",
                 "shasum": ""
             },
             "type": "library",
@@ -26,7 +26,7 @@
                 "source": "https://github.com/City-of-Bloomington/factory-number-one/tree/refactor",
                 "issues": "https://github.com/City-of-Bloomington/factory-number-one/issues"
             },
-            "time": "2016-09-21 17:51:05"
+            "time": "2016-10-19 20:59:23"
         }
     ],
     "packages-dev": [],
