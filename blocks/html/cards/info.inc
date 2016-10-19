@@ -59,15 +59,16 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
             <?php
                 $log = $this->card->getLogEntries();
                 foreach ($log as $entry) {
+                    $response       = $entry->getResponse();
                     $responseValues = '';
                     foreach ($responseDefinition as $key=>$v) {
-                        $responseValues.= "<td>{$entry['response'][$key]}</td>";
+                        $responseValues.= "<td>{$response[$key]}</td>";
                     }
 
                     echo "
-                    <tr><th>{$entry['logDate']->format(DATE_FORMAT)}</th>
+                    <tr><th>{$entry->getLogDate(DATE_FORMAT)}</th>
                         $responseValues
-                        <td>{$entry[ServiceInterface::EFFECTIVE_DATE]->format(DATETIME_FORMAT)}</td>
+                        <td>{$entry->getEffectiveDate(DATETIME_FORMAT)}</td>
                     </tr>
                     ";
                 }

@@ -11,34 +11,29 @@ foreach ($this->cards as $c) {
     $name        = parent::escape($c->getName());
     $description = parent::escape($c->getDescription());
     $target      = parent::escape($c->getTarget());
-    $entry       = $c->getLatestLogEntry();
-    $status      = $c->getStatus($entry);
     $uri         = parent::generateUri('cards.view', ['id'=>$c->getId()]);
     $dataUrl     = parent::escape($c->getDataUrl());
     $dataLink    = $dataUrl ? "<a href=\"$dataUrl\">{$this->_('dataUrl')}</a>" : '';
 
+    $entry       = $c->getLatestLogEntry();
+    $status      = $entry->getStatus();
+
     $data = [];
     foreach ($c->getLogEntries(10) as $entry) {
-        $d        = $entry['logDate']->format($JSON_DATE_FORMAT);
-        $data[$d] = (int)$entry['response'][$c->getResponseKey()];
+        $d        = $entry->getLogDate($JSON_DATE_FORMAT);
+        $data[$d] = $entry->getMetricValue();
     }
     $data = parent::escape(json_encode($data));
+
     echo "
     <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
         <header>
             <h1><a href=\"$uri\">$name</a></h1>
         </header>
-        <div class=\"response\">
-    ";
-        foreach ($entry['response'] as $key=>$value) {
-            echo "<div class=\"$key\">$value $key</div>";
-        }
-    echo "
-        </div>
-        <div class=\"dataUrl\">$dataLink</div>
-        <div class=\"target\">{$this->_('target')}: $target</div>
+        <div class=\"value\">{$entry->getMetricValue()} {$entry->getMetricUnits()}</div>
         <div class=\"chart\"></div>
-        <footer>$description</footer>
+        <div class=\"description\">$description</div>
+        <div class=\"dataUrl\">$dataLink</div>
     </article>
     ";
 }

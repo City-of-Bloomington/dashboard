@@ -23,11 +23,18 @@
     border:2px solid $color-text-default;
     border-radius: $size-gutter/2;
 
-    h1 { color:$color-content-background; font-size:$font-size-normal; }
+    h1 { color:$color-content-background; }
     a  { color:$color-content-background; }
+
+    .value {
+        font-size:$font-size-bigger; font-weight:bold;
+        float:right;
+        position:relative; top:-1.75em;
+    }
+    .description { color:$color-text-default; }
 }
 
 article.card {
-    &.pass { background-color:$green; }
-    &.fail { background-color:$red; }
+    &.pass { background-color:$color-status-pass; }
+    &.fail { background-color:$color-status-fail; }
 }

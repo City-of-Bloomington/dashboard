@@ -131,7 +131,7 @@ msgid "description"
 msgstr "Description"
 
 msgid "dataUrl"
-msgstr "Dataset URL"
+msgstr "Source"
 
 msgid "service"
 msgid_plural "services"

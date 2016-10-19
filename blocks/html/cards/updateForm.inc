@@ -43,7 +43,8 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'id'       => 'description',
                     'label'    => $this->_('description'),
                     'value'    => $description,
-                    'required' => true
+                    'required' => true,
+                    'type'     => 'textarea'
                 ]);
 
                 echo $helper->field([

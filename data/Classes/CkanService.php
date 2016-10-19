@@ -23,7 +23,8 @@ class CkanService extends ServiceInterface
         return [
             'onTimePercentage' => [
                 'parameters' => ['resource_id'=>'', 'slaDays'=>''],
-                'response'   => ['total'=>'', 'ontime'=>'', 'percent'=>'']
+                'response'   => ['total'=>'', 'ontime'=>'', 'percent'=>''],
+                'labels'     => ['percent'=>'%']
             ]
         ];
     }

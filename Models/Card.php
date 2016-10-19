@@ -205,12 +205,7 @@ class Card extends ActiveRecord
 
         $result = parent::doQuery($sql, [$this->getId()]);
         foreach ($result as $row) {
-            $log[] = [
-                'card_id'       => $row['card_id'],
-                'logDate'       => new \DateTime($row['logDate'      ]),
-                'effectiveDate' => new \DateTime($row['effectiveDate']),
-                'response'      =>   json_decode($row['response'], true)
-            ];
+            $log[] = new CardLogEntry($row);
         }
         return $log;
 	}
@@ -218,14 +213,16 @@ class Card extends ActiveRecord
 	/**
 	 * @return array A Log Entry array
 	 */
-	public function getStatus(array $entry)
+	public function getStatus(CardLogEntry $entry)
 	{
-        $hasData = false;
-        foreach ($entry['response'] as $k=>$v) { if ($v) { $hasData = true; } }
+        $hasData  = false;
+        $response = $entry->getResponse();
+
+        foreach ($response as $k=>$v) { if ($v) { $hasData = true; } }
 
         if ($hasData) {
             $target = (int)$this->getTarget();
-            $value  = (int)$entry['response'][$this->getResponseKey()];
+            $value  = (int)$response[$this->getResponseKey()];
 
             $status = 'fail';
             switch ($this->getComparison()) {

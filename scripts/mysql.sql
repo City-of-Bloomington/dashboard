@@ -34,10 +34,11 @@ create table cards (
 );
 
 create table cardLog (
+    id            int unsigned not null primary key auto_increment,
     card_id       int unsigned not null,
     logDate       date         not null,
     effectiveDate datetime     not null,
     response      varchar(255) not null,
-    primary key (card_id, logDate),
+    unique key (card_id, logDate),
     constraint FK_card_log_card_id foreign key (card_id) references cards(id)
 );
