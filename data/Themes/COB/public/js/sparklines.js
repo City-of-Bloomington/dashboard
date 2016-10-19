@@ -11,15 +11,15 @@ DASHBOARD.drawSparklines = function () {
         options = {
             axisTitlesPosition: 'none',
             enableInteractivity: false,
-            width:120, height:20,
+            width:280, height:20,
             backgroundColor: 'transparent',
-            colors: ['white', 'gray'],
+            colors: ['black', 'gray'],
             series: [
                 {  },
                 { lineWidth: 1, lineDashStyle:[4, 2] }
             ],
             chartArea: {
-                width:120, height:20
+                width:280, height:20
             },
             legend: { position: 'none' },
             hAxis: {

@@ -49,6 +49,7 @@ class CardLogEntry extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
+			$this->setLogDate(new \DateTime());
 		}
 	}
 
@@ -133,5 +134,20 @@ class CardLogEntry extends ActiveRecord
             }
             return $status;
         }
+	}
+
+	/**
+	 * @return array ['start'=> DateTime, 'end'=> DateTime]
+	 */
+	public function getPeriodRange()
+	{
+        $end   = $this->getLogDate();
+        $start = clone($end);
+        $start->sub(new \DateInterval("P{$this->getCard()->getPeriod()}D"));
+
+        return [
+            'start' => $start,
+            'end'   => $end
+        ];
 	}
 }
