@@ -7,7 +7,7 @@ These files also serve as living documentation of the system requirements and co
 
 This assume some familiarity with the Ansible configuration management system and that you have an ansible control machine configured. Detailed instructions for getting up and running on Ansible are maintained as part of our system-playbooks repository:
 
-    https://github.com/City-of-Bloomington/system-playbooks
+https://github.com/City-of-Bloomington/system-playbooks
 
 On the ansible control machine, make sure you have everything you need:
 
@@ -38,12 +38,12 @@ Variables
 
 Variables are set and configured in a few different places. Update these to match your needs:
 
-    roles/cob.dashboard/vars/main.yml
-    group_vars/dashboard.yml
+  -  roles/cob.dashboard/vars/main.yml
+  -  group_vars/dashboard.yml
 
 Vaulting (encrypting) any sensitive information is recommended. These variables should be in:
 
-    group_vars/vault/dashboard.yml
+group_vars/vault/dashboard.yml
 
 More information about vaulting passwords is available here:
 
@@ -55,7 +55,7 @@ Templates
 
 It may be necessary to update the configuration file settings in the templates:
 
-    roles/cob.dashboard/templates/*
+roles/cob.dashboard/templates/*
 
 Run the Playbook
 -----------------
