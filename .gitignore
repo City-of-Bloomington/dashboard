@@ -1,4 +1,8 @@
-site_config.inc
+*~
+*\#
+._*
+.DS_Store
+data/site_config.inc
 data/sessions/*
 build
 dist
@@ -12,3 +16,8 @@ gulpfile.js
 .ftppass
 .gulp-build
 vendor
+ansible/roles/geerlingguy*
+ansible/roles/City-of-Bloomington.*
+ansible/hosts.txt
+ansible/group_vars/vault/
+

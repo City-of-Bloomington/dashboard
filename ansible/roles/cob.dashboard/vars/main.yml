@@ -1,0 +1,19 @@
+---
+# vars file for cob.dashboard
+
+dashboard_path: /srv/sites/dashboard
+dashboard_base: dashboard
+
+#these should be defined elsewhere (these are not sane defaults)
+#dashboard_db_name: dashboard
+#dashboard_db_username: user
+#dashboard_db_password: pass
+
+dashboard_apache_config: /etc/apache2/sites-available/dashboard.conf
+
+cas_server: bloomington.in.gov
+directory_server: 'http://apps.bloomington.in.gov/directory'
+
+dashboard_user_fname: Charles
+dashboard_user_lname: Brandt
+dashboard_user_email: something@somewhere.com

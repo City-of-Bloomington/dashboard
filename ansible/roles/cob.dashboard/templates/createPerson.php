@@ -8,11 +8,11 @@ use Application\Models\Person;
 
 include '../bootstrap.inc';
 $person = new Person();
-$person->setFirstname('Administrator');
-$person->setLastname('Person');
-$person->setEmail('admin@example.org');
+$person->setFirstname('{{dashboard_user_fname}}');
+$person->setLastname('{{dashboard_user_lname}}');
+$person->setEmail('{{dashboard_user_email}}');
 
-$person->setUsername('admin');
+$person->setUsername("{{ ansible_ssh_user }}");
 //$person->setPassword();
 $person->setAuthenticationMethod('Employee');
 $person->setRole('Administrator');

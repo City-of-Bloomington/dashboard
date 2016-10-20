@@ -1,0 +1,105 @@
+---
+# tasks file for cob.dashboard
+
+# this sets up the environment for development
+# tarball would include many of these dependencies
+
+- file: path='{{ dashboard_path }}' state=directory mode=2755  
+  
+- name: Check out source repository with git
+  git: repo=https://github.com/City-of-Bloomington/dashboard.git dest='{{ dashboard_path }}' update=no
+
+#TODO:
+# this won't work if the path is a directory on a VM shared with host
+# way to check for that?
+- name: Update ownership for dashboard_path
+  file: path={{ dashboard_path }} state=directory owner=www-data group=staff recurse=yes mode=g+rw
+  #file: path={{ dashboard_path }} state=directory owner=www-data group=staff recurse=yes mode=2770
+
+  
+- name: check if dashboard apache config already exists
+  stat: path={{ dashboard_apache_config }}
+  register: original
+  
+# check if backup of dashboard_apache_config exists
+# if it already exists, we won't move it again
+- name: check if dashboard apached config backup already exists
+  stat: path={{ dashboard_apache_config }}.bkup
+  register: backup
+
+#note that "copy" command in ansible copies from ansible host to client
+#one machine to the other
+#here we just want to do the copy only on the client 
+- name: Make a backup copy of dashboard apache config file
+  shell: cp {{ dashboard_apache_config }} {{ dashboard_apache_config }}.bkup
+  when: original.stat.exists and not backup.stat.exists
+
+- name: Create an apache config file for dashboard site based on template
+  template: src=dashboard.conf dest={{ dashboard_apache_config }}
+  notify:
+    - restart apache
+  tags: dashboard
+
+- name: a2ensite dashboard
+  command: a2ensite dashboard
+  notify:
+    - restart apache
+
+    
+- name: Fetch dashboard dependencies with composer
+  composer: command=install working_dir={{ dashboard_path }}
+
+- name: Run the build script
+  shell: ./build.sh
+  become_user: "{{ ansible_ssh_user }}"
+  args:
+    chdir: "{{ dashboard_path }}"
+
+- name: Compile the theme Sass
+  shell: ./build_css.sh
+  become_user: "{{ ansible_ssh_user }}"
+  args:
+    chdir: "{{ dashboard_path }}/data/Themes/COB/public/css"
+    
+- name: configure dashboard application
+  template: src=site_config.inc dest={{ dashboard_path }}/data/
+  tags: dashboard
+
+- name: configure asset library location
+  template: src=theme_config.inc dest={{ dashboard_path }}/data/Themes/COB
+  tags: dashboard
+
+  
+
+- name: Update ownership for sessions path
+  #file: path='{{ dashboard_path }}/data/sessions' state=directory owner=www-data group=staff recurse=yes mode=2770  
+  file: path='{{ dashboard_path }}/data/sessions' state=directory owner=www-data group=staff recurse=yes mode=g+rw
+
+#build creates files owned by user...
+#this is a common pattern to have to chown after build
+- name: Update ownership for dashboard_path (again)
+  #file: path={{ dashboard_path }} state=directory owner=www-data group=staff recurse=yes mode=2770
+  file: path={{ dashboard_path }} state=directory owner=www-data group=staff recurse=yes mode=g+rw
+
+- name: Check if database has already been initialized
+  command: mysql -u {{ dashboard_db_username }} -p{{ dashboard_db_password }} -D {{ dashboard_db_name }} -NBe "show tables;"
+  register: db_tables_result
+
+#capture text output, then count the rows to check
+  
+- name: Initialize the database 
+  shell: mysql -u {{ dashboard_db_username }} -p{{ dashboard_db_password }} {{ dashboard_db_name }} < mysql.sql
+  args:
+    chdir: "{{ dashboard_path }}/scripts"
+  when: db_tables_result.stdout_lines|length <= 1
+
+- name: update createPerson script
+  template: src=createPerson.php dest={{ dashboard_path }}/scripts/
+  tags: dashboard
+
+# run create user (if not already initialized)
+- name: Create first user!
+  shell: php createPerson.php
+  args:
+    chdir: "{{ dashboard_path }}/scripts"
+  when: db_tables_result.stdout_lines|length <= 1
