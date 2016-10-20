@@ -4,7 +4,9 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->cards
  */
-foreach ($this->cards as $c) {
-    $this->card = $c;
-    $this->_include('cards/card.inc');
-}
+echo '<section class="dashboard">';
+    foreach ($this->cards as $c) {
+        $this->card = $c;
+        $this->_include('cards/card.inc');
+    }
+echo '</section>';
