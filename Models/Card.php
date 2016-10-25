@@ -12,6 +12,7 @@ use Blossom\Classes\Url;
 class Card extends ActiveRecord
 {
     protected $tablename = 'cards';
+    protected $group;
     protected $service;
 
     public static $comparisons = ['gt', 'gte', 'lt', 'lte'];
@@ -87,8 +88,11 @@ class Card extends ActiveRecord
 	public function getComparison()    { return parent::get('comparison');   }
 	public function getResponseKey()   { return parent::get('responseKey');  }
 	public function getDataUrl()       { return parent::get('dataUrl');      }
+	public function getGroup_id()      { return parent::get('group_id');     }
 	public function getService_id()    { return parent::get('service_id');   }
+	public function getGroup()         { return parent::getForeignKeyObject(__namespace__.'\Group',   'group_id'  ); }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
+
 
 	public function setName       ($s) { parent::set('name',        $s); }
 	public function setDescription($s) { parent::set('description', $s); }
@@ -98,7 +102,9 @@ class Card extends ActiveRecord
 	public function setComparison ($s) { parent::set('comparison',  $s); }
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
 	public function setDataUrl    ($s) { parent::set('dataUrl',     $s); }
+	public function setGroup_id  ($id)     { parent::setForeignKeyField (__namespace__.'\Group',   'group_id',   $id); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
+	public function setGroup  (Group   $o) { parent::setForeignKeyObject(__namespace__.'\Group',   'group_id',   $o ); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
 	{
@@ -109,7 +115,7 @@ class Card extends ActiveRecord
 	public function handleUpdate($post)
 	{
         $fields = [
-            'name', 'description', 'service_id', 'method', 'parameters',
+            'name', 'description', 'group_id', 'service_id', 'method', 'parameters',
             'target', 'period', 'comparison', 'responseKey', 'dataUrl'
         ];
         foreach ($fields as $f) {

@@ -41,6 +41,7 @@ if ($route) {
 }
 else {
     $f = $ROUTES->getFailedRoute();
+    print_r($f);
     $view = new \Application\Views\NotFoundView();
 }
 

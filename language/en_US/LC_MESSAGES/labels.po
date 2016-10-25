@@ -113,6 +113,17 @@ msgstr "Account Info"
 msgid "error"
 msgstr "Sorry"
 
+msgid "group"
+msgid_plural "groups"
+msgstr[0] "Group"
+msgstr[1] "Groups"
+
+msgid "group_add"
+msgstr "New Group"
+
+msgid "group_edit"
+msgstr "Edit Group"
+
 msgid "card"
 msgid_plural "cards"
 msgstr[0] "Card"

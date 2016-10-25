@@ -8,7 +8,6 @@ namespace Application\Controllers;
 use Application\Models\Card;
 use Application\Models\CardsTable;
 
-use Blossom\Classes\Block;
 use Blossom\Classes\Controller;
 
 class CardsController extends Controller

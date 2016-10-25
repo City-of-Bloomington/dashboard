@@ -23,6 +23,7 @@ $ZEND_ACL->addResource(new Resource('login'));
 
 $ZEND_ACL->addResource(new Resource('cards'));
 $ZEND_ACL->addResource(new Resource('services'));
+$ZEND_ACL->addResource(new Resource('groups'));
 
 /**
  * Assign permissions to the resources

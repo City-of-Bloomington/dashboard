@@ -5,13 +5,14 @@
  * @param Card $this->card
  */
 use Application\Models\Card;
+use Application\Models\GroupsTable;
 use Application\Models\ServicesTable;
 
 $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
 $fields = [
     'id', 'name', 'description', 'dataUrl', 'service_id', 'method',
-    'target', 'period', 'comparison', 'responseKey',
+    'target', 'period', 'comparison', 'responseKey', 'group_id'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -53,6 +54,19 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'label' => $this->_('dataUrl'),
                     'help'  => $this->_('dataUrl_help', 'messages'),
                     'value' => $dataUrl
+                ]);
+
+                $options = [['value'=>'']];
+                $table   = new GroupsTable();
+                $list    = $table->find();
+                foreach ($list as $g) { $options[] = ['value'=>$g->getId(), 'label'=>parent::escape($g->getName())]; }
+                echo $helper->field([
+                    'name'    => 'group_id',
+                    'id'      => 'group_id',
+                    'label'   => $this->_('group'),
+                    'value'   => $group_id,
+                    'type'    => 'select',
+                    'options' => $options
                 ]);
 
                 $options = [['value'=>'']];

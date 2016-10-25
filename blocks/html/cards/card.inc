@@ -28,9 +28,22 @@ $value  = $entry->getMetricValue();
 $units  = $entry->getMetricUnits();
 $period = $entry->getPeriodRange();
 
+if ($this->card->getGroup_id()) {
+    $g = $this->card->getGroup();
+    $class = $g->getCSSClass();
+    $n  = parent::escape($g->getName());
+    $group = "
+    <div class=\"group\">
+        <span class=\"$class\">$n</span>
+    </div>
+    ";
+}
+else { $group = ''; }
+
 echo "
 <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
     <header>
+        $group
         <h1><a href=\"$uri\">$name</a></h1>
     </header>
     <div class=\"value\"><a href=\"$uri\">$value$units</a></div>

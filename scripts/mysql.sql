@@ -18,6 +18,12 @@ create table services (
     url   varchar(128) not null
 );
 
+create table groups (
+    id       int unsigned not null primary key auto_increment,
+    name     varchar(64)  not null,
+    cssClass varchar(64)  not null unique
+);
+
 create table cards (
     id          int unsigned not null primary key auto_increment,
     name        varchar(32)  not null,
@@ -30,7 +36,9 @@ create table cards (
     comparison  varchar(16)  not null,
     responseKey varchar(32)  not null,
     dataUrl     varchar(255),
+    group_id    int unsigned,
     constraint FK_cards_service_id foreign key (service_id) references services(id)
+    constraint FK_cards_group_id   foreign key (group_id  ) references groups  (id)
 );
 
 create table cardLog (

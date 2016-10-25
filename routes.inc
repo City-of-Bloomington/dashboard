@@ -52,3 +52,11 @@ $ROUTES->attach('services', '/services', function ($r) {
     $r->add('view',   '/{id}')       ->addValues(['action'=>'view'  ]);
     $r->add('update', '/update{/id}')->addValues(['action'=>'update']);
 });
+
+$ROUTES->attach('groups', '/groups', function ($r) {
+    $r->setTokens(['id'=>'[0-9]+']);
+    $r->setValues(['controller'=>'groups']);
+
+    $r->add('index',  '')            ->addValues(['action'=>'index' ]);
+    $r->add('update', '/update{/id}')->addValues(['action'=>'update']);
+});

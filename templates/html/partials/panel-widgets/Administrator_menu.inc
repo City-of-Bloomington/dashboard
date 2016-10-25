@@ -9,6 +9,7 @@ $links  = [];
 $routes = [
     'services'       => 'service',
     'cards'          => 'card',
+    'groups'         => 'group',
     'people'         => 'person',
     'users'          => 'user'
 ];
