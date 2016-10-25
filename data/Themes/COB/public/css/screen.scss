@@ -26,13 +26,26 @@
     header { margin-right:4em; }
     h1 { color:$color-content-background; }
     a  { color:$color-content-background; }
+    div { margin-top:$size-gutter; }
 
     .value {
-        font-size:$font-size-bigger; font-weight:bold;
+        margin:0; padding:0;
+        font-size:$font-size-biggest; font-weight:100;
         position:absolute; top:$size-gutter; right:$size-gutter;
     }
     .period      a { color:black; font-weight:bold; }
     .description a { color:black; }
+    .target {
+        position:absolute; bottom:0px; width:100%; margin-left:-$size-gutter;
+        background-color:white;
+        padding:$size-gutter 0;
+
+        a {
+            color:black; font-size:$font-size-bigger;
+            margin-left:$size-gutter;
+        }
+    }
+    .chart { position:absolute; bottom:40px; }
 }
 
 article.card {

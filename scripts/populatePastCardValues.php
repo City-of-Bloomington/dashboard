@@ -1,7 +1,13 @@
 <?php
 /**
+ * Generates past log entries for all cards
+ *
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ *
+ * It is useful to be able to generate what a metric query would have
+ * returned at various points in the past.  This is how we can populate
+ * a newly added card with past data.
  */
 use Application\Models\CardsTable;
 use Application\Models\ServiceInterface;

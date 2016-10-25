@@ -41,16 +41,16 @@
         },
         {
             "name": "aura/router",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Router.git",
-                "reference": "457efd185e4306fa671d659a66a2d9d28bf91a56"
+                "reference": "d8cb21b7fa8d2b2ae874093d5440688b3356f9c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Router/zipball/457efd185e4306fa671d659a66a2d9d28bf91a56",
-                "reference": "457efd185e4306fa671d659a66a2d9d28bf91a56",
+                "url": "https://api.github.com/repos/auraphp/Aura.Router/zipball/d8cb21b7fa8d2b2ae874093d5440688b3356f9c4",
+                "reference": "d8cb21b7fa8d2b2ae874093d5440688b3356f9c4",
                 "shasum": ""
             },
             "require": {
@@ -91,20 +91,20 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-07-17 15:55:37"
+            "time": "2016-10-03 20:00:15"
         },
         {
             "name": "aura/sqlquery",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.SqlQuery.git",
-                "reference": "1dd7729db77d6a96c919bad843d765abdfe14464"
+                "reference": "dd81b57aeb43628180a9c70a4df58d872024d7f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.SqlQuery/zipball/1dd7729db77d6a96c919bad843d765abdfe14464",
-                "reference": "1dd7729db77d6a96c919bad843d765abdfe14464",
+                "url": "https://api.github.com/repos/auraphp/Aura.SqlQuery/zipball/dd81b57aeb43628180a9c70a4df58d872024d7f2",
+                "reference": "dd81b57aeb43628180a9c70a4df58d872024d7f2",
                 "shasum": ""
             },
             "require": {
@@ -155,7 +155,7 @@
                 "sqlserver",
                 "update"
             ],
-            "time": "2016-09-02 22:10:12"
+            "time": "2016-10-03 20:34:56"
         },
         {
             "name": "container-interop/container-interop",
@@ -240,16 +240,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -283,7 +283,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "zendframework/zend-log",

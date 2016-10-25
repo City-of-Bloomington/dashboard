@@ -2,7 +2,7 @@
 *\#
 ._*
 .DS_Store
-data/site_config.inc
+site_config.inc
 data/sessions/*
 build
 dist

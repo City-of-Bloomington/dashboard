@@ -33,14 +33,14 @@ echo "
     <header>
         <h1><a href=\"$uri\">$name</a></h1>
     </header>
-    <div class=\"value\"><a href=\"$uri\">$value $units</a></div>
+    <div class=\"value\"><a href=\"$uri\">$value$units</a></div>
     <div class=\"period\">
         <a href=\"$uri\">
             {$period['start']->format(DATE_FORMAT)} - {$period['end']->format(DATE_FORMAT)}
         </a>
     </div>
     <div class=\"description\"><a href=\"$uri\">$description</a></div>
-    <div class=\"target\"><a href=\"$uri\">{$this->_('target')}: $target $units</a></div>
+    <div class=\"target\"><a href=\"$uri\">{$this->_('target')}: $target$units</a></div>
     <div class=\"chart\"></div>
 </article>
 ";
