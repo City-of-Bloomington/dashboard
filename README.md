@@ -1,9 +1,15 @@
-Dashboard
-=======
+City Performance Dashboard
+==============================
 
-This is a web application for displaying live metrics from data sources throughout the city.  The cards in this application each reach out to a data source an get the latest value for the requested metric.  Then, the card will compare the current value with a target value, and display some status accordingly.
+A performance dashboard that pulls data from CKAN data portals to show key metrics about data sets. 
 
-Data sources will need to expose a URL we can query to receive a single value for the requested metric.
+The City Performance Dashboard application displays metrics supplied by data sources throughout the city. The dashboard consists of cards that each represent a summary of the corresponding data. The application runs scheduled queries against the data source and then generates the summary card. The card compares the current value with a target value, and displays the corresponding status.
+
+We have an instance of this application available here:
+https://bloomington.in.gov/performance
+
+See also:
+http://blog.strom.com/wp/?p=4755
 
 ## Features
 Internationalization and Localization ready
