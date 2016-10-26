@@ -35,6 +35,16 @@ $userCanDelete = Person::isAllowed('cards', 'delete');
     <?php
         if ($userCanEdit) { $this->_include('cards/partials/parameters.inc'); }
         $this->_include('cards/card.inc');
+
+        $url = $this->card->getDataUrl();
+        if ($url) {
+            echo "
+            <dl><dt>{$this->_('dataUrl')}</dt>
+                <dd><a href=\"$url\">$url</a></dd>
+            </dl>
+            ";
+        }
+
         $this->_include('cards/log.inc');
     ?>
 </section>

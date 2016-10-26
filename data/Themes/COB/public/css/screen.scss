@@ -37,8 +37,8 @@
     .description { color:$color-text-default; }
     .target {
         position:absolute; bottom:0px; left:0px;
+        background-color:darken($gray, 25%);
         width:100%;
-        background-color:$color-content-background; color:$color-text-default;
         font-size:$font-size-bigger;
         box-sizing:border-box;
         padding:$size-gutter;
@@ -47,8 +47,15 @@
 }
 
 article.card {
-    &.pass { background-color:$color-status-pass; }
-    &.fail { background-color:$color-status-fail; }
+    &.pass {
+        background-color:$color-status-pass;
+        .target { background-color:darken($color-status-pass, 25%); }
+
+    }
+    &.fail {
+        background-color:$color-status-fail;
+        .target { background-color:darken($color-status-fail, 25%); }
+    }
 }
 
 .dashboard {
