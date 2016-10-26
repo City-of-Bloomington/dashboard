@@ -11,8 +11,6 @@ $name        = parent::escape($this->card->getName());
 $description = parent::escape($this->card->getDescription());
 $target      = parent::escape($this->card->getTarget());
 $uri         = parent::generateUri('cards.view', ['id'=>$this->card->getId()]);
-$dataUrl     = parent::escape($this->card->getDataUrl());
-$dataLink    = $dataUrl ? "<a href=\"$dataUrl\">{$this->_('dataUrl')}</a>" : '';
 
 $entry       = $this->card->getLatestLogEntry();
 $status      = $entry->getStatus();
@@ -41,19 +39,19 @@ if ($this->card->getGroup_id()) {
 else { $group = ''; }
 
 echo "
+<a href=\"$uri\">
 <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
     <header>
         $group
-        <h1><a href=\"$uri\">$name</a></h1>
+        <h1>$name</h1>
     </header>
-    <div class=\"value\"><a href=\"$uri\">$value$units</a></div>
+    <div class=\"value\">$value$units</div>
     <div class=\"period\">
-        <a href=\"$uri\">
-            {$period['start']->format(DATE_FORMAT)} - {$period['end']->format(DATE_FORMAT)}
-        </a>
+        {$period['start']->format(DATE_FORMAT)} - {$period['end']->format(DATE_FORMAT)}
     </div>
-    <div class=\"description\"><a href=\"$uri\">$description</a></div>
-    <div class=\"target\"><a href=\"$uri\">{$this->_('target')}: $target$units</a></div>
+    <div class=\"description\">$description</div>
+    <div class=\"target\">{$this->_('target')}: $target$units</div>
     <div class=\"chart\"></div>
 </article>
+</a>
 ";

@@ -15,7 +15,7 @@
 @import 'modules/main.scss';
 
 .card {
-    height:200px; position:relative;
+    height:260px; position:relative;
     color:$color-content-background;
     margin:$size-gutter;
     padding:$size-gutter;
@@ -33,17 +33,15 @@
         font-size:$font-size-biggest; font-weight:100;
         position:absolute; top:$size-gutter; right:$size-gutter;
     }
-    .period      a { color:black; font-weight:bold; }
-    .description a { color:black; }
+    .period      { color:$color-text-default; font-weight:bold; }
+    .description { color:$color-text-default; }
     .target {
-        position:absolute; bottom:0px; width:100%; margin-left:-$size-gutter;
-        background-color:white;
-        padding:$size-gutter 0;
-
-        a {
-            color:black; font-size:$font-size-bigger;
-            margin-left:$size-gutter;
-        }
+        position:absolute; bottom:0px; left:0px;
+        width:100%;
+        background-color:$color-content-background; color:$color-text-default;
+        font-size:$font-size-bigger;
+        box-sizing:border-box;
+        padding:$size-gutter;
     }
     .chart { position:absolute; bottom:40px; }
 }
