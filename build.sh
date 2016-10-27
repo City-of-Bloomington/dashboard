@@ -7,7 +7,7 @@ if [ ! -d $BUILD ]
 	then mkdir $BUILD
 fi
 
-# Compile the Lanague files
+# Compile the Language files
 cd $DIR/language
 ./build_lang.sh
 cd $DIR
