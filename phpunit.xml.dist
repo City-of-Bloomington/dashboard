@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit colors="true">
+
+	<testsuites>
+		<testsuite name="Dashboard Test Suite">
+			<directory>./tests/UnitTests</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
+
