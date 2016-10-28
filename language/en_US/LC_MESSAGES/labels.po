@@ -159,7 +159,7 @@ msgid "method"
 msgstr "Method"
 
 msgid "responseKey"
-msgstr "Reponse Key"
+msgstr "Response Key"
 
 msgid "target"
 msgstr "Target"

@@ -39,4 +39,4 @@ msgid "passwordCorrupted"
 msgstr "Your password is corrupted.  Please contact a system administrator for help."
 
 msgid "ldap/unknownUser"
-msgstr "That username is not in LDAP.  You cannot set LDAP authentication if the user is not in LDAP."
+msgstr "That username is not in LDAP. You cannot set LDAP authentication if the user is not in LDAP."
