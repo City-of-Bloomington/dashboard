@@ -97,7 +97,7 @@ class CardLogEntry extends ActiveRecord
 	 */
 	public function getMetricValue()
 	{
-        return (int)$this->getResponse()[$this->getCard()->getResponseKey()];
+        return $this->getResponse()[$this->getCard()->getResponseKey()];
 	}
 
 	/**
@@ -119,7 +119,7 @@ class CardLogEntry extends ActiveRecord
         $response = $this->getResponse();
         $card     = $this->getCard();
 
-        foreach ($response as $k=>$v) { if (is_int($v)) { $hasData = true; } }
+        if (is_int($response[$card->getResponseKey()])) { $hasData = true; }
 
         if ($hasData) {
             $target = (int)$card->getTarget();

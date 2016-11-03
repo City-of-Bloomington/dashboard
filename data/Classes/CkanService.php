@@ -73,7 +73,7 @@ class CkanService extends ServiceInterface
         $sql = "select  x.total,
                         x.ontime,
                         case x.total
-                            when 0 then 0
+                            when 0 then null
                             else floor(x.ontime::real / x.total::real * 100)
                         end as percentage,
                         x.effectiveDate
@@ -86,11 +86,14 @@ class CkanService extends ServiceInterface
 
         $json = $this->sqlQuery($sql);
         if ($json) {
+            $p = $json->result->records[0]->percentage
+                ? (int)$json->result->records[0]->percentage
+                : null;
             return new ServiceResponse(
                 [
                     'total'   => (int)$json->result->records[0]->total,
                     'ontime'  => (int)$json->result->records[0]->ontime,
-                    'percent' => (int)$json->result->records[0]->percentage
+                    'percent' => $p
                 ],
                 new \DateTime($json->result->records[0]->effectivedate)
             );

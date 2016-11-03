@@ -14,9 +14,11 @@ $uri         = parent::generateUri('cards.view', ['id'=>$this->card->getId()]);
 
 $entry       = $this->card->getLatestLogEntry();
 $status      = $entry->getStatus();
+$value       = $entry->getMetricValue();
+$units       = $entry->getMetricUnits();
+$display     = $value ? "$value$units" : '';
 
-$value  = $entry->getMetricValue();
-$units  = $entry->getMetricUnits();
+
 $period = $entry->getPeriodRange();
 
 $data = [];
@@ -46,7 +48,7 @@ echo "
         $group
         <h1>$name</h1>
     </header>
-    <div class=\"value\">$value$units</div>
+    <div class=\"value\">$display</div>
     <div class=\"period\">
         {$period['start']->format(DATE_FORMAT)} - {$period['end']->format(DATE_FORMAT)}
     </div>
