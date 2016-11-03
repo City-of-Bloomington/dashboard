@@ -15,6 +15,10 @@ $uri         = parent::generateUri('cards.view', ['id'=>$this->card->getId()]);
 $entry       = $this->card->getLatestLogEntry();
 $status      = $entry->getStatus();
 
+$value  = $entry->getMetricValue();
+$units  = $entry->getMetricUnits();
+$period = $entry->getPeriodRange();
+
 $data = [];
 foreach ($this->card->getLogEntries(10) as $entry) {
     $d        = $entry->getLogDate($JSON_DATE_FORMAT);
@@ -22,9 +26,6 @@ foreach ($this->card->getLogEntries(10) as $entry) {
 }
 $data = parent::escape(json_encode($data));
 
-$value  = $entry->getMetricValue();
-$units  = $entry->getMetricUnits();
-$period = $entry->getPeriodRange();
 
 if ($this->card->getGroup_id()) {
     $g = $this->card->getGroup();
