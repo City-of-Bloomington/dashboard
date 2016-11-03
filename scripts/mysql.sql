@@ -25,18 +25,18 @@ create table groups (
 );
 
 create table cards (
-    id          int unsigned not null primary key auto_increment,
-    name        varchar(32)  not null,
-    service_id  int unsigned not null,
-    description varchar(255) not null,
-    method      varchar(32)  not null,
+    id          int      unsigned not null primary key auto_increment,
+    name        varchar(32)       not null,
+    service_id  int      unsigned not null,
+    description varchar(255)      not null,
+    method      varchar(32)       not null,
     parameters  varchar(128),
-    target      tinyint      not null,
-    period      tinyint unsigned not null,
-    comparison  varchar(16)  not null,
-    responseKey varchar(32)  not null,
+    target      tinyint           not null,
+    period      smallint unsigned not null,
+    comparison  varchar(16)       not null,
+    responseKey varchar(32)       not null,
     dataUrl     varchar(255),
-    group_id    int unsigned,
+    group_id    int      unsigned,
     constraint FK_cards_service_id foreign key (service_id) references services(id)
     constraint FK_cards_group_id   foreign key (group_id  ) references groups  (id)
 );

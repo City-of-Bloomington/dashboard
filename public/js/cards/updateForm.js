@@ -13,8 +13,8 @@ var CARD_FORM = {
             CARD_FORM.service = JSON.parse(r.responseText);
 
             for (m in CARD_FORM.service.methods) { options += '<option>' + m + '</option>'; }
-            method.innerHTML     = options;
-            method.selectedIndex = 1;
+            method.innerHTML     = '<option value=""></option>' + options;
+            method.selectedIndex = 0;
 
             document.getElementById('responseKey').innerHTML = '';
         });
