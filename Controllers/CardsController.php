@@ -12,13 +12,25 @@ use Blossom\Classes\Controller;
 
 class CardsController extends Controller
 {
+        /**
+         * Index method for CardController class
+         * 
+         * @param array $params
+         * @return \Application\Views\Cards\ListView
+         */
 	public function index(array $params)
 	{
         $table = new CardsTable();
         $list  = $table->find();
         return new \Application\Views\Cards\ListView(['cards'=>$list]);
 	}
-
+        
+        /**
+         * View method for CardController class
+         * 
+         * @param array $params
+         * @return type
+         */
 	public function view(array $params)
 	{
         if (!empty($_GET['id'])) {
@@ -30,6 +42,12 @@ class CardsController extends Controller
             : new \Application\Views\NotFoundView();
 	}
 
+        /**
+         * Update method for CardController class
+         * 
+         * @param array $params
+         * @return \Application\Views\Cards\UpdateView|\Application\Views\NotFoundView
+         */
 	public function update(array $params)
 	{
         if (!empty($_REQUEST['id'])) {
@@ -59,6 +77,12 @@ class CardsController extends Controller
         else { return new \Application\Views\NotFoundView(); }
 	}
 
+        /**
+         * Delete method for CardController class
+         * 
+         * @param array $params
+         * @return \Application\Views\NotFoundView
+         */
 	public function delete(array $params)
 	{
         if (!empty($_GET['id'])) {
