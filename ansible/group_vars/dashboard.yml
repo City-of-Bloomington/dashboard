@@ -1,5 +1,0 @@
-# do *not* include trailing slash!
-dashboard_path: /srv/sites/dashboard
-dashboard_db_name: "{{ vault_dashboard_db_name }}"
-dashboard_db_username: "{{ vault_dashboard_db_username }}"
-dashboard_db_password: "{{ vault_dashboard_db_password }}"

@@ -1,2 +1,3 @@
 ---
-# handlers file for cob.dashboard
+- name: dashboard update permissions
+  file: path='{{ dashboard_path }}' state=directory owner=www-data group=staff recurse=yes mode=g+rw

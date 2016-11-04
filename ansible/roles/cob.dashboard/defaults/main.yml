@@ -1,2 +1,18 @@
 ---
-# defaults file for cob.dashboard
+dashboard_uri: /dashboard
+dashboard_path: /srv/sites/dashboard
+
+dashboard_db:
+  name: "dashboard"
+  username: "dashboard"
+  password: "{{ vault_dashboard_db_password }}"
+
+dashboard_admin:
+  username: "{{ ansible_user|default(lookup('env', 'USER'), True) }}"
+  firstname: "Admin"
+  lastname: "Person"
+  email: "{{ ansible_user|default(lookup('env', 'USER'), True) }}@localhost"
+
+dashboard_apache_config: /etc/apache2/sites-available
+dashboard_directory_server: ''
+dashboard_cas_server: ''

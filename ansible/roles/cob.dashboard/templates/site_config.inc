@@ -5,8 +5,8 @@ define('APPLICATION_NAME','Dashboard');
  * The URL to get to this site
  * Do NOT use a trailing slash
  */
-define('BASE_URL','http://localhost/{{ dashboard_base }}');
-define('BASE_URI','/{{ dashboard_base }}');
+define('BASE_URL','http://localhost/{{ dashboard_uri }}');
+define('BASE_URI','/{{ dashboard_uri }}');
 
 /**
  * Specify the theme directory
@@ -24,9 +24,9 @@ define('THEME', 'COB');
  */
 $DATABASES = [
     'default' => [
-        'dsn'      => 'mysql:dbname={{ dashboard_db_name }};host=localhost',
-        'username' => '{{ dashboard_db_username }}',
-        'password' => '{{ dashboard_db_password }}',
+        'dsn'      => 'mysql:dbname={{ dashboard_db.name }};host=localhost',
+        'username' => '{{ dashboard_db.username }}',
+        'password' => '{{ dashboard_db.password }}',
         'options'  => []
     ]
 ];
@@ -66,7 +66,7 @@ $DIRECTORY_CONFIG = [
 // Example for Directory webservice
   'Employee' => [
      'classname' => 'Site\Classes\Employee',
-     'DIRECTORY_SERVER' => '{{ directory_server }}',
+     'DIRECTORY_SERVER' => '{{ dashboard_directory_server }}',
   ]
 ];
 
@@ -79,7 +79,7 @@ $DIRECTORY_CONFIG = [
  * It is the official library, part of the Jasig CAS project
  */
 define('CAS', APPLICATION_HOME.'/vendor/jasig/phpcas/source');
-define('CAS_SERVER','{{ cas_server }}');
+define('CAS_SERVER','{{ dashboard_cas_server }}');
 define('CAS_URI','cas');
 
 define('DATE_FORMAT', 'n/j/Y');
