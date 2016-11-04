@@ -1,36 +1,18 @@
 ---
-# Sets up a development version of dashboard
-#
-# A production task list might look very different, since
-# it would be pulling from the release version.
-# Releases that we make available will already be built, so,
-# there would be no need for many the dependencies needed to build.
-- name: Install Development Dependencies
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - gettext
-    - nodejs
-    - npm
+# Sets up a production version of Dashboard
+- name: Create directory for Dashboard web application
+  file: path='{{ dashboard_path }}' state=directory mode=2755
 
-- name: Update symlinks to node
-  file: state=link src=/usr/bin/nodejs path=/usr/bin/node
+- name: Download release
+  unarchive:
+    src: https://github.com/City-of-Bloomington/dashboard/releases/download/0.1.0/dashboard-0.1.0.tar.gz
+    dest: /srv/sites
+    remote_src: yes
+  register: download
 
-- name: Update npm
-  command: "npm install npm@latest -g"
-
-- name: Update node-sass
-  command: "npm install node-sass@latest -g"
-
-- file: path='{{ dashboard_path }}' state=directory mode=2755
-
-- name: Check out source repository with git
-  git:
-    repo: https://github.com/City-of-Bloomington/dashboard.git
-    dest: "{{ dashboard_path }}"
-    update: no
-  notify: dashbo update permissions
+- name: Install release
+  command: rsync -rlv /srv/sites/dashboard-0.1.0/ /srv/sites/dashboard/
+  when: download.changed
 
 - name: check if dashboard apache config already exists
   stat: path={{ dashboard_apache_config }}
@@ -59,12 +41,6 @@
   command: a2ensite dashboard
   notify:
     - restart apache
-
-- name: Run the build script
-  shell: ./build.sh
-  args:
-    chdir: "{{ dashboard_path }}"
-  notify: dashboard update permissions
 
 - name: configure dashboard application
   template: src=site_config.inc dest={{ dashboard_path }}/data/
