@@ -4,15 +4,20 @@
   file: path='{{ dashboard_path }}' state=directory mode=2755
 
 - name: Download release
-  unarchive:
-    src: https://github.com/City-of-Bloomington/dashboard/releases/download/0.1.0/dashboard-0.1.0.tar.gz
-    dest: /srv/sites
-    remote_src: yes
-  register: download
+  get_url:
+    url: https://github.com/City-of-Bloomington/dashboard/releases/download/0.1.0/dashboard-0.1.0.tar.gz
+    dest: /srv/sites/dashboard-0.1.0.tar.gz
+  register: release
+
+- name: Extract release
+  command: tar xzvf dashboard-0.1.0.tar.gz
+  args:
+    chdir: /srv/sites
+  when: release.changed
 
 - name: Install release
   command: rsync -rlv /srv/sites/dashboard-0.1.0/ /srv/sites/dashboard/
-  when: download.changed
+  when: release.changed
 
 - name: check if dashboard apache config already exists
   stat: path={{ dashboard_apache_config }}

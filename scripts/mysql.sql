@@ -37,7 +37,7 @@ create table cards (
     responseKey varchar(32)       not null,
     dataUrl     varchar(255),
     group_id    int      unsigned,
-    constraint FK_cards_service_id foreign key (service_id) references services(id)
+    constraint FK_cards_service_id foreign key (service_id) references services(id),
     constraint FK_cards_group_id   foreign key (group_id  ) references groups  (id)
 );
 
