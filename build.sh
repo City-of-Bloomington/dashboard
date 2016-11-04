@@ -3,7 +3,7 @@ APPNAME=dashboard
 DIR=`pwd`
 BUILD=$DIR/build
 
-declare -a dependencies=(msgfmt node-sass node npm)
+declare -a dependencies=(msgfmt node-sass node npm composer)
 for i in "${dependencies[@]}"; do
     command -v $i > /dev/null 2>&1 || { echo "$i not installed" >&2; exit 1; }
 done
@@ -12,14 +12,15 @@ if [ ! -d $BUILD ]
 	then mkdir $BUILD
 fi
 
-# Compile the Language files
-cd $DIR/language
-./build_lang.sh
-cd $DIR
+composer update
 
-# Compile the SASS
-cd $DIR/public/css
-./build_css.sh
+# Call all the build scripts in any subdirectories
+for f in $(find $DIR -name build_*.sh -not -path "$DIR/build/*" -not -path "*/vendor/*"); do
+    echo $f
+    cd `dirname $f`
+    ./`basename $f`
+done
+
 cd $DIR
 
 # The PHP code does not need to actually build anything.
