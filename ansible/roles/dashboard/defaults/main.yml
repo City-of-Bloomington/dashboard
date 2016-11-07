@@ -1,6 +1,6 @@
 ---
 dashboard_name: dashboard
-dashboard_version: 0.1.0
+dashboard_version: 0.1.1
 dashboard_uri: /{{ dashboard_name }}
 dashboard_install_dir: /srv/sites
 dashboard_path: "{{ dashboard_install_dir }}/{{ dashboard_name }}"
