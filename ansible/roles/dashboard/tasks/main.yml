@@ -17,6 +17,7 @@
 
 - name: Install release
   command: rsync -rlv {{ dashboard_install_dir }}/dashboard-{{ dashboard_version }}/ {{ dashboard_path }}/
+  notify: dashboard update permissions
   when: release.changed
 
 - name: check if dashboard apache config already exists
@@ -49,10 +50,12 @@
 
 - name: configure dashboard application
   template: src=site_config.inc dest={{ dashboard_path }}/data/
+  notify: dashboard update permissions
   tags: dashboard
 
 - name: configure COB Theme
   template: src=theme_config.inc dest={{ dashboard_path }}/data/Themes/COB
+  notify: dashboard update permissions
   tags: dashboard
 
 - name: Create database for Dashboard
@@ -77,6 +80,7 @@
 
 - name: update createPerson script
   template: src=createPerson.php dest={{ dashboard_path }}/scripts/
+  notify: dashboard update permissions
   tags: dashboard
 
 - name: Create first user!
