@@ -8,7 +8,7 @@ dashboard_path: "{{ dashboard_install_dir }}/{{ dashboard_name }}"
 dashboard_db:
   name: "{{ dashboard_name }}"
   username: "{{ dashboard_name }}"
-  password: "{{ vault_dashboard_db_password }}"
+  password: "{{ vault_dashboard_db.password }}"
 
 dashboard_admin:
   username: "{{ ansible_user|default(lookup('env', 'USER'), True) }}"

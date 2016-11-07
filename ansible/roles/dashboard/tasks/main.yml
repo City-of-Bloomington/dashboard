@@ -20,7 +20,7 @@
   when: release.changed
 
 - name: check if dashboard apache config already exists
-  stat: path=/etc/apache2/sites-available/{{ dashboard_name }}
+  stat: path=/etc/apache2/sites-available/{{ dashboard_name }}.conf
   register: original
 
 # check if backup of dashboard_apache_config exists
@@ -33,11 +33,11 @@
 #one machine to the other
 #here we just want to do the copy only on the host
 - name: Make a backup copy of dashboard apache config file
-  shell: cp /etc/apache2/sites-available/{{ dashboard_name }} /etc/apache2/sites-available/{{ dashboard_name }}.bak
+  shell: cp /etc/apache2/sites-available/{{ dashboard_name }}.conf /etc/apache2/sites-available/{{ dashboard_name }}.bak
   when: original.stat.exists and not backup.stat.exists
 
 - name: Create an apache config file for dashboard site based on template
-  template: src=dashboard.conf dest=/etc/apache2/sites-available/{{ dashboard_name }}
+  template: src=dashboard.conf dest=/etc/apache2/sites-available/{{ dashboard_name }}.conf
   notify:
     - restart apache
   tags: dashboard
