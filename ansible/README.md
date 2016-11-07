@@ -1,7 +1,7 @@
 Dashboard - Ansible
 ======================
 
-The included ansible playbook and role install the data portal dashboard web application along with required dependencies.
+The included ansible playbook and role install the dashboard web application along with required dependencies.
 
 These files also serve as living documentation of the system requirements and configurations necessary to run the application.
 
@@ -19,31 +19,21 @@ Dependencies
 
 Decide how you want to get the other necessary ansible roles:
 
-    ansible-galaxy install --roles-path ./roles -r roles.yml
+    ansible-galaxy install -r roles.yml
 
 or for development:
 
-```
+```bash
 git clone https://github.com/City-of-Bloomington/ansible-role-linux.git ./roles/City-of-Bloomington.linux
 git clone https://github.com/City-of-Bloomington/ansible-role-apache.git ./roles/City-of-Bloomington.apache
+git clone https://github.com/City-of-Bloomington/ansible-role-apache.git ./roles/City-of-Bloomington.mysql
 git clone https://github.com/City-of-Bloomington/ansible-role-php.git ./roles/City-of-Bloomington.php
-git clone https://github.com/City-of-Bloomington/ansible-role-fn1.git ./roles/City-of-Bloomington.fn1
-git clone https://github.com/geerlingguy/ansible-role-composer ./roles/geerlingguy.composer
-git clone https://github.com/geerlingguy/ansible-role-mysql ./roles/geerlingguy.mysql
-etc
 ```
 
 Variables
 --------------
 
-Variables are set and configured in a few different places. Update these to match your needs:
-
-  -  roles/cob.dashboard/vars/main.yml
-  -  group_vars/dashboard.yml
-
-Vaulting (encrypting) any sensitive information is recommended. These variables should be in:
-
-group_vars/vault/dashboard.yml
+Vaulting (encrypting) any sensitive information is recommended.
 
 More information about vaulting passwords is available here:
 
@@ -55,12 +45,12 @@ Templates
 
 It may be necessary to update the configuration file settings in the templates:
 
-roles/cob.dashboard/templates/*
+roles/dashboard/templates/*
 
 Run the Playbook
 -----------------
 
-    ansible-playbook playbooks/dashboard.yml -i hosts.txt --ask-become-pass --ask-vault-pass
+    ansible-playbook playbooks/dashboard.yml -i hosts.txt
 
 Additional Information
 -------------------------
@@ -79,5 +69,3 @@ Copyright (c) 2016 City of Bloomington, Indiana
 
 This material is avialable under the GNU General Public License (GLP) v3.0:
 https://www.gnu.org/licenses/gpl.txt
-
-

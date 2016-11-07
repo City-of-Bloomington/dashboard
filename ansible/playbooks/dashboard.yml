@@ -9,6 +9,5 @@
     - City-of-Bloomington.apache
     - City-of-Bloomington.mysql
     - City-of-Bloomington.php
-    - geerlingguy.composer
 
-    - cob.dashboard
+    - dashboard
