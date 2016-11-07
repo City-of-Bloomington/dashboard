@@ -12,12 +12,10 @@ screen.css
 screen.css.map
 .sass-cache
 node_modules
-package.json
 gulpfile.js
 .ftppass
 .gulp-build
 vendor
-ansible/roles/geerlingguy*
 ansible/roles/City-of-Bloomington.*
 ansible/hosts.txt
 ansible/group_vars/vault/

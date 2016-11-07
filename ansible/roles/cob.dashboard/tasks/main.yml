@@ -5,39 +5,39 @@
 
 - name: Download release
   get_url:
-    url: https://github.com/City-of-Bloomington/dashboard/releases/download/0.1.0/dashboard-0.1.0.tar.gz
-    dest: /srv/sites/dashboard-0.1.0.tar.gz
+    url: https://github.com/City-of-Bloomington/dashboard/releases/download/{{ dashboard_version }}/dashboard-{{ dashboard_version }}.tar.gz
+    dest: "{{ dashboard_install_dir }}/dashboard-{{ dashboard_version }}.tar.gz"
   register: release
 
 - name: Extract release
-  command: tar xzvf dashboard-0.1.0.tar.gz
+  command: tar xzvf dashboard-{{ dashboard_version }}.tar.gz
   args:
-    chdir: /srv/sites
+    chdir: "{{ dashboard_install_dir }}"
   when: release.changed
 
 - name: Install release
-  command: rsync -rlv /srv/sites/dashboard-0.1.0/ /srv/sites/dashboard/
+  command: rsync -rlv {{ dashboard_install_dir }}/dashboard-{{ dashboard_version }}/ {{ dashboard_path }}/
   when: release.changed
 
 - name: check if dashboard apache config already exists
-  stat: path={{ dashboard_apache_config }}
+  stat: path=/etc/apache2/sites-available/{{ dashboard_name }}
   register: original
 
 # check if backup of dashboard_apache_config exists
 # if it already exists, we won't move it again
 - name: check if dashboard apached config backup already exists
-  stat: path={{ dashboard_apache_config }}.bkup
+  stat: path=/etc/apache2/sites-available/{{ dashboard_name }}.bak
   register: backup
 
 #note that "copy" command in ansible copies from ansible client to host
 #one machine to the other
 #here we just want to do the copy only on the host
 - name: Make a backup copy of dashboard apache config file
-  shell: cp {{ dashboard_apache_config }} {{ dashboard_apache_config }}.bkup
+  shell: cp /etc/apache2/sites-available/{{ dashboard_name }} /etc/apache2/sites-available/{{ dashboard_name }}.bak
   when: original.stat.exists and not backup.stat.exists
 
 - name: Create an apache config file for dashboard site based on template
-  template: src=dashboard.conf dest={{ dashboard_apache_config }}
+  template: src=dashboard.conf dest=/etc/apache2/sites-available/{{ dashboard_name }}
   notify:
     - restart apache
   tags: dashboard

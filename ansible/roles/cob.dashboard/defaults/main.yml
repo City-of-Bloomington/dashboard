@@ -1,10 +1,13 @@
 ---
-dashboard_uri: /dashboard
-dashboard_path: /srv/sites/dashboard
+dashboard_name: dashboard
+dashboard_version: 0.1.0
+dashboard_uri: /{{ dashboard_name }}
+dashboard_install_dir: /srv/sites
+dashboard_path: "{{ dashboard_install_dir }}/{{ dashboard_name }}"
 
 dashboard_db:
-  name: "dashboard"
-  username: "dashboard"
+  name: "{{ dashboard_name }}"
+  username: "{{ dashboard_name }}"
   password: "{{ vault_dashboard_db_password }}"
 
 dashboard_admin:
@@ -13,6 +16,5 @@ dashboard_admin:
   lastname: "Person"
   email: "{{ ansible_user|default(lookup('env', 'USER'), True) }}@localhost"
 
-dashboard_apache_config: /etc/apache2/sites-available
 dashboard_directory_server: ''
 dashboard_cas_server: ''
