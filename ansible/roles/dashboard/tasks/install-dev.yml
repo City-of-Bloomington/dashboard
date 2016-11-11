@@ -1,0 +1,40 @@
+---
+- name: Clone the repository
+  become: no
+  git:
+    repo: https://github.com/City-of-Bloomington/dashboard.git
+    dest: "{{ dashboard_path }}"
+    update: yes
+  notify: dashboard update permissions
+
+- name: Install Core Dependencies
+  become: no
+  composer:
+    command: update
+    working_dir: "{{ dashboard_path }}"
+
+- name: Install Theme Dependencies
+  become: no
+  composer:
+    command: update
+    working_dir: "{{ dashboard_path }}/data/Themes/COB"
+
+- name: Install Factory Number One Dependencies
+  become: no
+  npm:
+    path: "{{ dashboard_path }}/data/Themes/COB/vendor/City-of-Bloomington/factory-number-one"
+    global: no
+
+- name: Build the application
+  become: no
+  command: "{{ dashboard_path }}/build.sh"
+  args:
+    chdir: "{{ dashboard_path }}"
+
+- name: Configure application instance
+  template: src=site_config.inc dest={{ dashboard_path }}/data/
+  notify: dashboard update permissions
+
+- name: Configure COB Theme
+  template: src=theme_config.inc dest={{ dashboard_path }}/data/Themes/COB
+  notify: dashboard update permissions
