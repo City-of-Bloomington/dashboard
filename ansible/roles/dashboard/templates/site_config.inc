@@ -5,7 +5,7 @@ define('APPLICATION_NAME','Dashboard');
  * The URL to get to this site
  * Do NOT use a trailing slash
  */
-define('BASE_URL','http://localhost{{ dashboard_uri }}');
+define('BASE_URL','http://{{ ansible_host }}{{ dashboard_uri }}');
 define('BASE_URI','{{ dashboard_uri }}');
 
 /**
