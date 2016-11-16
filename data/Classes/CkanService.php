@@ -12,6 +12,7 @@ use Blossom\Classes\Url;
 class CkanService extends ServiceInterface
 {
     const PSQL_DATETIME_FORMAT = 'c';
+    const SOLR_DATETIME_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * Returns a list of all the methods and their parameters
@@ -28,10 +29,30 @@ class CkanService extends ServiceInterface
             ],
             'rowCount' => [
                 'parameters' => ['resource_id' => ''],
-                'response'   => ['count'=> ''],
-                'labels'     => ['count'=> '']
+                'response'   => ['count' => ''],
+                'labels'     => ['count' => '']
+            ],
+            'datasetCount' => [
+                'parameters' => ['' => ''],
+                'response'   => ['count' => ''],
+                'labels'     => ['count' => '']
             ]
         ];
+    }
+    
+    /**
+     * @param  string    $url
+     * @return stdObject       The JSON object for the response
+     */
+    private static function jsonQuery($url)
+    {
+        $response = Url::get($url);
+        if ($response) {
+            $json = json_decode($response);
+            if ($json->success) {
+                return $json;
+            }
+        }
     }
 
     /**
@@ -45,16 +66,10 @@ class CkanService extends ServiceInterface
         $url = new Url($this->base_url.'/api/action/datastore_search_sql');
         $url->sql = $sql;
         $url = $url->__toString();
-
-        $response = Url::get($url);
-        if ($response) {
-            $json = json_decode($response);
-            if ($json->success) {
-                return $json;
-            }
-        }
+        
+        return self::jsonQuery($url);
     }
-
+    
     public function onTimePercentage(array $params)
     {
         $resource_id = preg_replace('/[^0-9a-f\-]/', '', $params['resource_id']);
@@ -117,5 +132,24 @@ class CkanService extends ServiceInterface
         return $json
             ? new ServiceResponse(['count' => (int)$json->result->records[0]->count], new \DateTime())
             : new ServiceResponse(['count' => 0], new \DateTime());
+    }
+    
+    public function datasetCount(array $params)
+    {
+        $d = clone($params[parent::EFFECTIVE_DATE]);
+        $d->setTimezone(new \DateTimeZone('UTC'));
+        $effectiveDate = $d->format(self::SOLR_DATETIME_FORMAT);
+        
+        $url = new Url($this->base_url.'/api/3/action/package_search');
+        $url->q  = '*:*';
+        $url->fq = "metadata_created:[* TO $effectiveDate]";
+        
+        $json = self::jsonQuery($url);
+        if (isset($json->result->count)) {
+            return new ServiceResponse(
+                ['count'=> (int)$json->result->count],
+                $params[parent::EFFECTIVE_DATE]
+            );
+        }
     }
 }
