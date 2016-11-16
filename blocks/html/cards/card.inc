@@ -22,11 +22,13 @@ $display     = $value ? "$value$units" : '';
 $period = $entry->getPeriodRange();
 
 $data = [];
-foreach ($this->card->getLogEntries(10) as $entry) {
+foreach ($this->card->getLogEntries(90) as $entry) {
     $d        = $entry->getLogDate($JSON_DATE_FORMAT);
     $data[$d] = $entry->getMetricValue();
 }
+$data = array_reverse($data);
 $data = parent::escape(json_encode($data));
+
 
 
 if ($this->card->getGroup_id()) {

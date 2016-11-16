@@ -15,6 +15,10 @@ use Blossom\Classes\Database;
 
 include realpath(__DIR__.'/../bootstrap.inc');
 
+$numDays = (isset($argv[1]) && is_numeric($argv[1]))
+    ? (int)$argv[1]
+    : 30;
+
 $oneDay = new \DateInterval('P1D');
 
 $table = new CardsTable();
@@ -22,7 +26,7 @@ $list  = $table->find();
 foreach ($list as $card) {
     $date   = new \DateTime();
 
-    for ($i=0; $i<30; $i++) {
+    for ($i=0; $i<$numDays; $i++) {
         $sr = $card->queryService($date);
         $id = $card->getId();
         $d  = $date->format(DATE_FORMAT);
