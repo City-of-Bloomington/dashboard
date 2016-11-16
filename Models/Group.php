@@ -46,9 +46,9 @@ class Group extends ActiveRecord
 	 * @return string
 	 */
 	public function getIconUri() {
-        $icons = glob(SITE_HOME."/groups/{$this->getCSSClass()}.*");
+        $icons = glob(SITE_HOME."/group_icons/{$this->getCSSClass()}.*");
         if (count($icons)) {
-            return BASE_URI.'/groups/'.basename($icons[0]);
+            return BASE_URI.'/group_icons/'.basename($icons[0]);
         }
 	}
 }
