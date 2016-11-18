@@ -119,7 +119,7 @@ class CardLogEntry extends ActiveRecord
         $response = $this->getResponse();
         $card     = $this->getCard();
 
-        if (is_int($response[$card->getResponseKey()])) { $hasData = true; }
+        if (is_numeric($response[$card->getResponseKey()])) { $hasData = true; }
 
         if ($hasData) {
             $target = (int)$card->getTarget();

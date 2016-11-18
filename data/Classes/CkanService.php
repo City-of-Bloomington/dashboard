@@ -39,21 +39,6 @@ class CkanService extends ServiceInterface
             ]
         ];
     }
-    
-    /**
-     * @param  string    $url
-     * @return stdObject       The JSON object for the response
-     */
-    private static function jsonQuery($url)
-    {
-        $response = Url::get($url);
-        if ($response) {
-            $json = json_decode($response);
-            if ($json->success) {
-                return $json;
-            }
-        }
-    }
 
     /**
      * @param  string    $sql
@@ -66,10 +51,10 @@ class CkanService extends ServiceInterface
         $url = new Url($this->base_url.'/api/action/datastore_search_sql');
         $url->sql = $sql;
         $url = $url->__toString();
-        
-        return self::jsonQuery($url);
+
+        return parent::jsonQuery($url);
     }
-    
+
     public function onTimePercentage(array $params)
     {
         $resource_id = preg_replace('/[^0-9a-f\-]/', '', $params['resource_id']);
@@ -129,22 +114,22 @@ class CkanService extends ServiceInterface
 
         $sql = "select count(*) as count from \"$resource_id\"";
         $json = $this->sqlQuery($sql);
-        return $json
+        return $json->success
             ? new ServiceResponse(['count' => (int)$json->result->records[0]->count], new \DateTime())
             : new ServiceResponse(['count' => 0], new \DateTime());
     }
-    
+
     public function datasetCount(array $params)
     {
         $d = clone($params[parent::EFFECTIVE_DATE]);
         $d->setTimezone(new \DateTimeZone('UTC'));
         $effectiveDate = $d->format(self::SOLR_DATETIME_FORMAT);
-        
+
         $url = new Url($this->base_url.'/api/3/action/package_search');
         $url->q  = '*:*';
         $url->fq = "metadata_created:[* TO $effectiveDate]";
-        
-        $json = self::jsonQuery($url);
+
+        $json = parent::jsonQuery($url);
         if (isset($json->result->count)) {
             return new ServiceResponse(
                 ['count'=> (int)$json->result->count],

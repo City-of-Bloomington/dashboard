@@ -15,14 +15,17 @@ use Blossom\Classes\Database;
 
 include realpath(__DIR__.'/../bootstrap.inc');
 
-$numDays = (isset($argv[1]) && is_numeric($argv[1]))
-    ? (int)$argv[1]
+$opts = getopt('c::n::');
+
+$numDays = !empty($opts['n']) && is_numeric($opts['n'])
+    ? (int)$opts['n']
     : 30;
 
 $oneDay = new \DateInterval('P1D');
 
-$table = new CardsTable();
-$list  = $table->find();
+$table  = new CardsTable();
+$search = !empty($opts['c']) ? ['id'=>(int)$opts['c']] : null;
+$list   = $table->find($search);
 foreach ($list as $card) {
     $date   = new \DateTime();
 
