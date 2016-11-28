@@ -17,11 +17,11 @@ if ($entry) {
     $status      = $entry->getStatus();
     $value       = $entry->getMetricValue();
     $units       = $entry->getMetricUnits();
-    $display     = $value ? "$value$units" : '';
+    $display     = is_numeric($value) ? "$value$units" : '';
 
     $period      = $entry->getPeriodRange();
-    $periodStart = $period['start']->format('DATE_FORMAT');
-    $periodEnd   = $period['end'  ]->format('DATE_FORMAT');
+    $periodStart = $period['start']->format(DATE_FORMAT);
+    $periodEnd   = $period['end'  ]->format(DATE_FORMAT);
 }
 else {
     $status      = '';
