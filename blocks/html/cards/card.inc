@@ -13,13 +13,25 @@ $target      = parent::escape($this->card->getTarget());
 $uri         = parent::generateUri('cards.view', ['id'=>$this->card->getId()]);
 
 $entry       = $this->card->getLatestLogEntry();
-$status      = $entry->getStatus();
-$value       = $entry->getMetricValue();
-$units       = $entry->getMetricUnits();
-$display     = $value ? "$value$units" : '';
+if ($entry) {
+    $status      = $entry->getStatus();
+    $value       = $entry->getMetricValue();
+    $units       = $entry->getMetricUnits();
+    $display     = $value ? "$value$units" : '';
 
+    $period      = $entry->getPeriodRange();
+    $periodStart = $period['start']->format('DATE_FORMAT');
+    $periodEnd   = $period['end'  ]->format('DATE_FORMAT');
+}
+else {
+    $status      = '';
+    $value       = '';
+    $units       = '';
+    $display     = '';
 
-$period = $entry->getPeriodRange();
+    $periodStart = '';
+    $periodEnd   = '';
+}
 
 $data = [];
 foreach ($this->card->getLogEntries(90) as $entry) {
@@ -28,8 +40,6 @@ foreach ($this->card->getLogEntries(90) as $entry) {
 }
 $data = array_reverse($data);
 $data = parent::escape(json_encode($data));
-
-
 
 if ($this->card->getGroup_id()) {
     $g = $this->card->getGroup();
@@ -51,9 +61,7 @@ echo "
         <h1>$name</h1>
     </header>
     <div class=\"value\">$display</div>
-    <div class=\"period\">
-        {$period['start']->format(DATE_FORMAT)} - {$period['end']->format(DATE_FORMAT)}
-    </div>
+    <div class=\"period\">$periodStart - $periodEnd</div>
     <div class=\"description\">$description</div>
     <div class=\"target\">{$this->_('target')}: $target$units</div>
     <div class=\"chart\"></div>
