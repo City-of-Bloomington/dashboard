@@ -1,6 +1,9 @@
 <nav id="nav1">
     <div class="container">
     <?php
+        $home = parent::generateUri('home');
+        echo "<a href=\"$home\">{$this->_('home')}</a>";
+
         use Application\Models\GroupsTable;
         use Blossom\Classes\Url;
 
@@ -9,7 +12,7 @@
         $table = new GroupsTable();
         $list  = $table->find();
         foreach ($list as $g) {
-            $url   = parent::generateUri('home').'?group_id='.$g->getId();
+            $url   = $home.'?group_id='.$g->getId();
             $name  = parent::escape($g->getName());
             echo "<a href=\"$url\" class=\"{$g->getCSSClass()}\">$name</a>";
         }
