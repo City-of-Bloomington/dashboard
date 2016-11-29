@@ -1,19 +1,17 @@
 <nav id="nav1">
     <div class="container">
     <?php
-        /**
-         * Navigation items are defined in /routes.inc
-         *
-         * We pulled them out so that theme designers could override this
-         * file without worrying about changes to the navigation items
-         * over time.
-         */
-        $links = [
-            ['msgid'=>'home', 'uri'=>self::generateUri('home')]
-        ];
+        use Application\Models\GroupsTable;
+        use Blossom\Classes\Url;
 
-        foreach ($links as $item) {
-            echo "<a href=\"$item[uri]\">{$this->_($item['msgid'])}</a>";
+        $url = new Url(Url::current_url());
+
+        $table = new GroupsTable();
+        $list  = $table->find();
+        foreach ($list as $g) {
+            $url   = parent::generateUri('home').'?group_id='.$g->getId();
+            $name  = parent::escape($g->getName());
+            echo "<a href=\"$url\" class=\"{$g->getCSSClass()}\">$name</a>";
         }
     ?>
     </div>
