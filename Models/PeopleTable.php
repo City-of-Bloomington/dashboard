@@ -14,11 +14,13 @@ class PeopleTable extends TableGateway
     public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
 	/**
-	 * @param array $fields Key value pairs to select on
-	 * @param array $order The default ordering to use for select
-	 * @param int $itemsPerPage
-	 * @param int $currentPage
+	 * @param  array $fields       Key value pairs to select on
+	 * @param  array $order        The default ordering to use for select
+	 * @param  int   $itemsPerPage
+	 * @param  int   $currentPage
 	 * @return array|Paginator
+	 *
+	 * @see https://github.com/auraphp/Aura.SqlQuery
 	 */
 	public function find($fields=null, $order=['lastname'], $itemsPerPage=null, $currentPage=null)
 	{

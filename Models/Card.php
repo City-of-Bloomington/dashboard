@@ -12,7 +12,7 @@ use Blossom\Classes\Url;
 class Card extends ActiveRecord
 {
     protected $tablename = 'cards';
-    protected $group;
+    protected $groups = [];
     protected $service;
 
     public static $comparisons = ['gt', 'gte', 'lt', 'lte'];
@@ -88,7 +88,6 @@ class Card extends ActiveRecord
 	public function getComparison()    { return parent::get('comparison');   }
 	public function getResponseKey()   { return parent::get('responseKey');  }
 	public function getDataUrl()       { return parent::get('dataUrl');      }
-	public function getGroup_id()      { return parent::get('group_id');     }
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getGroup()         { return parent::getForeignKeyObject(__namespace__.'\Group',   'group_id'  ); }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
@@ -102,9 +101,7 @@ class Card extends ActiveRecord
 	public function setComparison ($s) { parent::set('comparison',  $s); }
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
 	public function setDataUrl    ($s) { parent::set('dataUrl',     $s); }
-	public function setGroup_id  ($id)     { parent::setForeignKeyField (__namespace__.'\Group',   'group_id',   $id); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
-	public function setGroup  (Group   $o) { parent::setForeignKeyObject(__namespace__.'\Group',   'group_id',   $o ); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
 	{
@@ -115,13 +112,18 @@ class Card extends ActiveRecord
 	public function handleUpdate($post)
 	{
         $fields = [
-            'name', 'description', 'group_id', 'service_id', 'method', 'parameters',
+            'name', 'description', 'service_id', 'method', 'parameters',
             'target', 'period', 'comparison', 'responseKey', 'dataUrl'
         ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
         }
+
+        if (!empty($post['group_id'])) {
+            $this->setGroups($post['group_id']);
+        }
+        else { $this->setGroups([]); }
 	}
 
 	//----------------------------------------------------------------
@@ -251,5 +253,44 @@ class Card extends ActiveRecord
         if ($method && $service) {
             return $service->getMethods()[$method];
         }
+	}
+
+	public function getGroups()
+	{
+        if (!count($this->groups)) {
+            $sql = 'select g.* from card_groups c join groups g on c.group_id=g.id where c.card_id=?';
+            $rows = parent::doQuery($sql, [$this->getId()]);
+            foreach ($rows as $r) {
+                $this->groups[$r['id']] = new Group($r);
+            }
+        }
+        return $this->groups;
+	}
+
+	public function setGroups(array $ids)
+	{
+        $old = [];
+        $new = [];
+        foreach (array_keys($this->groups) as $id) { $old[] = (int)$id; }
+        foreach ($ids                      as $id) { $new[] = (int)$id; }
+
+        $diff = array_diff($new, $old);
+
+        $sql = 'delete from card_groups where card_id=?';
+        if (count($new)) {
+            $new = implode(',', $new);
+            $sql.= " and group_id not in ($new)";
+        }
+
+        $pdo = Database::getConnection();
+        $query = $pdo->prepare($sql);
+        $query->execute([$this->getId()]);
+
+        $query = $pdo->prepare("insert into card_groups set card_id=?, group_id=?");
+        foreach ($diff as $group_id) {
+            $query->execute([$this->getId(), $group_id]);
+        }
+
+        $this->groups = [];
 	}
 }

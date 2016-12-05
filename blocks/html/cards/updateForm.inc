@@ -12,7 +12,7 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/updateForm.js');
 
 $fields = [
     'id', 'name', 'description', 'dataUrl', 'service_id', 'method',
-    'target', 'period', 'comparison', 'responseKey', 'group_id'
+    'target', 'period', 'comparison', 'responseKey'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -56,16 +56,15 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'value' => $dataUrl
                 ]);
 
-                $options = [['value'=>'']];
+                $options = [];
                 $table   = new GroupsTable();
                 $list    = $table->find();
                 foreach ($list as $g) { $options[] = ['value'=>$g->getId(), 'label'=>parent::escape($g->getName())]; }
                 echo $helper->field([
                     'name'    => 'group_id',
-                    'id'      => 'group_id',
-                    'label'   => $this->_('group'),
-                    'value'   => $group_id,
-                    'type'    => 'select',
+                    'label'   => $this->_(['group', 'groups', count($list)]),
+                    'value'   => array_keys($this->card->getGroups()),
+                    'type'    => 'checkbox',
                     'options' => $options
                 ]);
 

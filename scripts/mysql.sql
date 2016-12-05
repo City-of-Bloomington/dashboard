@@ -36,9 +36,7 @@ create table cards (
     comparison  varchar(16)       not null,
     responseKey varchar(32)       not null,
     dataUrl     varchar(255),
-    group_id    int      unsigned,
-    constraint FK_cards_service_id foreign key (service_id) references services(id),
-    constraint FK_cards_group_id   foreign key (group_id  ) references groups  (id)
+    constraint FK_cards_service_id foreign key (service_id) references services(id)
 );
 
 create table cardLog (
@@ -49,4 +47,11 @@ create table cardLog (
     response      varchar(255) not null,
     unique key (card_id, logDate),
     constraint FK_card_log_card_id foreign key (card_id) references cards(id)
+);
+
+create table card_groups (
+    card_id int unsigned not null,
+    group_id int unsigned not null,
+    constraint FK_card_groups_card_id  foreign key (card_id)  references cards (id),
+    constraint FK_card_groups_group_id foreign key (group_id) references groups(id)
 );

@@ -31,7 +31,6 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
         foreach ($this->cards as $c) {
             $id          = $c->getId();
             $name        = parent::escape($c->getName());
-            $group       = parent::escape($c->getGroup());
             $period      = parent::escape($c->getPeriod());
             $service     = parent::escape($c->getService()->getName());
             $uri         = parent::generateUri('cards.view', ['id'=>$id]);
@@ -41,7 +40,6 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
             echo "
             <tr><th>$id</th>
                 <td><a href=\"$uri\">$name</a></td>
-                <td>$group</td>
                 <td>$service</td>
                 <td>{$c->getMethod()}</td>
                 <td>$period</td>

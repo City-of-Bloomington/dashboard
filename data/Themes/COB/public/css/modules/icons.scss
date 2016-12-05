@@ -2,7 +2,7 @@
     background-position: top left;
     background-repeat: no-repeat;
     background-size: 24px;
-    display:block;
+    display:inline-block;
     width:24px; height:24px;
     text-indent:100%; white-space:nowrap; overflow:hidden;
 }
@@ -18,3 +18,4 @@
 .internet      { background-image:url('images/fa-svg/white/cloud.svg' ); }
 .hand          { background-image:url('images/fa-svg/white/home.svg'  ); }
 .public_safety { background-image:url('images/fa-svg/white/shield.svg'); }
+.utilities     { background-image:url('images/fa-svg/white/tint.svg'  ); }

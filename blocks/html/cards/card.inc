@@ -41,23 +41,22 @@ foreach ($this->card->getLogEntries(90) as $entry) {
 $data = array_reverse($data);
 $data = parent::escape(json_encode($data));
 
-if ($this->card->getGroup_id()) {
-    $g = $this->card->getGroup();
-    $class = $g->getCSSClass();
-    $n  = parent::escape($g->getName());
-    $group = "
-    <div class=\"group\">
-        <span class=\"$class\">$n</span>
-    </div>
-    ";
+$groups = $this->card->getGroups();
+if ($groups) {
+    $groupHTML = '<div class="group">';
+    foreach ($groups as $g) {
+        $n = parent::escape($g->getName());
+        $groupHTML.= "<span class=\"{$g->getCSSClass()}\">$n</span>";
+    }
+    $groupHTML.= '</div>';
 }
-else { $group = ''; }
+else { $groupHTML = ''; }
 
 echo "
 <a href=\"$uri\">
 <article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
     <header>
-        $group
+        $groupHTML
         <h1>$name</h1>
     </header>
     <div class=\"value\">$display</div>

@@ -15,11 +15,16 @@ if (Person::isAllowed('services', 'view')) {
 
 $parameters = json_encode($this->card->getParameters());
 
-$fields = ['description', 'method', 'period', 'target', 'comparison', 'responseKey', 'group'];
+$fields = ['description', 'method', 'period', 'target', 'comparison', 'responseKey'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->card->$get());
 }
+
+$groupNames = [];
+$groups     = $this->card->getGroups();
+foreach ($groups as $g) { $groupNames[] = $g->getName(); }
+$groupNames = parent::escape(implode(', ', $groupNames));
 ?>
 <p><?= $description; ?></p>
 <table>
@@ -30,5 +35,5 @@ foreach ($fields as $f) {
     <tr><th><?= $this->_('target'     ); ?></th><td><?= $target;      ?></td></tr>
     <tr><th><?= $this->_('comparison' ); ?></th><td><?= $comparison;  ?></td></tr>
     <tr><th><?= $this->_('parameters' ); ?></th><td><?= $parameters;  ?></td></tr>
-    <tr><th><?= $this->_('group'      ); ?></th><td><?= $group;       ?></td></tr>
+    <tr><th><?= $this->_(['group', 'groups', count($groups)]); ?></th><td><?= $groupNames; ?></td></tr>
 </table>
