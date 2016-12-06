@@ -25,6 +25,11 @@ class CardsTable extends TableGateway
         $select = $this->queryFactory->newSelect();
         $select->cols(['c.*'])
                ->from('cards as c');
+
+        if (!isset($_SESSION['USER']) || !Person::isAllowed('cards', 'internal')) {
+            $select->where('not c.internal');
+        }
+
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {

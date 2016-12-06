@@ -49,6 +49,17 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                 ]);
 
                 echo $helper->field([
+                    'name' => 'internal',
+                    'label' => 'visibility',
+                    'value' => $this->card->getInternal(),
+                    'type'=>'radio',
+                    'options'=>[
+                        ['value'=>0, 'label'=>$this->_('public'  )],
+                        ['value'=>1, 'label'=>$this->_('internal')]
+                    ]
+                ]);
+
+                echo $helper->field([
                     'name'  => 'dataUrl',
                     'id'    => 'dataUrl',
                     'label' => $this->_('dataUrl'),

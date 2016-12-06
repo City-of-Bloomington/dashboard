@@ -7,6 +7,7 @@ namespace Application\Controllers;
 
 use Application\Models\Card;
 use Application\Models\CardsTable;
+use Application\Models\Person;
 
 use Blossom\Classes\Controller;
 
@@ -22,7 +23,13 @@ class CardsController extends Controller
 	public function view(array $params)
 	{
         if (!empty($_GET['id'])) {
-            try { $card = new Card($_GET['id']); }
+            try {
+                $card = new Card($_GET['id']);
+                if ($card->isInternal() && !Person::isAllowed('cards', 'internal')) {
+                    unset($card);
+                    return new \Application\Views\ForbiddenView();
+                }
+            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         return isset($card)

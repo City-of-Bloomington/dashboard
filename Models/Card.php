@@ -88,6 +88,7 @@ class Card extends ActiveRecord
 	public function getComparison()    { return parent::get('comparison');   }
 	public function getResponseKey()   { return parent::get('responseKey');  }
 	public function getDataUrl()       { return parent::get('dataUrl');      }
+	public function getInternal()      { return (int)parent::get('internal');}
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getGroup()         { return parent::getForeignKeyObject(__namespace__.'\Group',   'group_id'  ); }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
@@ -101,6 +102,7 @@ class Card extends ActiveRecord
 	public function setComparison ($s) { parent::set('comparison',  $s); }
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
 	public function setDataUrl    ($s) { parent::set('dataUrl',     $s); }
+	public function setInternal   ($s) { parent::set('internal', $s ? 1 : 0); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
@@ -120,6 +122,8 @@ class Card extends ActiveRecord
             $this->$set($post[$f]);
         }
 
+        $this->setInternal(!empty($post['internal']) ? $post['internal'] : 0);
+
         if (!empty($post['group_id'])) {
             $this->setGroups($post['group_id']);
         }
@@ -129,6 +133,8 @@ class Card extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function isInternal() { return $this->getInternal() ? true : false; }
+
 	/**
 	 * Queries the configured webservice for a value as of a point in time
 	 * If no date is provided, then the current datetime is used
