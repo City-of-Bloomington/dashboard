@@ -53,9 +53,9 @@ class CardsController extends Controller
         if (isset($card)) {
             if (isset($_POST['description'])) {
                 try {
+                    // handleUpdate calls save automatically
                     $card->handleUpdate($_POST);
-                    $card->save();
-                    header('Location: '.parent::generateUrl('cards.index'));
+                    header('Location: '.parent::generateUrl('cards.view', ['id'=>$card->getId()]));
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

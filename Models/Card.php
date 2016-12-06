@@ -111,7 +111,14 @@ class Card extends ActiveRecord
         parent::set('parameters', $p);
     }
 
-	public function handleUpdate($post)
+	/**
+	 * Updates card properties and saves to the database.
+	 *
+	 * @note This function calls save() automatically
+	 *
+	 * @param array $post
+	 */
+	public function handleUpdate(array $post)
 	{
         $fields = [
             'name', 'description', 'service_id', 'method', 'parameters',
@@ -123,11 +130,12 @@ class Card extends ActiveRecord
         }
 
         $this->setInternal(!empty($post['internal']) ? $post['internal'] : 0);
+        $this->save();
 
         if (!empty($post['group_id'])) {
-            $this->setGroups($post['group_id']);
+            $this->saveGroups($post['group_id']);
         }
-        else { $this->setGroups([]); }
+        else { $this->saveGroups([]); }
 	}
 
 	//----------------------------------------------------------------
@@ -273,28 +281,17 @@ class Card extends ActiveRecord
         return $this->groups;
 	}
 
-	public function setGroups(array $ids)
+	public function saveGroups(array $ids)
 	{
-        $old = [];
-        $new = [];
-        foreach (array_keys($this->groups) as $id) { $old[] = (int)$id; }
-        foreach ($ids                      as $id) { $new[] = (int)$id; }
+        $card_id = $this->getId();
+        $pdo     = Database::getConnection();
 
-        $diff = array_diff($new, $old);
+        $query = $pdo->prepare('delete from card_groups where card_id=?');
+        $query->execute([$card_id]);
 
-        $sql = 'delete from card_groups where card_id=?';
-        if (count($new)) {
-            $new = implode(',', $new);
-            $sql.= " and group_id not in ($new)";
-        }
-
-        $pdo = Database::getConnection();
-        $query = $pdo->prepare($sql);
-        $query->execute([$this->getId()]);
-
-        $query = $pdo->prepare("insert into card_groups set card_id=?, group_id=?");
-        foreach ($diff as $group_id) {
-            $query->execute([$this->getId(), $group_id]);
+        $query = $pdo->prepare("insert card_groups set card_id=?, group_id=?");
+        foreach ($ids as $group_id) {
+            $query->execute([$card_id, $group_id]);
         }
 
         $this->groups = [];
