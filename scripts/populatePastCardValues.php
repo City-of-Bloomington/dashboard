@@ -10,12 +10,48 @@
  * a newly added card with past data.
  */
 use Application\Models\CardsTable;
+use Application\Models\Person;
 use Application\Models\ServiceInterface;
 use Blossom\Classes\Database;
 
 include realpath(__DIR__.'/../bootstrap.inc');
 
-$opts = getopt('c::n::');
+$opts = getopt('c::n::u::', ['help']);
+if (isset($opts['help'])) {
+    echo <<<EOT
+DESCRIPTION
+    This script populates past log entries for the cards in the dashboard.
+    If no cards are specified, this script will use all cards in the system.
+    If the number of days to generate is not specified, this script will
+    generate 30 days of past logs.
+
+OPTIONS
+    Generic Program Information
+        --help Output a usage message and exit
+
+    Selection
+        -cNUM
+            Specify the card_id for generating past log values
+
+        -nNUM
+            Specify the number of days of past log entries to generate
+
+        -uUSER
+            Run the command as the specified user in the system.
+            The user may be either a username or a numeric user_id.
+
+EOT;
+exit();
+}
+
+
+if (!empty($opts['u'])) {
+    try { $_SESSION['USER'] = new Person($opts['u']); }
+    catch (\Exception $e) {
+        echo "Unknown user\n";
+        exit();
+    }
+}
 
 $numDays = !empty($opts['n']) && is_numeric($opts['n'])
     ? (int)$opts['n']
@@ -46,3 +82,4 @@ foreach ($list as $card) {
         $date->sub($oneDay);
     }
 }
+if (!count($list)) { echo "No Cards Found\n"; }
