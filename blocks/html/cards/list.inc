@@ -29,6 +29,10 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
     <table>
     <?php
         foreach ($this->cards as $c) {
+            $groups = [];
+            foreach ($c->getGroups() as $g) { $groups[] = $g->getName(); }
+            $groups = parent::escape(implode(', ', $groups));
+
             $id          = $c->getId();
             $name        = parent::escape($c->getName());
             $period      = parent::escape($c->getPeriod());
@@ -46,6 +50,7 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
                 <td>$responseKey</td>
                 <td>$comparison</td>
                 <td>$target</td>
+                <td>$groups</td>
             </tr>
             ";
         }
