@@ -14,6 +14,15 @@
         background-size:24px;
     }
 }
+
+tr.internal th:first-child {
+    background-image:url('images/fa-svg/white/lock.svg');
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-size:24px;
+    padding-left: $size-gutter + 24px;
+}
+
 #nav1 a {
     background-position: top left;
     background-repeat: no-repeat;

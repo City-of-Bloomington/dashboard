@@ -41,8 +41,11 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
             $target      = parent::escape($c->getTarget());
             $responseKey = parent::escape($c->getResponseKey());
             $comparison  = $this->_($c->getComparison());
+            $class       = $c->isInternal() ? 'class="internal"' : '';
+
             echo "
-            <tr><th>$id</th>
+            <tr $class>
+                <th>$id</th>
                 <td><a href=\"$uri\">$name</a></td>
                 <td>$service</td>
                 <td>{$c->getMethod()}</td>
