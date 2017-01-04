@@ -11,6 +11,7 @@ $name        = parent::escape($this->card->getName());
 $description = parent::escape($this->card->getDescription());
 $target      = parent::escape($this->card->getTarget());
 $uri         = parent::generateUri('cards.view', ['id'=>$this->card->getId()]);
+$visibility  = $this->card->isInternal() ? 'internal' : '';
 
 $entry       = $this->card->getLatestLogEntry();
 if ($entry) {
@@ -54,7 +55,7 @@ else { $groupHTML = ''; }
 
 echo "
 <a href=\"$uri\">
-<article class=\"card $status\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
+<article class=\"card $status $visibility\" id=\"card_$id\" data-logEntries=\"$data\" data-target=\"$target\">
     <header>
         $groupHTML
         <h1>$name</h1>
