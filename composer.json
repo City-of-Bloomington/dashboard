@@ -7,7 +7,8 @@
         "php": ">=5.6",
         "City-of-Bloomington/blossom-lib": "dev-viewmodel",
         "jasig/phpcas": "~1",
-        "zendframework/zend-permissions-acl": "@stable"
+        "zendframework/zend-permissions-acl": "@stable",
+        "google/apiclient": "~2"
     },
     "autoload": {
         "psr-4": {"Application\\": ""}

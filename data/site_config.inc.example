@@ -17,7 +17,9 @@ define('BASE_URI','/application');
  * A theme can consist of templates, blocks which will override core.
  * The current theme's screen.css will be included in the HTML head.
  */
-define('THEME', 'Kirkwood');
+define('THEME', 'COB');
+define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
+define('GOOGLE_USER_EMAIL', 'someone@gmail.com');
 
 /**
  * Database Setup
