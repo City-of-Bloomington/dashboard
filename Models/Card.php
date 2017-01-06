@@ -83,7 +83,7 @@ class Card extends ActiveRecord
 	public function getDescription()   { return parent::get('description');  }
 	public function getMethod()        { return parent::get('method');       }
 	public function getParameters()    { return json_decode(parent::get('parameters'), true); }
-	public function getTarget()        { return (int)parent::get('target');  }
+	public function getTarget()        { return (float)parent::get('target');  }
 	public function getPeriod()        { return (int)parent::get('period');  }
 	public function getComparison()    { return parent::get('comparison');   }
 	public function getResponseKey()   { return parent::get('responseKey');  }
@@ -97,7 +97,7 @@ class Card extends ActiveRecord
 	public function setName       ($s) { parent::set('name',        $s); }
 	public function setDescription($s) { parent::set('description', $s); }
 	public function setMethod     ($s) { parent::set('method',      $s); }
-	public function setTarget     ($i) { parent::set('target', (int)$i); }
+	public function setTarget     ($i) { parent::set('target', (float)$i); }
 	public function setPeriod     ($i) { parent::set('period', (int)$i); }
 	public function setComparison ($s) { parent::set('comparison',  $s); }
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
@@ -243,8 +243,8 @@ class Card extends ActiveRecord
         foreach ($response as $k=>$v) { if ($v) { $hasData = true; } }
 
         if ($hasData) {
-            $target = (int)$this->getTarget();
-            $value  = (int)$response[$this->getResponseKey()];
+            $target = $this->getTarget();
+            $value  = $response[$this->getResponseKey()];
 
             $status = 'fail';
             switch ($this->getComparison()) {

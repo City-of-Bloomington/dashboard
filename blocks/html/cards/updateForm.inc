@@ -137,7 +137,8 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
                     'id'    => 'target',
                     'label' => $this->_('target'),
                     'value' => $target,
-                    'type'  => 'number'
+                    'type'  => 'number',
+                    'attr'  => ['step'=>'0.01']
                 ]);
                 echo $helper->field([
                     'name'  => 'period',

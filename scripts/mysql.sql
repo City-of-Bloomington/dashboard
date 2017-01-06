@@ -31,7 +31,7 @@ create table cards (
     description varchar(255)      not null,
     method      varchar(32)       not null,
     parameters  varchar(128),
-    target      tinyint           not null,
+    target      float(6, 2)       not null,
     period      smallint unsigned not null,
     comparison  varchar(16)       not null,
     responseKey varchar(32)       not null,
