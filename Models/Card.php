@@ -196,8 +196,8 @@ class Card extends ActiveRecord
         if (!$logDate) { $logDate = new \DateTime(); }
 
         $id = $this->getId();
-        $ld = $logDate          ->format(parent::MYSQL_DATE_FORMAT);
-        $ed = $sr->effectiveDate->format(parent::MYSQL_DATETIME_FORMAT);
+        $ld = $logDate          ->format(parent::DB_DATE_FORMAT);
+        $ed = $sr->effectiveDate->format(parent::DB_DATETIME_FORMAT);
         $v  = json_encode($sr->response);
 
         $sql = "insert into cardLog (card_id, logDate, effectiveDate, response) values(?, ?, ?, ?)

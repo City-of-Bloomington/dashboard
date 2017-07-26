@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2013-2016 City of Bloomington, Indiana
+ * @copyright 2013-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -22,11 +21,13 @@ class PeopleTable extends TableGateway
 	 *
 	 * @see https://github.com/auraphp/Aura.SqlQuery
 	 */
-	public function find($fields=null, $order=['lastname'], $itemsPerPage=null, $currentPage=null)
+	public function find(array $fields=null, array $order=['lastname'], int $itemsPerPage=null, int $currentPage=null)
 	{
         $select = $this->queryFactory->newSelect();
         $select->cols(['p.*'])
                ->from('people as p');
+        if ($order) { $select->orderBy($order); }
+
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {

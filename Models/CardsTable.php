@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -20,11 +20,12 @@ class CardsTable extends TableGateway
 	 *
 	 * @see https://github.com/auraphp/Aura.SqlQuery
 	 */
-	public function find($fields=null, $order=['lastname'], $itemsPerPage=null, $currentPage=null)
+	public function find(array $fields=null, array $order=[], int $itemsPerPage=null, int $currentPage=null)
 	{
         $select = $this->queryFactory->newSelect();
         $select->cols(['c.*'])
                ->from('cards as c');
+        if ($order) { $select->orderBy($order); }
 
         if (!isset($_SESSION['USER']) || !Person::isAllowed('cards', 'internal')) {
             $select->where('not c.internal');
