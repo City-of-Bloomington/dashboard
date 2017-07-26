@@ -86,8 +86,8 @@ class CkanService extends ServiceInterface
 
         $json = $this->sqlQuery($sql);
         if ($json) {
-            $p = $json->result->records[0]->percentage
-                ? (int)$json->result->records[0]->percentage
+            $p = !is_null($json->result->records[0]->percentage)
+                ?    (int)$json->result->records[0]->percentage
                 : null;
             return new ServiceResponse(
                 [
