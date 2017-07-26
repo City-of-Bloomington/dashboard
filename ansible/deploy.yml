@@ -1,0 +1,63 @@
+---
+- hosts: dashboard
+  become: yes
+  roles:
+    - City-of-Bloomington.mysql
+    - City-of-Bloomington.php
+
+  tasks:
+    - name: Create mysql database
+      mysql_db:
+        config_file: "{{ mysql_defaults_extra_file }}"
+        name: "{{ dashboard_db.name }}"
+        state: present
+      no_log: True
+
+    - name: Create mysql user for site
+      mysql_user:
+        name:     "{{ dashboard_db.username }}"
+        password: "{{ dashboard_db.password }}"
+        priv:     "{{ dashboard_db.name }}.*:ALL"
+        state: present
+        config_file: "{{ mysql_defaults_extra_file }}"
+      no_log: True
+
+    - name: Extract release
+      unarchive:
+        src: "{{ dashboard_archive_path }}"
+        dest: /usr/local/src
+      register: release
+
+    - name: Install release
+      command: rsync -rl /usr/local/src/dashboard/ {{ dashboard_install_path }}/
+      when: release.changed
+
+    - name: Update permissions
+      file: path={{ dashboard_install_path }} state=directory owner=www-data group=staff mode="g+rw" recurse=yes
+
+    - name: Update apache configuration
+      template:
+        src: dashboard.conf
+        dest: /etc/apache2/sites-enabled/conf.d/dashboard.conf
+        owner: root
+        group: root
+        mode: 0644
+      notify: apache_restart
+
+    - name: Install CRON backup script
+      template:
+        src: backup.sh
+        dest: /etc/cron.daily/backup.d/dashboard
+        mode: 0755
+
+    - name: Install CRON backup credentials
+      template:
+        src: backup.cnf
+        dest: /etc/cron.daily/backup.d/dashboard.cnf
+        mode: 0400
+
+    - name: Install site_config
+      template:
+        src: site_config.inc
+        dest: "{{ dashboard_install_path }}/data"
+...

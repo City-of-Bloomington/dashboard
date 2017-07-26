@@ -1,0 +1,14 @@
+[linux]
+dashboardhost
+
+[apache]
+dashboardhost
+
+[mysql]
+dashboardhost
+
+[php]
+dashboardhost
+
+[dashboard]
+dashboardhost

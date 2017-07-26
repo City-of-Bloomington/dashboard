@@ -1,0 +1,3 @@
+[mysqldump]
+user={{ dashboard_db.username }}
+password={{ dashboard_db.password }}

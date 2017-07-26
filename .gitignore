@@ -5,6 +5,7 @@
 site_config.inc
 credentials.json
 data/sessions/*
+data/Themes/COB/public/fn1
 build
 dist
 *.mo

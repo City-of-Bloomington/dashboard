@@ -2,11 +2,19 @@
 define('APPLICATION_NAME','Dashboard');
 
 /**
- * The URL to get to this site
- * Do NOT use a trailing slash
+ * URL Generation settings
+ *
+ * Do NOT use trailing slashes
+ *
+ * If your site is being proxied, change BASE_HOST to the hostname
+ * used for the outside world.
  */
-define('BASE_URL','http://{{ ansible_host }}{{ dashboard_uri }}');
-define('BASE_URI','{{ dashboard_uri }}');
+define('BASE_URI' , '{{ dashboard_base_uri }}');
+#define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+#                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
+#                        : $_SERVER['SERVER_NAME']);
+define('BASE_HOST', $_SERVER['SERVER_NAME']);
+define('BASE_URL' , "$_SERVER[REQUEST_SCHEME]://".BASE_HOST.BASE_URI);
 
 /**
  * Specify the theme directory

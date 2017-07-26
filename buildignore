@@ -8,6 +8,7 @@ site_config.inc
 credentials.json
 backup.cnf
 /data/sessions/*
+/data/Themes/COB/vendor
 node_modules
 .gulp-build
 .ftppass

@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fc369ada193bbec6006e37dc0716a38f",
     "content-hash": "fca3638a9cc853e2d003e15117975176",
     "packages": [
         {
@@ -13,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Bloomington/factory-number-one.git",
-                "reference": "c0123934c1f71800e363b6a74ac6a7c485e0dad3"
+                "reference": "8f26057051e632b1d3c376c569550471f1943894"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/c0123934c1f71800e363b6a74ac6a7c485e0dad3",
-                "reference": "c0123934c1f71800e363b6a74ac6a7c485e0dad3",
+                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/8f26057051e632b1d3c376c569550471f1943894",
+                "reference": "8f26057051e632b1d3c376c569550471f1943894",
                 "shasum": ""
             },
             "type": "library",
@@ -26,7 +25,7 @@
                 "source": "https://github.com/City-of-Bloomington/factory-number-one/tree/refactor",
                 "issues": "https://github.com/City-of-Bloomington/factory-number-one/issues"
             },
-            "time": "2017-01-04 15:14:08"
+            "time": "2017-07-10 14:42:59"
         }
     ],
     "packages-dev": [],
