@@ -44,6 +44,9 @@
         mode: 0644
       notify: apache_restart
 
+    - name: Create backups directory
+      file: path={{ dashboard_backup_path }} state=directory owner=www-data group=staff mode="g+rw"
+
     - name: Install CRON backup script
       template:
         src: backup.sh
@@ -60,4 +63,5 @@
       template:
         src: site_config.inc
         dest: "{{ dashboard_install_path }}/data"
+
 ...
