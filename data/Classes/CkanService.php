@@ -33,7 +33,7 @@ class CkanService extends ServiceInterface
                 'labels'     => ['count' => '']
             ],
             'datasetCount' => [
-                'parameters' => ['' => ''],
+                'parameters' => ['tag'=>''],
                 'response'   => ['count' => ''],
                 'labels'     => ['count' => '']
             ]
@@ -128,6 +128,10 @@ class CkanService extends ServiceInterface
         $url = new Url($this->base_url.'/api/3/action/package_search');
         $url->q  = '*:*';
         $url->fq = "metadata_created:[* TO $effectiveDate]";
+
+        if (!empty($params['tag'])) {
+            $url->fq = "tags:$params[tag]";
+        }
 
         $json = parent::jsonQuery($url);
         if (isset($json->result->count)) {

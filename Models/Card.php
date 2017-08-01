@@ -57,7 +57,7 @@ class Card extends ActiveRecord
 	{
         if (   !$this->getName() || !$this->getPeriod()
             || !$this->getDescription() || !$this->getService_id() || !$this->getMethod()) {
-            throw new \Exception('missingRequiredFields');
+                throw new \Exception('missingRequiredFields');
         }
 
         if (!array_key_exists($this->getMethod(), $this->getService()->getMethods())) {
