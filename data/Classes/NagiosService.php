@@ -64,10 +64,10 @@ class NagiosService extends ServiceInterface
         ]);
 
         if (isset($json->data->service->time_ok)) {
-            $time_ok    = (int)$json->data->service->time_ok;
+            $time_ok    = $json->data->service->time_ok;
             $total      = $scopeEnd - $scopeStart;
             $percent    = round((($time_ok / $total) * 100), 2);
-            $lastUpdate = (int)$json->result->last_data_update / 100;
+            $lastUpdate = $json->result->last_data_update / 100;
 
             return new ServiceResponse([
                     'time_ok' => $time_ok,
@@ -103,7 +103,7 @@ class NagiosService extends ServiceInterface
             }
 
             $numHosts   = count($json->data->hostgroup->hosts);
-            $lastUpdate =  (int)$json->result->last_data_update / 100;
+            $lastUpdate =  $json->result->last_data_update / 100;
             return new ServiceResponse(
                 [
                     'percent' => round(($sum_total_percent / $numHosts), 2),
