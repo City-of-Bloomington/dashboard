@@ -22,9 +22,15 @@ $list  = $table->find();
 foreach ($list as $card) {
     $date   = new \DateTime();
 
-    $sr = $card->queryService($date);
-    $id = $card->getId();
-    $d  = $date->format(DATE_FORMAT);
+    $sr = null;
+    try {
+        $sr = $card->queryService($date);
+        $id = $card->getId();
+        $d  = $date->format(DATE_FORMAT);
+    }
+    catch (\Exception $e) {
+        echo $e->getMessage()."\n";
+    }
 
     if ($sr) {
         $card->logResponse($sr, $date);

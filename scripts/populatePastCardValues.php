@@ -66,6 +66,7 @@ foreach ($list as $card) {
     $date   = new \DateTime();
 
     for ($i=0; $i<$numDays; $i++) {
+        $sr = null;
         try {
             $sr = $card->queryService($date);
             $id = $card->getId();
