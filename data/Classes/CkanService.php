@@ -86,17 +86,20 @@ class CkanService extends ServiceInterface
 
         $json = $this->sqlQuery($sql);
         if ($json) {
-            $p = !is_null($json->result->records[0]->percentage)
-                ?    (int)$json->result->records[0]->percentage
-                : null;
-            return new ServiceResponse(
-                [
-                    'total'   => (int)$json->result->records[0]->total,
-                    'ontime'  => (int)$json->result->records[0]->ontime,
-                    'percent' => $p
-                ],
-                new \DateTime($json->result->records[0]->effectivedate)
-            );
+            $record = isset($json->result->records[0]) ? $json->result->records[0] : null;
+            if ($record) {
+                $p = !is_null($record->percentage)
+                    ?    (int)$record->percentage
+                    : null;
+                return new ServiceResponse(
+                    [
+                        'total'   => (int)$record->total,
+                        'ontime'  => (int)$record->ontime,
+                        'percent' => $p
+                    ],
+                    new \DateTime($record->effectivedate)
+                );
+            }
         }
     }
 
