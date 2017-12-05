@@ -13,4 +13,6 @@ dashboard_db:
 
 dashboard_directory_server: ''
 dashboard_cas_server: ''
+
+dashboard_google_email: ""
 ...

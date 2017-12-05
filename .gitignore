@@ -20,3 +20,4 @@ vendor
 ansible/roles/City-of-Bloomington.*
 ansible/hosts.txt
 ansible/group_vars/vault/
+ansible/*.retry

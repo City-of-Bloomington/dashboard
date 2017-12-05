@@ -10,11 +10,11 @@ define('APPLICATION_NAME','Dashboard');
  * used for the outside world.
  */
 define('BASE_URI' , '{{ dashboard_base_uri }}');
-#define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
-#                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
-#                        : $_SERVER['SERVER_NAME']);
-define('BASE_HOST', $_SERVER['SERVER_NAME']);
-define('BASE_URL' , "$_SERVER[REQUEST_SCHEME]://".BASE_HOST.BASE_URI);
+define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
+                        : '{{ ansible_host }}');
+#define('BASE_HOST', $_SERVER['SERVER_NAME']);
+define('BASE_URL' , "https://".BASE_HOST.BASE_URI);
 
 /**
  * Specify the theme directory
@@ -26,6 +26,8 @@ define('BASE_URL' , "$_SERVER[REQUEST_SCHEME]://".BASE_HOST.BASE_URI);
  * The current theme's screen.css will be included in the HTML head.
  */
 define('THEME', 'COB');
+define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
+define('GOOGLE_USER_EMAIL', '{{ dashboard_google_email }}');
 
 /**
  * Database Setup

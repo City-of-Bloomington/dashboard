@@ -53,6 +53,12 @@
         dest: /etc/cron.daily/backup.d/dashboard
         mode: 0755
 
+    - name: "Install CRON update script"
+      template:
+        src: "updateCardValues.sh"
+        dest: "/etc/cron.daily/dashboard"
+        mode: 0755
+
     - name: Install CRON backup credentials
       template:
         src: backup.cnf
@@ -63,5 +69,4 @@
       template:
         src: site_config.inc
         dest: "{{ dashboard_install_path }}/data"
-
 ...
