@@ -1,7 +1,6 @@
 /buildignore
 /build.sh
 /build
-/dist
 .git/
 .git*
 site_config.inc
