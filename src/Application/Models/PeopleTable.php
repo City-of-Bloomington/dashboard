@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2013-2017 City of Bloomington, Indiana
+ * @copyright 2013-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -10,6 +10,8 @@ use Blossom\Classes\TableGateway;
 
 class PeopleTable extends TableGateway
 {
+    public static $SORT_DEFAULT = ['lastname'];
+
     public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
 	/**
@@ -21,14 +23,15 @@ class PeopleTable extends TableGateway
 	 *
 	 * @see https://github.com/auraphp/Aura.SqlQuery
 	 */
-	public function find(array $fields=null, array $order=['lastname'], int $itemsPerPage=null, int $currentPage=null)
+	public function find(array $fields=null, array $order=null, int $itemsPerPage=null, int $currentPage=null)
 	{
+        if (!$order) { $order = self::$SORT_DEFAULT; }
         $select = $this->queryFactory->newSelect();
         $select->cols(['p.*'])
-               ->from('people as p');
-        if ($order) { $select->orderBy($order); }
+               ->from('people as p')
+               ->orderBy($order);
 
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'user_account':
