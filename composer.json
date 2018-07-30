@@ -4,13 +4,13 @@
         "url": "https://github.com/City-of-Bloomington/blossom-lib"
     }],
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.2",
         "City-of-Bloomington/blossom-lib": "dev-viewmodel",
         "jasig/phpcas": "~1",
         "zendframework/zend-permissions-acl": "@stable",
         "google/apiclient": "~2"
     },
     "autoload": {
-        "psr-4": {"Application\\": ""}
+        "psr-4": {"Application\\": "src/Application"}
     }
 }
