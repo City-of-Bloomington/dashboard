@@ -3,7 +3,7 @@
  * Saves the current metric value for each card.
  *
  * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  *
  * This is probably the script to use for nightly cron jobs.
  * It only does one metric query per card, so it shouldn't take too

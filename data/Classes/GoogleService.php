@@ -3,7 +3,7 @@
  * Class for making calls via Google webservice APIs
  *
  * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Site\Classes;
 

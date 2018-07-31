@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright 2006-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param User $this->user
  */
 use Application\Models\Person;
