@@ -5,7 +5,7 @@ MSGFMT := $(shell command -v msgfmt 2> /dev/null)
 
 LANGUAGES := $(wildcard language/*/LC_MESSAGES)
 
-default: clean compile package
+default: compile package
 
 deps:
 ifndef SASS

@@ -35,8 +35,8 @@ define('GOOGLE_USER_EMAIL', '{{ dashboard_google_email }}');
 $DATABASES = [
     'default' => [
         'dsn'      => 'mysql:dbname={{ dashboard_db.name }};host=localhost',
-        'username' => '{{ dashboard_db.username }}',
-        'password' => '{{ dashboard_db.password }}',
+        'username' => '{{ dashboard_db.user }}',
+        'password' => '{{ dashboard_db.pass }}',
         'options'  => []
     ]
 ];

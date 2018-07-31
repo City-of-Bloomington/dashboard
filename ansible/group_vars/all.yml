@@ -1,15 +1,16 @@
 ---
-dashboard_archive_path: ../build/dashboard.tar.gz
+dashboard_archive_path: "../build/dashboard.tar.gz"
 dashboard_install_path: "/srv/sites/dashboard"
-dashboard_backup_path: "/srv/backups/dashboard"
+dashboard_backup_path:  "/srv/backups/dashboard"
+dashboard_site_home:    "/srv/data/dashboard"
 
-dashboard_base_uri: /dashboard
-dashboard_base_url: https://{{ ansible_host }}{{ dashboard_base_uri }}
+dashboard_base_uri: "/dashboard"
+dashboard_base_url: "https://{{ ansible_host }}{{ dashboard_base_uri }}"
 
 dashboard_db:
-  name:     "dashboard"
-  username: "dashboard"
-  password: "{{ vault_dashboard_db.password }}"
+  name: "dashboard"
+  user: "dashboard"
+  pass: "{{ vault_dashboard_db.pass }}"
 
 dashboard_directory_server: ''
 dashboard_cas_server: ''
