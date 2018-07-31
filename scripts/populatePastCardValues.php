@@ -64,17 +64,14 @@ $search = !empty($opts['c']) ? ['id'=>(int)$opts['c']] : null;
 $list   = $table->find($search);
 foreach ($list as $card) {
     $date   = new \DateTime();
+    $id     = $card->getId();
 
     for ($i=0; $i<$numDays; $i++) {
         $sr = null;
-        try {
-            $sr = $card->queryService($date);
-            $id = $card->getId();
-            $d  = $date->format(DATE_FORMAT);
-        }
-        catch (\Exception $e) {
-            echo $e->getMessage()."\n";
-        }
+        $d  = $date->format(DATE_FORMAT);
+
+        try { $sr = $card->queryService($date); }
+        catch (\Exception $e) { echo $e->getMessage()."\n"; }
 
         if ($sr) {
             $card->logResponse($sr, $date);

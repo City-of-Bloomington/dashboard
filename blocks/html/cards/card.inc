@@ -18,7 +18,7 @@ if ($entry) {
     $status      = $entry->getStatus();
     $value       = $entry->getMetricValue();
     $units       = $entry->getMetricUnits();
-    $display     = is_numeric($value) ? "$value$units" : '';
+    $display     = is_numeric($value) ? round($value, 2)."$units" : '';
 
     $period      = $entry->getPeriodRange();
     $periodStart = $period['start']->format(DATE_FORMAT);

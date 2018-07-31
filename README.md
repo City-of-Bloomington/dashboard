@@ -1,9 +1,9 @@
 City Performance Dashboard
 ==============================
 
-A performance dashboard that pulls data from CKAN data portals to show key metrics about data sets. 
+A performance dashboard that pulls data from CKAN data portals to show key metrics about data sets.
 
-The City Performance Dashboard application displays metrics supplied by data sources throughout the city. The dashboard consists of cards that each represent a summary of the corresponding data. The application runs scheduled queries against the data source and then generates the summary card. The card compares the current value with a target value, and displays the corresponding status.
+The dashboard gathers, logs, and displays metric values from data sources throughout the city.  A metric is some scalar value that reflects something useful about city performance.
 
 We have an instance of this application available here:
 https://bloomington.in.gov/performance

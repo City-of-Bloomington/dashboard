@@ -152,17 +152,22 @@ class Card extends ActiveRecord
 	 */
 	public function queryService(\DateTime $effectiveDate=null)
 	{
+        static $serviceInstance;
+
         if (!$effectiveDate) { $effectiveDate = new \DateTime(); }
 
         $service = $this->getService();
         $method  = $this->getMethod();
         $params  = $this->getParameters();
 
+
         $params[ServiceInterface::EFFECTIVE_DATE] = $effectiveDate;
         $params[ServiceInterface::PERIOD        ] = $this->getPeriod();
 
-        $o = $service->factory();
-        return $o->$method($params);
+        if (!$serviceInstance) {
+             $serviceInstance = $service->factory();
+        }
+        return $serviceInstance->$method($params);
 	}
 
 	/**
