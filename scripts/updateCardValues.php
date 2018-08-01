@@ -2,7 +2,7 @@
 /**
  * Saves the current metric value for each card.
  *
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  *
  * This is probably the script to use for nightly cron jobs.
@@ -21,16 +21,12 @@ $table = new CardsTable();
 $list  = $table->find();
 foreach ($list as $card) {
     $date   = new \DateTime();
+    $id     = $card->getId();
+    $d      = $date->format(DATE_FORMAT);
 
     $sr = null;
-    try {
-        $sr = $card->queryService($date);
-        $id = $card->getId();
-        $d  = $date->format(DATE_FORMAT);
-    }
-    catch (\Exception $e) {
-        echo $e->getMessage()."\n";
-    }
+    try { $sr = $card->queryService($date); }
+    catch (\Exception $e) { echo $e->getMessage()."\n"; }
 
     if ($sr) {
         $card->logResponse($sr, $date);

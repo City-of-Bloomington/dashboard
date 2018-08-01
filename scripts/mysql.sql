@@ -37,6 +37,7 @@ create table cards (
     responseKey varchar(32)       not null,
     dataUrl     varchar(255),
     internal    tinyint(1) unsigned not null default 0,
+    disabled    tinyint(1) unsigned not null default 0,
     constraint FK_cards_service_id foreign key (service_id) references services(id)
 );
 

@@ -34,6 +34,10 @@ class CardsTable extends TableGateway
 		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
+                    case 'active':
+                        $select->where("disabled=?", $value ? 0 : 1);
+                    break;
+
                     case 'group_id':
                         $select->join('inner', 'card_groups as g', 'c.id=g.card_id');
                         $select->where("g.group_id=?", $value);

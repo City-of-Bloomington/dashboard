@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Card $this->card
  */
@@ -20,6 +20,8 @@ foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->card->$get());
 }
+$visibility = $this->card->isInternal() ? $this->_('internal') : $this->_('public');
+$active     = $this->card->isActive()   ? $this->_('active'  ) : $this->_('disabled');
 
 $groupNames = [];
 $groups     = $this->card->getGroups();
@@ -35,5 +37,7 @@ $groupNames = parent::escape(implode(', ', $groupNames));
     <tr><th><?= $this->_('target'     ); ?></th><td><?= $target;      ?></td></tr>
     <tr><th><?= $this->_('comparison' ); ?></th><td><?= $comparison;  ?></td></tr>
     <tr><th><?= $this->_('parameters' ); ?></th><td><?= $parameters;  ?></td></tr>
-    <tr><th><?= $this->_(['group', 'groups', count($groups)]); ?></th><td><?= $groupNames; ?></td></tr>
+    <tr><th><?= $this->_('visibility' ); ?></th><td><?= $visibility;  ?></td></tr>
+    <tr><th><?= $this->_('active'     ); ?></th><td><?= $active;      ?></td></tr>
+    <tr><th><?= $this->_(['group', 'groups', count($groups)]);        ?></th><td><?= $groupNames; ?></td></tr>
 </table>

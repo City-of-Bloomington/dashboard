@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Card $this->card
  */
@@ -50,12 +50,23 @@ $title = $id ? $this->_('card_edit') : $this->_('card_add');
 
                 echo $helper->field([
                     'name' => 'internal',
-                    'label' => 'visibility',
+                    'label' => $this->_('visibility'),
                     'value' => $this->card->getInternal(),
                     'type'=>'radio',
                     'options'=>[
                         ['value'=>0, 'label'=>$this->_('public'  )],
                         ['value'=>1, 'label'=>$this->_('internal')]
+                    ]
+                ]);
+
+                echo $helper->field([
+                    'name' => 'disabled',
+                    'label' => $this->_('disabled'),
+                    'value' => $this->card->getDisabled(),
+                    'type'=>'radio',
+                    'options'=>[
+                        ['value'=>0, 'label'=>$this->_('active'  )],
+                        ['value'=>1, 'label'=>$this->_('disabled')]
                     ]
                 ]);
 

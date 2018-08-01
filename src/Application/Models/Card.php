@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -89,6 +89,7 @@ class Card extends ActiveRecord
 	public function getResponseKey()   { return parent::get('responseKey');  }
 	public function getDataUrl()       { return parent::get('dataUrl');      }
 	public function getInternal()      { return (int)parent::get('internal');}
+	public function getDisabled()      { return (int)parent::get('disabled');}
 	public function getService_id()    { return parent::get('service_id');   }
 	public function getGroup()         { return parent::getForeignKeyObject(__namespace__.'\Group',   'group_id'  ); }
 	public function getService()       { return parent::getForeignKeyObject(__namespace__.'\Service', 'service_id'); }
@@ -103,6 +104,7 @@ class Card extends ActiveRecord
 	public function setResponseKey($s) { parent::set('responseKey', $s); }
 	public function setDataUrl    ($s) { parent::set('dataUrl',     $s); }
 	public function setInternal   ($s) { parent::set('internal', $s ? 1 : 0); }
+	public function setDisabled   ($s) { parent::set('disabled', $s ? 1 : 0); }
 	public function setService_id($id)     { parent::setForeignKeyField (__namespace__.'\Service', 'service_id', $id); }
 	public function setService(Service $o) { parent::setForeignKeyObject(__namespace__.'\Service', 'service_id', $o ); }
 	public function setParameters(array $p=null)
@@ -130,6 +132,8 @@ class Card extends ActiveRecord
         }
 
         $this->setInternal(!empty($post['internal']) ? $post['internal'] : 0);
+        $this->setDisabled(!empty($post['disabled']) ? $post['disabled'] : 0);
+
         $this->save();
 
         if (!empty($post['group_id'])) {
@@ -142,6 +146,8 @@ class Card extends ActiveRecord
 	// Custom Functions
 	//----------------------------------------------------------------
 	public function isInternal() { return $this->getInternal() ? true : false; }
+	public function isDisabled() { return $this->getDisabled() ? true : false; }
+	public function isActive  () { return $this->getDisabled() ? false : true; }
 
 	/**
 	 * Queries the configured webservice for a value as of a point in time
