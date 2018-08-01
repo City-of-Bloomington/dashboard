@@ -35,12 +35,8 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
 
             $id          = $c->getId();
             $name        = parent::escape($c->getName());
-            $period      = parent::escape($c->getPeriod());
             $service     = parent::escape($c->getService()->getName());
             $uri         = parent::generateUri('cards.view', ['id'=>$id]);
-            $target      = parent::escape($c->getTarget());
-            $responseKey = parent::escape($c->getResponseKey());
-            $comparison  = $this->_($c->getComparison());
             $class       = $c->isInternal() ? 'class="internal"' : '';
 
             echo "
@@ -49,10 +45,6 @@ $this->template->addToAsset('scripts', BASE_URI.'/js/cards/list.js');
                 <td><a href=\"$uri\">$name</a></td>
                 <td>$service</td>
                 <td>{$c->getMethod()}</td>
-                <td>$period</td>
-                <td>$responseKey</td>
-                <td>$comparison</td>
-                <td>$target</td>
                 <td>$groups</td>
             </tr>
             ";

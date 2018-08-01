@@ -26,7 +26,7 @@ create table groups (
 
 create table cards (
     id          int      unsigned not null primary key auto_increment,
-    name        varchar(32)       not null,
+    name        varchar(64)       not null,
     service_id  int      unsigned not null,
     description varchar(255)      not null,
     method      varchar(32)       not null,
