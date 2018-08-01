@@ -17,6 +17,8 @@ class Card extends ActiveRecord
 
     public static $comparisons = ['gt', 'gte', 'lt', 'lte'];
 
+    private $serviceInstance;
+
 	/**
 	 * Populates the object with data
 	 *
@@ -158,8 +160,6 @@ class Card extends ActiveRecord
 	 */
 	public function queryService(\DateTime $effectiveDate=null)
 	{
-        static $serviceInstance;
-
         if (!$effectiveDate) { $effectiveDate = new \DateTime(); }
 
         $service = $this->getService();
@@ -170,10 +170,10 @@ class Card extends ActiveRecord
         $params[ServiceInterface::EFFECTIVE_DATE] = $effectiveDate;
         $params[ServiceInterface::PERIOD        ] = $this->getPeriod();
 
-        if (!$serviceInstance) {
-             $serviceInstance = $service->factory();
+        if (!$this->serviceInstance) {
+             $this->serviceInstance = $service->factory();
         }
-        return $serviceInstance->$method($params);
+        return $this->serviceInstance->$method($params);
 	}
 
 	/**
