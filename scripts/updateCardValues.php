@@ -18,7 +18,7 @@ include realpath(__DIR__.'/../bootstrap.inc');
 $oneDay = new \DateInterval('P1D');
 
 $table = new CardsTable();
-$list  = $table->find();
+$list  = $table->find(['active'=>true]);
 foreach ($list as $card) {
     $date   = new \DateTime();
     $id     = $card->getId();

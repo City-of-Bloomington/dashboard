@@ -27,15 +27,17 @@ class CardsTable extends TableGateway
                ->from('cards as c');
         if ($order) { $select->orderBy($order); }
 
-        if (!isset($_SESSION['USER']) || !Person::isAllowed('cards', 'internal')) {
-            $select->where('not c.internal');
-        }
-
 		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'active':
-                        $select->where("disabled=?", $value ? 0 : 1);
+                        if ($value) { $select->where('not c.disabled'); }
+                        else        { $select->where('c.disabled'    ); }
+                    break;
+
+                    case 'internal':
+                        if ($value) { $select->where('c.internal'    ); }
+                        else        { $select->where('not c.internal'); }
                     break;
 
                     case 'group_id':
