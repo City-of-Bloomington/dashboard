@@ -36,6 +36,7 @@ tar czf $today.tar.gz $MYSQL_DBNAME.sql
 mv $today.tar.gz $BACKUP_DIR
 
 # Purge any backup tarballs that are too old
+cd $BACKUP_DIR
 for file in `ls`
 do
 	atime=`stat -c %Y $file`
