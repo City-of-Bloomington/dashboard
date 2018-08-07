@@ -83,7 +83,7 @@
     - name: "Install site_config"
       template:
         src:  "site_config.inc"
-        dest: "{{ dashboard_site_home }}"
+        dest: "{{ dashboard_site_home }}/site_config.inc"
 
     - name: "Update directory ownership"
       command: "chown -R www-data:staff {{ item }}"
